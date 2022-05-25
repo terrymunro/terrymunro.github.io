@@ -1,8 +1,10 @@
 ---
 aliases: 
 tags: 
-title: _index
+title: "Knowledge Base"
 linkTitle: "Knowledge Base"
+description: >
+  What little knowledge I have accumulated, shared with whomever desires it
 weight: 20
 menu:
   main:
@@ -10,8 +12,6 @@ menu:
 date created: Friday, March 18th 2022, 4:53:03 pm
 date modified: Wednesday, May 25th 2022, 11:42:16 pm
 ---
-
-# _index
 
 {{% pageinfo %}}
 This knowledge base is as full as my brain is. Soz.
