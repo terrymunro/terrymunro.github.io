@@ -1,17 +1,15 @@
 ---
-categories: ["Examples"]
-tags: ["test", "sample", "docs"]
-title: "Example Page"
-linkTitle: "Example Page"
-date: 2017-01-05
+categories: ["Databricks"]
+tags: ["data-eng", "data-science", "bi", "best-practices", "architecture", "data-lake"]
+title: "Medallion Architecture"
+linkTitle: "Medallion Architecture"
 description: >
-  A short lead description about this content page. It can be **bold** or _italic_ and can be split over multiple paragraphs.
+  TODO: write medallion architecture description
 ---
 
 {{% pageinfo %}}
-This is a placeholder page. Replace it with your own content.
+This is a placeholder page that will be about medallion architecture eventually.
 {{% /pageinfo %}}
-
 
 Text can be **bold**, _italic_, or ~~strikethrough~~. [Links](https://gohugo.io) should be blue with no underlines (unless hovered over).
 
