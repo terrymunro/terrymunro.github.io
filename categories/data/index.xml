@@ -1,9 +1,15 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Databricks</title><link>https://tm.gg/categories/databricks/</link><description>Recent content in Databricks on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/categories/databricks/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Databricks</title><link>https://tm.gg/docs/databricks/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Data</title><link>https://tm.gg/categories/data/</link><description>Recent content in Data on Terence Munro</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://tm.gg/categories/data/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Databricks</title><link>https://tm.gg/docs/databricks/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>Something meaningful will go here later I swears.&lt;/p>
 &lt;/div>
 &lt;p>Databricks was founded by the original creators of Apache Spark an open-source
-unified analytics engine for large-scale data processing.&lt;/p></description></item><item><title>Docs: Medallion Architecture</title><link>https://tm.gg/docs/databricks/medallion-architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/medallion-architecture/</guid><description>
+unified analytics engine for large-scale data processing.&lt;/p></description></item><item><title>Docs: Real-Time Analytics</title><link>https://tm.gg/docs/real-time_analytics/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/real-time_analytics/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>This is a placeholder page for real-time analytics&lt;/p>
+&lt;/div></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>This is a placeholder page for streaming systems&lt;/p>
+&lt;/div></description></item><item><title>Docs: Medallion Architecture</title><link>https://tm.gg/docs/databricks/medallion-architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/medallion-architecture/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page that will be about medallion architecture eventually.&lt;/p>
 &lt;/div>

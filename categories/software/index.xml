@@ -1,0 +1,7 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Software</title><link>https://tm.gg/categories/software/</link><description>Recent content in Software on Terence Munro</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://tm.gg/categories/software/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: CQRS</title><link>https://tm.gg/docs/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/cqrs/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>Something meaningful will go here later I swears.&lt;/p>
+&lt;/div></description></item><item><title>Docs: Event Sourcing</title><link>https://tm.gg/docs/event_sourcing/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/event_sourcing/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>This is a placeholder page for event sourcing&lt;/p>
+&lt;/div></description></item></channel></rss>
