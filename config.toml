@@ -175,10 +175,10 @@ enable = true
 [params.links]
 # End user relevant links. These will show up on left side of footer and in the community page if you have one.
 [[params.links.user]]
-  name ="Twitter"
-  url = "https://twitter.com/terrymunro"
-  icon = "fab fa-twitter"
-  desc = "Follow me on Twitter to be disappointed"
+  name ="Mastodon"
+  url = "https://mastodon.au/@terrymunro"
+  icon = "fab fa-mastodon"
+  desc = "Follow me on Mastodon to be disappointed"
 [[params.links.user]]
   name = "Stack Overflow"
   url = "https://stackoverflow.com/users/712632/terrymunro"

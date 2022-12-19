@@ -1,6 +1,6 @@
 ---
-categories: ["Databricks"]
-tags: ["data-eng", "data-science", "bi"]
+categories: ["Data"]
+tags: ["databricks", "bi"]
 title: "Databricks"
 linkTitle: "Databricks"
 weight: 2

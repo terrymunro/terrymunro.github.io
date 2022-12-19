@@ -1,4 +1,5 @@
 ---
+categories: ["Data"]
 title: "Real-Time Analytics"
 linkTitle: "Real-Time Analytics"
 weight: 3

@@ -1,6 +1,6 @@
 ---
-categories: ["Databricks"]
-tags: ["data-eng", "data-science", "bi", "best-practices", "architecture", "data-lake"]
+categories: ["Data"]
+tags: ["databricks", "data-science", "bi", "best-practices", "architecture", "data-lake"]
 title: "Medallion Architecture"
 linkTitle: "Medallion Architecture"
 description: >

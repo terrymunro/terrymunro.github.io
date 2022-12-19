@@ -1,4 +1,5 @@
 ---
+categories: ["Data"]
 title: "Streaming Systems"
 linkTitle: "Streaming Systems"
 weight: 4

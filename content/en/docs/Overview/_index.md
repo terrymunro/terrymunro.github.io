@@ -1,6 +1,4 @@
 ---
-aliases: 
-tags: 
 title: What is it?
 linkTitle: "Overview"
 weight: 1
