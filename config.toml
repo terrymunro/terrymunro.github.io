@@ -11,7 +11,7 @@ enableMissingTranslationPlaceholders = true
 enableRobotsTXT = true
 
 # Hugo allows theme composition (and inheritance). The precedence is from left to right.
-theme = ["docsy"]
+#theme = ["docsy"]
 
 # Will give values to .Lastmod etc.
 enableGitInfo = true
@@ -163,8 +163,8 @@ sidebar_search_disable = false
 [params.ui.feedback]
 enable = true
 # The responses that the user sees after clicking "yes" (the page was helpful) or "no" (the page was not helpful).
-yes = 'Glad to hear it! Please <a href="https://github.com/terrymunro/terrymunro.github.io/issues/new">tell us how we can improve</a>.'
-no = 'Sorry to hear that. Please <a href="https://github.com/terrymunro/terrymunro.github.io/issues/new">tell us how we can improve</a>.'
+yes = 'Glad to hear it! 😹<br />But if you do have any thoughts, please <a href="https://github.com/terrymunro/terrymunro.github.io/issues/new">let me know how I can improve</a>.'
+no = 'Sorry to hear that. 😭<br />Please <a href="https://github.com/terrymunro/terrymunro.github.io/issues/new">share with me your thoughts on how I can improve</a>.'
 
 # Adds a reading time to the top of each doc.
 # If you want this feature, but occasionally need to remove the Reading time from a single page, 
@@ -184,9 +184,21 @@ enable = true
   url = "https://stackoverflow.com/users/712632/terrymunro"
   icon = "fab fa-stack-overflow"
   desc = "Useless unhelpful person"
+[[params.links.user]]
+  name = "Keybase"
+  url = "https://keybase.io/terrymunro"
+  icon = "fab fa-keybase"
+  desc = "Baron wasteland of never getting used"
 # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
 [[params.links.developer]]
   name = "GitHub"
   url = "https://github.com/terrymunro"
   icon = "fab fa-github"
   desc = "Empty pit of despair"
+
+[module]
+proxy = "direct"
+[[module.imports]]
+path = "github.com/google/docsy"
+[[module.imports]]
+path = "github.com/google/docsy/dependencies"

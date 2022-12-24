@@ -9,7 +9,7 @@ description: >
 ---
 
 {{% pageinfo %}}
-Something meaningful will go here later I swears.
+WIP: Placeholder page
 {{% /pageinfo %}}
 
 Databricks was founded by the original creators of Apache Spark an open-source

@@ -1,0 +1,16 @@
+---
+categories: ["Software"]
+tags: ["data-structure"]
+title: "CRDTs"
+linkTitle: "CRDTs"
+weight: 2
+description: >
+  CRDTs (Conflict-free Replicated Data Types) are data structures that allow multiple replicas of a shared data set to be kept in sync without the need for a central authority or global clock, using techniques such as convergence, idempotence, and commutativity to resolve conflicts and ensure consistency among the replicas.
+---
+
+{{% pageinfo %}}
+WIP: Placeholder page
+
+* [Wikipedia: Conflict-free replicated data type](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
+* [Conflict-free Replicated Data Types](https://crdt.tech/)
+{{% /pageinfo %}}
