@@ -1,0 +1,61 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Patterns</title><link>https://tm.gg/docs/patterns/</link><description>Recent content in Patterns on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/docs/patterns/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Event Sourcing</title><link>https://tm.gg/docs/patterns/event_sourcing/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/event_sourcing/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>This is a placeholder page for event sourcing&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing">Microsoft - Event Sourcing pattern&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven">Microsoft - Event Driven Architecture&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://aws.amazon.com/event-driven-architecture/">AWS - Event Driven Architecture&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://leanpub.com/esversioning/read">Versioning in an Event Sourced System&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://martinfowler.com/eaaDev/EventSourcing.html">Martin Fowler - Event Sourcing&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://eventuate.io/whyeventsourcing.html">Why Event Sourcing?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://microservices.io/patterns/data/event-sourcing.html">Pattern: Event sourcing&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.codemag.com/Article/2209071/Event-Sourcing-and-CQRS-with-Marten">Event Sourcing and CQRS with Marten(DB)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hackernoon.com/1-year-of-event-sourcing-and-cqrs-fb9033ccd1c6">1 year of Event Sourcing and CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://engineering.grab.com/democratising-fare-storage-at-scale-using-event-sourcing">Democratising Fare Storage at Scale using Event Sourcing&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Bulkhead</title><link>https://tm.gg/docs/patterns/bulkhead/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/bulkhead/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead">Bulkhead pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Circuit Breaker</title><link>https://tm.gg/docs/patterns/circuit_breaker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/circuit_breaker/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
+&lt;/div></description></item><item><title>Docs: CQRS</title><link>https://tm.gg/docs/patterns/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/cqrs/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://martinfowler.com/bliki/CQRS.html">Martin Fowler - CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs">Microsoft - CQRS pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://microservices.io/patterns/data/cqrs.html">Pattern: Command Query Responsibility Segregation (CQRS)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://udidahan.com/2009/12/09/clarified-cqrs/">Clarified CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.codemag.com/Article/2209071/Event-Sourcing-and-CQRS-with-Marten">Event Sourcing and CQRS with Marten(DB)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hackernoon.com/1-year-of-event-sourcing-and-cqrs-fb9033ccd1c6">1 year of Event Sourcing and CQRS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Saga</title><link>https://tm.gg/docs/patterns/saga/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/saga/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga">Saga distributed transactions pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Sharding</title><link>https://tm.gg/docs/patterns/sharding/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/sharding/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding">Sharding pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Strangler Fig</title><link>https://tm.gg/docs/patterns/strangler_fig/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/strangler_fig/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig">Strangler Fig&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developer.ibm.com/articles/cl-strangler-application-pattern-microservices-apps-trs/">Apply the Strangler Fig Application pattern to microservices applications&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dianadarie.medium.com/the-strangler-fig-migration-pattern-2e20a7350511">The Strangler Fig Migration Pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://shopify.engineering/refactoring-legacy-code-strangler-fig-pattern">Refactoring Legacy Code with the Strangler Fig Pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item></channel></rss>

@@ -1,278 +1,237 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Data</title><link>https://tm.gg/categories/data/</link><description>Recent content in Data on Terence Munro</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://tm.gg/categories/data/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Databricks</title><link>https://tm.gg/docs/databricks/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
-&lt;p>Something meaningful will go here later I swears.&lt;/p>
+&lt;p>WIP: Placeholder page&lt;/p>
 &lt;/div>
 &lt;p>Databricks was founded by the original creators of Apache Spark an open-source
 unified analytics engine for large-scale data processing.&lt;/p></description></item><item><title>Docs: Real-Time Analytics</title><link>https://tm.gg/docs/real-time_analytics/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/real-time_analytics/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page for real-time analytics&lt;/p>
-&lt;/div></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
+&lt;/div>
+&lt;a id="td-block-1" class="td-offset-anchor">&lt;/a>
+&lt;section class="row td-box td-box--white td-box--gradient td-box--height-auto">
+&lt;div class="col">
+&lt;div class="row section">
+&lt;h2 id="resources">Resources&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">The Log: What every software engineer should know about real-time data&amp;rsquo;s unifying abstraction&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.statsig.com/realtime-product-observability-with-apache-druid-3fed6c9bc8f8">Realtime Product Observability with Apache Druid&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.twitter.com/engineering/en_us/topics/infrastructure/2022/powering-real-time-data-analytics-with-druid-at-twitter">Powering real-time data analytics with Druid at Twitter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/blog/2022/05/20/design-patterns-for-real-time-insights-in-financial-services.html">Design Patterns for Real-time Insights in Financial Services&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/blog/2022/06/08/announcing-the-availability-of-data-lineage-with-unity-catalog.html">Real-time lineage with Unity Catalog&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/blog/2022/05/24/arc-uses-a-lakehouse-architecture-for-real-time-data-insights-that-optimize-drilling-performance-and-lower-carbon-emissions.html">ARC Uses a Lakehouse Architecture for Real-time Data Insights That Optimize Drilling Performance and Lower Carbon Emissions&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://meroxa.com/">Meroxa&lt;/a> is a real-time data platform as a service.&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/section></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page for streaming systems&lt;/p>
+&lt;/div>
+&lt;a id="td-block-1" class="td-offset-anchor">&lt;/a>
+&lt;section class="row td-box td-box--white td-box--gradient td-box--height-auto">
+&lt;div class="col">
+&lt;div class="row section">
+&lt;h2 id="resources">Resources&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">The Log: What every software engineer should know about real-time data&amp;rsquo;s unifying abstraction&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.oreilly.com/radar/the-world-beyond-batch-streaming-101/">The world beyond batch - streaming 101&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.oreilly.com/radar/the-world-beyond-batch-streaming-102/">The world beyond batch - streaming 102&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://netflixtechblog.com/keystone-real-time-stream-processing-platform-a3ee651812a">Netflix - Keystone&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://netflixtechblog.com/stream-processing-with-mantis-78af913f51a6">Netflix - Mantis&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/netflix-techblog/kafka-inside-keystone-pipeline-dd5aeabaf6bb">Netflix - Kafka + Keystone&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html">Databricks - CDC DLT&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dzone.com/articles/how-does-kafka-perform-when-you-need-low-latency">How does Kafka Perform when you need Low Latency&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.kai-waehner.de/blog/2021/11/14/streaming-data-exchange-data-mesh-apache-kafka-in-motion/%60">Streaming Data Exchange - Data Mesh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.kai-waehner.de/blog/2021/05/09/kafka-api-de-facto-standard-event-streaming-like-amazon-s3-object-storage/">Kafka API De Facto Standard - Event Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.confluent.io/events/kafka-summit-europe-2021/apache-kafka-and-the-data-mesh/">Apache Kafka and the Data Mesh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://towardsdatascience.com/running-apache-flink-with-rocksdb-on-azure-kubernetes-service-904181d79f72">Flink w/ RocksDB on AKS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://martin.kleppmann.com/2018/01/18/event-types-in-kafka-topic.html">Event Types in Kafka Topics&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://nathanmarz.com/blog/history-of-apache-storm-and-lessons-learned.html">History of Apache Storm and Lessons Learned&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.twitter.com/engineering/en_us/topics/infrastructure/2021/processing-billions-of-events-in-real-time-at-twitter-">Processing Billions of Events in Real Time at Twitter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://acceldataio.medium.com/benefits-of-using-kafka-to-handle-real-time-data-streams-662e9dfc09fe">Benefits of using Kafka to Handle RTDS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/whatfix-techblog/real-time-data-processing-architecture-using-apache-spark-apache-kafka-and-click-house-ab8e98ad3f98">RTDP Arch - Spark + Kafka + ClickHouse&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2022/05/05/streaming-windows-event-logs-into-the-cybersecurity-lakehouse.html">Streaming Windows Event Logs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cube.dev/blog/materialize-integration">Cube Materialize Integration&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/benbjohnson/litestream">Litestream&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://slack.engineering/building-self-driving-kafka-clusters-using-open-source-components/">Slack - Building Self Driving Kafka Clusters&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dzone.com/refcardz/apache-kafka">Apache Kafka - Refcard&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.baeldung.com/apache-activemq-vs-kafka">Apache ActiveMQ vs Kafka&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://selectfrom.dev/streaming-applications-on-serverless-spark-66f282a29b7c">Streaming Applications on Serverless Spark&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://materialize.com/docs/quickstarts/live-analytics/">Live Analytics - Materialize&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.rilldata.com/">Rill Data - Apache Druid - DuckDB&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.redhat.com/articles/2022/05/24/managed-kafka-services-which-right-you#what_kafka_distribution_is_right_for_you_">Managed Kafka Services - Which one is right for you?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/@samueldavidwinter/streaming-data-9d8a3967f7ee">Streaming Data&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://quastor.substack.com/p/building-a-search-index-with-kafka?s=r">Building a search index with Kafka and Elasticsearch&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://quine.io/">Streaming Graph Library&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.risingwave.dev/docs/latest/intro/">RisingWave similar to Materialize&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.thatdot.com/blog/understanding-the-scale-limitations-of-graph-databases">Graph Databases&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/learn/modules/introduction-to-data-streaming/">Microsoft - Intro to Data Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/glossary/what-is-spark-streaming">Databricks - What is Spark Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html">How Uplift built CDC and Multiplexing data pipelines with Databricks Delta Live Tables&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="existing-tools">Existing Tools&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://beam.apache.org/">Apache Beam&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://cloud.google.com/dataflow">GCP Dataflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://flink.apache.org/">Apache Flink&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://aws.amazon.com/kinesis/">AWS Kinesis&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html">Apache Spark&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://www.databricks.com">Databricks&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://kafka.apache.org/">Apache Kafka&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://redpanda.com/">Redpanda&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.confluent.io/">Confluent&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.lightbend.com/akka-platform">Akka Platform&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.akka.io/docs/akka/current/stream/index.html">Akka Streams&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cloudflow.io/">Cloudflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://jet-start.sh/">Hazelcast - Jet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.fluvio.io/">Fluvio&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pulsar.apache.org/">Apache Pulsar&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.nats.io/nats-concepts/jetstream/streams">NATS Jetstream&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.rabbitmq.com/stream.html">RabbitMQ Streams&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-about">Azure EventHub&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://heron.apache.org/">Apache Heron&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://storm.apache.org/">Apache Storm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://samza.apache.org/">Apache Samza&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/pinterest/memq">MemQ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://twister2.org/">Twister2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/faust-streaming/faust">Faust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/section></description></item><item><title>Docs: DE Associate</title><link>https://tm.gg/docs/databricks/de-associate/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-associate/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/">Partner Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://customer-academy.databricks.com/">Customer Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/learn/certification/data-engineer-associate">Databricks Certified Data Engineer Associate&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://files.training.databricks.com/assessments/practice-exams/PracticeExam-DataEngineerAssociate.pdf">Practice Exam&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tm.gg/resources/DataBricks Associate Data Engineer Prep - Notes.pdf" download>DataBricks Associate Data Engineer Prep - Notes.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://files.training.databricks.com/lms/docebo/databricks-academy-faq.pdf">Databricks Academy FAQ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tm.gg/docs/databricks/de-professional/">Data Engineering - Professional Notes&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: DE Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/">Partner Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://customer-academy.databricks.com/">Customer Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tm.gg/docs/databricks/de-associate/">Data Engineering - Associate Notes&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Medallion Architecture</title><link>https://tm.gg/docs/databricks/medallion-architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/medallion-architecture/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
-&lt;p>This is a placeholder page that will be about medallion architecture eventually.&lt;/p>
+&lt;p>These are just quick n dirty notes, will fill this out with more substance another time.&lt;/p>
 &lt;/div>
-&lt;p>Text can be &lt;strong>bold&lt;/strong>, &lt;em>italic&lt;/em>, or &lt;del>strikethrough&lt;/del>. &lt;a href="https://gohugo.io">Links&lt;/a> should be blue with no underlines (unless hovered over).&lt;/p>
-&lt;p>There should be whitespace between paragraphs. Vape migas chillwave sriracha poutine try-hard distillery. Tattooed shabby chic small batch, pabst art party heirloom letterpress air plant pop-up. Sustainable chia skateboard art party banjo cardigan normcore affogato vexillologist quinoa meggings man bun master cleanse shoreditch readymade. Yuccie prism four dollar toast tbh cardigan iPhone, tumblr listicle live-edge VHS. Pug lyft normcore hot chicken biodiesel, actually keffiyeh thundercats photo booth pour-over twee fam food truck microdosing banh mi. Vice activated charcoal raclette unicorn live-edge post-ironic. Heirloom vexillologist coloring book, beard deep v letterpress echo park humblebrag tilde.&lt;/p>
-&lt;p>90&amp;rsquo;s four loko seitan photo booth gochujang freegan tumeric listicle fam ugh humblebrag. Bespoke leggings gastropub, biodiesel brunch pug fashion axe meh swag art party neutra deep v chia. Enamel pin fanny pack knausgaard tofu, artisan cronut hammock meditation occupy master cleanse chartreuse lumbersexual. Kombucha kogi viral truffaut synth distillery single-origin coffee ugh slow-carb marfa selfies. Pitchfork schlitz semiotics fanny pack, ugh artisan vegan vaporware hexagon. Polaroid fixie post-ironic venmo wolf ramps &lt;strong>kale chips&lt;/strong>.&lt;/p>
-&lt;blockquote>
-&lt;p>There should be no margin above this first sentence.&lt;/p>
-&lt;p>Blockquotes should be a lighter gray with a border along the left side in the secondary color.&lt;/p>
-&lt;p>There should be no margin below this final sentence.&lt;/p>
-&lt;/blockquote>
-&lt;h2 id="first-header-2">First Header 2&lt;/h2>
-&lt;p>This is a normal paragraph following a header. Knausgaard kale chips snackwave microdosing cronut copper mug swag synth bitters letterpress glossier &lt;strong>craft beer&lt;/strong>. Mumblecore bushwick authentic gochujang vegan chambray meditation jean shorts irony. Viral farm-to-table kale chips, pork belly palo santo distillery activated charcoal aesthetic jianbing air plant woke lomo VHS organic. Tattooed locavore succulents heirloom, small batch sriracha echo park DIY af. Shaman you probably haven&amp;rsquo;t heard of them copper mug, crucifix green juice vape &lt;em>single-origin coffee&lt;/em> brunch actually. Mustache etsy vexillologist raclette authentic fam. Tousled beard humblebrag asymmetrical. I love turkey, I love my job, I love my friends, I love Chardonnay!&lt;/p>
-&lt;p>Deae legum paulatimque terra, non vos mutata tacet: dic. Vocant docuique me plumas fila quin afuerunt copia haec o neque.&lt;/p>
-&lt;p>On big screens, paragraphs and headings should not take up the full container width, but we want tables, code blocks and similar to take the full width.&lt;/p>
-&lt;p>Scenester tumeric pickled, authentic crucifix post-ironic fam freegan VHS pork belly 8-bit yuccie PBR&amp;amp;B. &lt;strong>I love this life we live in&lt;/strong>.&lt;/p>
-&lt;h2 id="second-header-2">Second Header 2&lt;/h2>
-&lt;blockquote>
-&lt;p>This is a blockquote following a header. Bacon ipsum dolor sit amet t-bone doner shank drumstick, pork belly porchetta chuck sausage brisket ham hock rump pig. Chuck kielbasa leberkas, pork bresaola ham hock filet mignon cow shoulder short ribs biltong.&lt;/p>
-&lt;/blockquote>
-&lt;h3 id="header-3">Header 3&lt;/h3>
-&lt;pre tabindex="0">&lt;code>This is a code block following a header.
-&lt;/code>&lt;/pre>&lt;p>Next level leggings before they sold out, PBR&amp;amp;B church-key shaman echo park. Kale chips occupy godard whatever pop-up freegan pork belly selfies. Gastropub Belinda subway tile woke post-ironic seitan. Shabby chic man bun semiotics vape, chia messenger bag plaid cardigan.&lt;/p>
-&lt;h4 id="header-4">Header 4&lt;/h4>
+&lt;h1 id="medallion-architecture">Medallion Architecture&lt;/h1>
+&lt;h2 id="bronze">Bronze&lt;/h2>
 &lt;ul>
-&lt;li>This is an unordered list following a header.&lt;/li>
-&lt;li>This is an unordered list following a header.&lt;/li>
-&lt;li>This is an unordered list following a header.&lt;/li>
+&lt;li>Append only&lt;/li>
+&lt;li>Retain everything&lt;/li>
+&lt;li>Soft-deletes if necessary&lt;/li>
+&lt;li>Hard-deletes if required by regulatory reasons&lt;/li>
+&lt;li>Don&amp;rsquo;t parse the underlying data,&lt;/li>
 &lt;/ul>
-&lt;h5 id="header-5">Header 5&lt;/h5>
-&lt;ol>
-&lt;li>This is an ordered list following a header.&lt;/li>
-&lt;li>This is an ordered list following a header.&lt;/li>
-&lt;li>This is an ordered list following a header.&lt;/li>
-&lt;/ol>
-&lt;h6 id="header-6">Header 6&lt;/h6>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>What&lt;/th>
-&lt;th>Follows&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>A table&lt;/td>
-&lt;td>A header&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>A table&lt;/td>
-&lt;td>A header&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>A table&lt;/td>
-&lt;td>A header&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;p>There&amp;rsquo;s a horizontal rule above and below this.&lt;/p>
-&lt;hr>
-&lt;p>Here is an unordered list:&lt;/p>
+&lt;h2 id="silver">Silver&lt;/h2>
 &lt;ul>
-&lt;li>Liverpool F.C.&lt;/li>
-&lt;li>Chelsea F.C.&lt;/li>
-&lt;li>Manchester United F.C.&lt;/li>
-&lt;/ul>
-&lt;p>And an ordered list:&lt;/p>
-&lt;ol>
-&lt;li>Michael Brecker&lt;/li>
-&lt;li>Seamus Blake&lt;/li>
-&lt;li>Branford Marsalis&lt;/li>
-&lt;/ol>
-&lt;p>And an unordered task list:&lt;/p>
+&lt;li>Ease of query&lt;/li>
+&lt;li>Clean data&lt;/li>
+&lt;li>ACID transactions&lt;/li>
+&lt;li>Enterprise data model
 &lt;ul>
-&lt;li>&lt;input checked="" disabled="" type="checkbox"> Create a Hugo theme&lt;/li>
-&lt;li>&lt;input checked="" disabled="" type="checkbox"> Add task lists to it&lt;/li>
-&lt;li>&lt;input disabled="" type="checkbox"> Take a vacation&lt;/li>
-&lt;/ul>
-&lt;p>And a &amp;ldquo;mixed&amp;rdquo; task list:&lt;/p>
-&lt;ul>
-&lt;li>&lt;input disabled="" type="checkbox"> Pack bags&lt;/li>
-&lt;li>?&lt;/li>
-&lt;li>&lt;input disabled="" type="checkbox"> Travel!&lt;/li>
-&lt;/ul>
-&lt;p>And a nested list:&lt;/p>
-&lt;ul>
-&lt;li>Jackson 5
-&lt;ul>
-&lt;li>Michael&lt;/li>
-&lt;li>Tito&lt;/li>
-&lt;li>Jackie&lt;/li>
-&lt;li>Marlon&lt;/li>
-&lt;li>Jermaine&lt;/li>
+&lt;li>3rd normal form&lt;/li>
+&lt;li>De-normalisation for performance reasons&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>TMNT
+&lt;li>Uses Delta Lake tables&lt;/li>
+&lt;li>Preserves grain of original data (no aggregation)&lt;/li>
+&lt;li>Eliminates duplicate records&lt;/li>
+&lt;li>Enforce production schema&lt;/li>
+&lt;/ul>
+&lt;h2 id="gold-layer">Gold Layer&lt;/h2>
 &lt;ul>
-&lt;li>Leonardo&lt;/li>
-&lt;li>Michelangelo&lt;/li>
-&lt;li>Donatello&lt;/li>
-&lt;li>Raphael&lt;/li>
+&lt;li>Designed for a particular user community&lt;/li>
+&lt;li>Reduces costs associated with ad hoc queries&lt;/li>
+&lt;li>Allows fine grained permissions&lt;/li>
+&lt;li>Power ML applications, reporting, dashboards, ad hoc analytics&lt;/li>
+&lt;li>Shifts query updates to production workloads&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Resources</title><link>https://tm.gg/docs/databricks/resources/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/resources/</guid><description>
+&lt;h2 id="-security">🔒 Security&lt;/h2>
+&lt;h3 id="coarse-grained-data-access-control">Coarse-grained Data Access Control&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.databricks.com/administration-guide/cloud-configurations/aws/instance-profiles.html">Secure access to S3 buckets using instance profiles | Databricks on AWS&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/li>
+&lt;h3 id="fine-grained-data-access-control">Fine-grained Data Access Control&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.databricks.com/security/credential-passthrough/iam-federation.html">SAML 2.0 Federation credential passthrough&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.databricks.com/security/credential-passthrough/iam-passthrough.html">Access S3 buckets using IAM credential passthrough with Databricks SCIM | Databricks on AWS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.databricks.com/administration-guide/clusters/policies.html">Manage cluster policies | Databricks on AWS&lt;/a>&lt;/li>
+&lt;li>Restrict access to PII Data - &lt;a href="https://databricks.com/blog/2020/11/20/enforcing-column-level-encryption-and-avoiding-data-duplication-with-pii.html" title="https://databricks.com/blog/2020/11/20/enforcing-column-level-encryption-and-avoiding-data-duplication-with-pii.html">Encrypt columns&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>Definition lists can be used with Markdown syntax. Definition headers are bold.&lt;/p>
-&lt;dl>
-&lt;dt>Name&lt;/dt>
-&lt;dd>Godzilla&lt;/dd>
-&lt;dt>Born&lt;/dt>
-&lt;dd>1952&lt;/dd>
-&lt;dt>Birthplace&lt;/dt>
-&lt;dd>Japan&lt;/dd>
-&lt;dt>Color&lt;/dt>
-&lt;dd>Green&lt;/dd>
-&lt;/dl>
-&lt;hr>
-&lt;p>Tables should have bold headings and alternating shaded rows.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Artist&lt;/th>
-&lt;th>Album&lt;/th>
-&lt;th>Year&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Michael Jackson&lt;/td>
-&lt;td>Thriller&lt;/td>
-&lt;td>1982&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Prince&lt;/td>
-&lt;td>Purple Rain&lt;/td>
-&lt;td>1984&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Beastie Boys&lt;/td>
-&lt;td>License to Ill&lt;/td>
-&lt;td>1986&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;p>If a table is too wide, it should scroll horizontally.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Artist&lt;/th>
-&lt;th>Album&lt;/th>
-&lt;th>Year&lt;/th>
-&lt;th>Label&lt;/th>
-&lt;th>Awards&lt;/th>
-&lt;th>Songs&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Michael Jackson&lt;/td>
-&lt;td>Thriller&lt;/td>
-&lt;td>1982&lt;/td>
-&lt;td>Epic Records&lt;/td>
-&lt;td>Grammy Award for Album of the Year, American Music Award for Favorite Pop/Rock Album, American Music Award for Favorite Soul/R&amp;amp;B Album, Brit Award for Best Selling Album, Grammy Award for Best Engineered Album, Non-Classical&lt;/td>
-&lt;td>Wanna Be Startin&amp;rsquo; Somethin&amp;rsquo;, Baby Be Mine, The Girl Is Mine, Thriller, Beat It, Billie Jean, Human Nature, P.Y.T. (Pretty Young Thing), The Lady in My Life&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Prince&lt;/td>
-&lt;td>Purple Rain&lt;/td>
-&lt;td>1984&lt;/td>
-&lt;td>Warner Brothers Records&lt;/td>
-&lt;td>Grammy Award for Best Score Soundtrack for Visual Media, American Music Award for Favorite Pop/Rock Album, American Music Award for Favorite Soul/R&amp;amp;B Album, Brit Award for Best Soundtrack/Cast Recording, Grammy Award for Best Rock Performance by a Duo or Group with Vocal&lt;/td>
-&lt;td>Let&amp;rsquo;s Go Crazy, Take Me With U, The Beautiful Ones, Computer Blue, Darling Nikki, When Doves Cry, I Would Die 4 U, Baby I&amp;rsquo;m a Star, Purple Rain&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Beastie Boys&lt;/td>
-&lt;td>License to Ill&lt;/td>
-&lt;td>1986&lt;/td>
-&lt;td>Mercury Records&lt;/td>
-&lt;td>noawardsbutthistablecelliswide&lt;/td>
-&lt;td>Rhymin &amp;amp; Stealin, The New Style, She&amp;rsquo;s Crafty, Posse in Effect, Slow Ride, Girls, (You Gotta) Fight for Your Right, No Sleep Till Brooklyn, Paul Revere, Hold It Now, Hit It, Brass Monkey, Slow and Low, Time to Get Ill&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;p>Code snippets like &lt;code>var foo = &amp;quot;bar&amp;quot;;&lt;/code> can be shown inline.&lt;/p>
-&lt;p>Also, &lt;code>this should vertically align&lt;/code> &lt;del>&lt;code>with this&lt;/code>&lt;/del> &lt;del>and this&lt;/del>.&lt;/p>
-&lt;p>Code can also be shown in a block element.&lt;/p>
-&lt;pre tabindex="0">&lt;code>foo := &amp;#34;bar&amp;#34;;
-bar := &amp;#34;foo&amp;#34;;
-&lt;/code>&lt;/pre>&lt;p>Code can also use syntax highlighting.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">main&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">input&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#4e9a06">`var foo = &amp;#34;bar&amp;#34;;`&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">lexer&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">lexers&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Get&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;javascript&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">iterator&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">_&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">lexer&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Tokenise&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#204a87;font-weight:bold">nil&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">input&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">style&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">styles&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Get&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#4e9a06">&amp;#34;github&amp;#34;&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">formatter&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">html&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">New&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">html&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">WithLineNumbers&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">var&lt;/span> &lt;span style="color:#000">buff&lt;/span> &lt;span style="color:#000">bytes&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Buffer&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">formatter&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Format&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">buff&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">style&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">iterator&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">fmt&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Println&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">buff&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">String&lt;/span>&lt;span style="color:#000;font-weight:bold">())&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-&lt;/code>&lt;/pre>&lt;p>Inline code inside table cells should still be distinguishable.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Language&lt;/th>
-&lt;th>Code&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Javascript&lt;/td>
-&lt;td>&lt;code>var foo = &amp;quot;bar&amp;quot;;&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Ruby&lt;/td>
-&lt;td>&lt;code>foo = &amp;quot;bar&amp;quot;{&lt;/code>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;p>Small images should be shown at their actual size.&lt;/p>
-&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Picea_abies_shoot_with_buds%2C_Sogndal%2C_Norway.jpg/240px-Picea_abies_shoot_with_buds%2C_Sogndal%2C_Norway.jpg" alt="">&lt;/p>
-&lt;p>Large images should always scale down and fit in the content container.&lt;/p>
-&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Picea_abies_shoot_with_buds%2C_Sogndal%2C_Norway.jpg/1024px-Picea_abies_shoot_with_buds%2C_Sogndal%2C_Norway.jpg" alt="">&lt;/p>
-&lt;p>&lt;em>The photo above of the Spruce Picea abies shoot with foliage buds: Bjørn Erik Pedersen, CC-BY-SA.&lt;/em>&lt;/p>
-&lt;h2 id="components">Components&lt;/h2>
-&lt;h3 id="alerts">Alerts&lt;/h3>
-&lt;p>
-&lt;div class="alert alert-primary" role="alert">
-This is an alert.
-&lt;/div>
-&lt;div class="alert alert-primary" role="alert">
-&lt;h4 class="alert-heading">Note&lt;/h4>
-This is an alert with a title.
-&lt;/div>
-&lt;div class="alert alert-primary" role="alert">
-&lt;h4 class="alert-heading">Note&lt;/h4>
-This is an alert with a title and &lt;strong>Markdown&lt;/strong>.
-&lt;/div>
-&lt;div class="alert alert-success" role="alert">
-This is a successful alert.
-&lt;/div>
-&lt;div class="alert alert-warning" role="alert">
-This is a warning.
-&lt;/div>
-&lt;div class="alert alert-warning" role="alert">
-&lt;h4 class="alert-heading">Warning&lt;/h4>
-This is a warning with a title.
-&lt;/div>
-&lt;/p>
-&lt;h2 id="another-heading">Another Heading&lt;/h2>
-&lt;p>Add some sections here to see how the ToC looks like. Bacon ipsum dolor sit amet t-bone doner shank drumstick, pork belly porchetta chuck sausage brisket ham hock rump pig. Chuck kielbasa leberkas, pork bresaola ham hock filet mignon cow shoulder short ribs biltong.&lt;/p>
-&lt;h3 id="this-document">This Document&lt;/h3>
-&lt;p>Inguina genus: Anaphen post: lingua violente voce suae meus aetate diversi. Orbis unam nec flammaeque status deam Silenum erat et a ferrea. Excitus rigidum ait: vestro et Herculis convicia: nitidae deseruit coniuge Proteaque adiciam &lt;em>eripitur&lt;/em>? Sitim noceat signa &lt;em>probat quidem&lt;/em>. Sua longis &lt;em>fugatis&lt;/em> quidem genae.&lt;/p>
-&lt;h3 id="pixel-count">Pixel Count&lt;/h3>
-&lt;p>Tilde photo booth wayfarers cliche lomo intelligentsia man braid kombucha vaporware farm-to-table mixtape portland. PBR&amp;amp;B pickled cornhole ugh try-hard ethical subway tile. Fixie paleo intelligentsia pabst. Ennui waistcoat vinyl gochujang. Poutine salvia authentic affogato, chambray lumbersexual shabby chic.&lt;/p>
-&lt;h3 id="contact-info">Contact Info&lt;/h3>
-&lt;p>Plaid hell of cred microdosing, succulents tilde pour-over. Offal shabby chic 3 wolf moon blue bottle raw denim normcore poutine pork belly.&lt;/p>
-&lt;h3 id="external-links">External Links&lt;/h3>
-&lt;p>Stumptown PBR&amp;amp;B keytar plaid street art, forage XOXO pitchfork selvage affogato green juice listicle pickled everyday carry hashtag. Organic sustainable letterpress sartorial scenester intelligentsia swag bushwick. Put a bird on it stumptown neutra locavore. IPhone typewriter messenger bag narwhal. Ennui cold-pressed seitan flannel keytar, single-origin coffee adaptogen occupy yuccie williamsburg chillwave shoreditch forage waistcoat.&lt;/p>
-&lt;pre tabindex="0">&lt;code>This is the final element on the page and there should be no margin below this.
-&lt;/code>&lt;/pre></description></item></channel></rss>
+&lt;h2 id="-documentation">🔖 Documentation&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-s3.html">Auto Loader | Databricks on AWS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.databricks.com/delta/optimizations/file-mgmt.html">Optimize performance with file management | Databricks on AWS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="-other-resources">📇 Other Resources&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://academy.databricks.com/">Databricks Academy - Home - Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/discover/demos/delta-live-tables-demo">Delta Live Tables Demo - Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2021/09/07/implementing-more-effective-fair-scientific-data-management-with-a-lakehouse.html">How to Create an R&amp;amp;D Lakehouse Based on FAIR Data Principles&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2021/05/24/security-best-practices-for-aws-on-databricks.html">Security Best Practices for Databricks on AWS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks/security-bucket-brigade">databricks/security-bucket-brigade&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/MrPowers/spark-daria">MrPowers/spark-daria&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks/tech-talks">databricks/tech-talks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/c/Databricks/playlists">YouTube | Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://forums.databricks.com/index.html">Online User Community&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/glossary/medallion-architecture">Medallion Architecture&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2017/04/17/query-watchdog-handling-disruptive-queries-spark-sql.html">Query Watchdog: Handling Disruptive Queries in Spark SQL&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/p/thank-you/best-practices-series-21-on-demand">Best Practices - Videos&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2022/04/25/disaster-recovery-overview-strategies-and-assessment.html">Disaster Recovery Overview&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2021/04/20/attack-of-the-delta-clones-against-disaster-recovery-availability-complexity.html">Attack of the Delta Clones - Against Disaster Recovery Availability Complexity&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/wp-content/uploads/notebooks/using-deep-clone-disaster-recovery-delta-lake-databricks.html">Using Deep Clone Disaster Recovery Delta Lake&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databrickslabs.github.io/overwatch/">Overwatch - Audit Logs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databrickslabs.github.io/delta-oms/">DeltaOMS - Delta operational metrics store&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.databricks.com/administration-guide/account-settings/audit-logs.html">Audit Logs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-schema.html">Auto-Loader Schema Inference&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs">Databricks Terraform Docs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="videos">Videos&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://vimeo.com/databricks">Vimeo | Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://youtu.be/FVtITxOabxg">Introduction to Instance Pools&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="training-notebooks">Training Notebooks&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/databricks-academy/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks-academy/apache-spark-programming-with-databricks">Apache Spark Programming with Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks-academy/data-analysis-with-databricks">Data Analysis with Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks-academy/advanced-data-engineering-with-databricks">Advanced Data Engineering with Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/databricks-academy/ml-in-production">ML In Production&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="self-paced-courses">Self-Paced Courses&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/learn/course/internal/view/elearning/62/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/learn/learning_plan/view/10/data-engineer-learning-plan">Data Engineering Learning Plan&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/learn/catalog">Partner Learning Catalog&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="unsorted">Unsorted&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/Intro%202022%20-%20Welcome%20to%20Databricks%20Lakehouse.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZheWXQX7WHl28F_Sosv2dGvkO2zPSGdl7wDm9ahC9azRaueWRq5XWqHt6Z5La8LWChX-rCuy1Snwh6HiVk9Ay4ONZHSjImTfviKlI-IrGex4">Slides - Welcome to Databricks Lakehouse&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/DE%20-%202022%20-%20CSE%20In%20person%20workshop%20%281%29.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZhcSv2LStdPhsCRzIP2HS9pqioaEck6hwYt7-pvoPiUQPHwf16hDo9kYkctLhZP9Hm0Nt5aq-Q4X26ESY5hFpNASsr0YS9KGuxO2whlGVL9w">Slides - Data Engineering Technical Overview&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/zivilenorkunaite/apjbootcamp2022?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZhdoSoicwhTsCJPRpqq6kc58SgsqYjpUyO-f7Rqg2oRn-y6oY86nAKBsTrQHwp2PrlmPZ7K0Gskd9mn4CSQ8tboM5Nj9DgSlTvpMA-Zxb4dA">Bootcamp Github&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

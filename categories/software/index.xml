@@ -1,7 +1,158 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Software</title><link>https://tm.gg/categories/software/</link><description>Recent content in Software on Terence Munro</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://tm.gg/categories/software/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: CQRS</title><link>https://tm.gg/docs/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/cqrs/</guid><description>
-&lt;div class="pageinfo pageinfo-primary">
-&lt;p>Something meaningful will go here later I swears.&lt;/p>
-&lt;/div></description></item><item><title>Docs: Event Sourcing</title><link>https://tm.gg/docs/event_sourcing/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/event_sourcing/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Software</title><link>https://tm.gg/categories/software/</link><description>Recent content in Software on Terence Munro</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Thu, 26 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://tm.gg/categories/software/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Event Sourcing</title><link>https://tm.gg/docs/patterns/event_sourcing/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/event_sourcing/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page for event sourcing&lt;/p>
-&lt;/div></description></item></channel></rss>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing">Microsoft - Event Sourcing pattern&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven">Microsoft - Event Driven Architecture&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://aws.amazon.com/event-driven-architecture/">AWS - Event Driven Architecture&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://leanpub.com/esversioning/read">Versioning in an Event Sourced System&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://martinfowler.com/eaaDev/EventSourcing.html">Martin Fowler - Event Sourcing&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://eventuate.io/whyeventsourcing.html">Why Event Sourcing?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://microservices.io/patterns/data/event-sourcing.html">Pattern: Event sourcing&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.codemag.com/Article/2209071/Event-Sourcing-and-CQRS-with-Marten">Event Sourcing and CQRS with Marten(DB)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hackernoon.com/1-year-of-event-sourcing-and-cqrs-fb9033ccd1c6">1 year of Event Sourcing and CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://engineering.grab.com/democratising-fare-storage-at-scale-using-event-sourcing">Democratising Fare Storage at Scale using Event Sourcing&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Bulkhead</title><link>https://tm.gg/docs/patterns/bulkhead/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/bulkhead/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead">Bulkhead pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Circuit Breaker</title><link>https://tm.gg/docs/patterns/circuit_breaker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/circuit_breaker/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
+&lt;/div></description></item><item><title>Docs: CQRS</title><link>https://tm.gg/docs/patterns/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/cqrs/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://martinfowler.com/bliki/CQRS.html">Martin Fowler - CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs">Microsoft - CQRS pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://microservices.io/patterns/data/cqrs.html">Pattern: Command Query Responsibility Segregation (CQRS)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://udidahan.com/2009/12/09/clarified-cqrs/">Clarified CQRS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.codemag.com/Article/2209071/Event-Sourcing-and-CQRS-with-Marten">Event Sourcing and CQRS with Marten(DB)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hackernoon.com/1-year-of-event-sourcing-and-cqrs-fb9033ccd1c6">1 year of Event Sourcing and CQRS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Patterns</title><link>https://tm.gg/docs/patterns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/</guid><description/></item><item><title>Docs: Saga</title><link>https://tm.gg/docs/patterns/saga/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/saga/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga">Saga distributed transactions pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Sharding</title><link>https://tm.gg/docs/patterns/sharding/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/sharding/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding">Sharding pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Strangler Fig</title><link>https://tm.gg/docs/patterns/strangler_fig/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/strangler_fig/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig">Strangler Fig&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developer.ibm.com/articles/cl-strangler-application-pattern-microservices-apps-trs/">Apply the Strangler Fig Application pattern to microservices applications&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dianadarie.medium.com/the-strangler-fig-migration-pattern-2e20a7350511">The Strangler Fig Migration Pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://shopify.engineering/refactoring-legacy-code-strangler-fig-pattern">Refactoring Legacy Code with the Strangler Fig Pattern&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: CRDTs</title><link>https://tm.gg/docs/crdts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/crdts/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Wikipedia: Conflict-free replicated data type&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://crdt.tech/">Conflict-free Replicated Data Types&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>This is a placeholder page for streaming systems&lt;/p>
+&lt;/div>
+&lt;a id="td-block-1" class="td-offset-anchor">&lt;/a>
+&lt;section class="row td-box td-box--white td-box--gradient td-box--height-auto">
+&lt;div class="col">
+&lt;div class="row section">
+&lt;h2 id="resources">Resources&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">The Log: What every software engineer should know about real-time data&amp;rsquo;s unifying abstraction&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.oreilly.com/radar/the-world-beyond-batch-streaming-101/">The world beyond batch - streaming 101&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.oreilly.com/radar/the-world-beyond-batch-streaming-102/">The world beyond batch - streaming 102&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://netflixtechblog.com/keystone-real-time-stream-processing-platform-a3ee651812a">Netflix - Keystone&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://netflixtechblog.com/stream-processing-with-mantis-78af913f51a6">Netflix - Mantis&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/netflix-techblog/kafka-inside-keystone-pipeline-dd5aeabaf6bb">Netflix - Kafka + Keystone&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html">Databricks - CDC DLT&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dzone.com/articles/how-does-kafka-perform-when-you-need-low-latency">How does Kafka Perform when you need Low Latency&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.kai-waehner.de/blog/2021/11/14/streaming-data-exchange-data-mesh-apache-kafka-in-motion/%60">Streaming Data Exchange - Data Mesh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.kai-waehner.de/blog/2021/05/09/kafka-api-de-facto-standard-event-streaming-like-amazon-s3-object-storage/">Kafka API De Facto Standard - Event Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.confluent.io/events/kafka-summit-europe-2021/apache-kafka-and-the-data-mesh/">Apache Kafka and the Data Mesh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://towardsdatascience.com/running-apache-flink-with-rocksdb-on-azure-kubernetes-service-904181d79f72">Flink w/ RocksDB on AKS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://martin.kleppmann.com/2018/01/18/event-types-in-kafka-topic.html">Event Types in Kafka Topics&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://nathanmarz.com/blog/history-of-apache-storm-and-lessons-learned.html">History of Apache Storm and Lessons Learned&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.twitter.com/engineering/en_us/topics/infrastructure/2021/processing-billions-of-events-in-real-time-at-twitter-">Processing Billions of Events in Real Time at Twitter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://acceldataio.medium.com/benefits-of-using-kafka-to-handle-real-time-data-streams-662e9dfc09fe">Benefits of using Kafka to Handle RTDS&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/whatfix-techblog/real-time-data-processing-architecture-using-apache-spark-apache-kafka-and-click-house-ab8e98ad3f98">RTDP Arch - Spark + Kafka + ClickHouse&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/blog/2022/05/05/streaming-windows-event-logs-into-the-cybersecurity-lakehouse.html">Streaming Windows Event Logs&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cube.dev/blog/materialize-integration">Cube Materialize Integration&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/benbjohnson/litestream">Litestream&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://slack.engineering/building-self-driving-kafka-clusters-using-open-source-components/">Slack - Building Self Driving Kafka Clusters&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dzone.com/refcardz/apache-kafka">Apache Kafka - Refcard&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.baeldung.com/apache-activemq-vs-kafka">Apache ActiveMQ vs Kafka&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://selectfrom.dev/streaming-applications-on-serverless-spark-66f282a29b7c">Streaming Applications on Serverless Spark&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://materialize.com/docs/quickstarts/live-analytics/">Live Analytics - Materialize&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.rilldata.com/">Rill Data - Apache Druid - DuckDB&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.redhat.com/articles/2022/05/24/managed-kafka-services-which-right-you#what_kafka_distribution_is_right_for_you_">Managed Kafka Services - Which one is right for you?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/@samueldavidwinter/streaming-data-9d8a3967f7ee">Streaming Data&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://quastor.substack.com/p/building-a-search-index-with-kafka?s=r">Building a search index with Kafka and Elasticsearch&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://quine.io/">Streaming Graph Library&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.risingwave.dev/docs/latest/intro/">RisingWave similar to Materialize&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.thatdot.com/blog/understanding-the-scale-limitations-of-graph-databases">Graph Databases&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/learn/modules/introduction-to-data-streaming/">Microsoft - Intro to Data Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://databricks.com/glossary/what-is-spark-streaming">Databricks - What is Spark Streaming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html">How Uplift built CDC and Multiplexing data pipelines with Databricks Delta Live Tables&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="existing-tools">Existing Tools&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://beam.apache.org/">Apache Beam&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://cloud.google.com/dataflow">GCP Dataflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://flink.apache.org/">Apache Flink&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://aws.amazon.com/kinesis/">AWS Kinesis&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html">Apache Spark&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://www.databricks.com">Databricks&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://kafka.apache.org/">Apache Kafka&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://redpanda.com/">Redpanda&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.confluent.io/">Confluent&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.lightbend.com/akka-platform">Akka Platform&lt;/a>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.akka.io/docs/akka/current/stream/index.html">Akka Streams&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cloudflow.io/">Cloudflow&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://jet-start.sh/">Hazelcast - Jet&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.fluvio.io/">Fluvio&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://pulsar.apache.org/">Apache Pulsar&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.nats.io/nats-concepts/jetstream/streams">NATS Jetstream&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.rabbitmq.com/stream.html">RabbitMQ Streams&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-about">Azure EventHub&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://heron.apache.org/">Apache Heron&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://storm.apache.org/">Apache Storm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://samza.apache.org/">Apache Samza&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/pinterest/memq">MemQ&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://twister2.org/">Twister2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/faust-streaming/faust">Faust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+&lt;/section></description></item></channel></rss>
