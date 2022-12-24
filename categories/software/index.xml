@@ -37,12 +37,18 @@
 &lt;li>&lt;a href="https://www.codemag.com/Article/2209071/Event-Sourcing-and-CQRS-with-Marten">Event Sourcing and CQRS with Marten(DB)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://hackernoon.com/1-year-of-event-sourcing-and-cqrs-fb9033ccd1c6">1 year of Event Sourcing and CQRS&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;/div></description></item><item><title>Docs: Functional Programming</title><link>https://tm.gg/docs/functional-programming/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/</guid><description/></item><item><title>Docs: Haskell</title><link>https://tm.gg/docs/functional-programming/haskell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/haskell/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
 &lt;/div></description></item><item><title>Docs: Patterns</title><link>https://tm.gg/docs/patterns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/</guid><description/></item><item><title>Docs: Saga</title><link>https://tm.gg/docs/patterns/saga/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/saga/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga">Saga distributed transactions pattern&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;/div></description></item><item><title>Docs: Scala</title><link>https://tm.gg/docs/functional-programming/scala/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
 &lt;/div></description></item><item><title>Docs: Sharding</title><link>https://tm.gg/docs/patterns/sharding/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/sharding/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
