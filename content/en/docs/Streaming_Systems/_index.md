@@ -1,4 +1,5 @@
 ---
+tags: []
 categories: ["Data", "Software"]
 title: "Streaming Systems"
 linkTitle: "Streaming Systems"
@@ -6,13 +7,18 @@ weight: 4
 date: 2022-05-26
 description: >
   Streaming systems are computer systems designed to continuously process and analyze data as it is generated or received in real time, allowing organizations to extract insights and take action on data as it becomes available, rather than having to wait for data to be stored and processed in batch.
+date created: Friday, December 23rd 2022, 6:59:55 pm
+date modified: Wednesday, January 4th 2023, 11:20:16 pm
 ---
 
 {{% pageinfo %}}
+
 This is a placeholder page for streaming systems
+
 {{% /pageinfo %}}
 
 {{% blocks/section type="section" color="white" %}}
+
 ## Resources
 
 * [The Log: What every software engineer should know about real-time data's unifying abstraction](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)

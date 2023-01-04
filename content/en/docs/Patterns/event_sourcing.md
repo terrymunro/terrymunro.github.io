@@ -7,6 +7,8 @@ weight: 1
 date: 2022-05-26
 description: >
   Event sourcing is a software architectural pattern that stores a log of all changes made to a system's state as a sequence of events, allowing the system to reconstruct its current state and track the history of changes.
+date created: Friday, December 23rd 2022, 6:56:05 pm
+date modified: Wednesday, January 4th 2023, 11:19:11 pm
 ---
 
 {{% pageinfo %}}

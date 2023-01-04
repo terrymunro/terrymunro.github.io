@@ -1,12 +1,17 @@
 ---
-title: DE Associate
+linkTitle:
+weight: 
+title: Date Engineer Associate
 categories: ["Data"]
 tags: ["databricks", "associate", "exam"]
 description: >
   The Databricks Certified Data Engineer Associate
+date created: Saturday, December 24th 2022, 10:31:03 pm
+date modified: Wednesday, January 4th 2023, 11:19:28 pm
 ---
 
 {{% pageinfo %}}
+
 WIP: Placeholder page
 
 * [Partner Academy](https://partner-academy.databricks.com/)

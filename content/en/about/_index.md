@@ -1,11 +1,16 @@
 ---
+categories: []
+tags: []
+weight: 
+description: >
 title: About
 linkTitle: About
 menu:
   main:
     weight: 10
+date created: Saturday, December 24th 2022, 4:50:56 pm
+date modified: Wednesday, January 4th 2023, 11:19:46 pm
 ---
-
 
 {{% blocks/cover title="About Terence Munro" height="min" image_anchor="center" %}}
 
@@ -15,11 +20,11 @@ I like cats.
 
 {{% blocks/section type="section" color="primary" %}}
 
-## Who am I?
+## Who Am I?
 
 Hi! I am one of the [Lead Engineers](https://aginic.com/our-people/) at [Aginic](https://aginic.com/). I'm both shy and an introvert, but I am forcing myself to write this as a way to [improve my writing and communication skills](https://towardsdatascience.com/the-more-you-write-the-better-you-are-at-explaining-your-work-708be316defc).
 
-I'm the type of person who isn't so fond of expressing myself publically. But I thought I should give some background and reasoning behind me writing this to temper any expectations 😹.
+I'm the type of person who isn't so fond of expressing myself publicly. But I thought I should give some background and reasoning behind me writing this to temper any expectations 😹.
 
 {{% /blocks/section %}}
 
@@ -35,7 +40,6 @@ I have been a software developer for around 13 years and within the last year or
 
 Which brings me to why I am writing this, and what you may get out of it should you choose to read any of it. I want to share what I know or what I'm learning with others but my problem is, I am too shy to give talks, and I have never been great at writing. So by writing these posts I hope to slowly improve at writing while sharing what I am learning or old topics that I decided to revisit.
 
-
 So, if you've made it this far, thank you and I hope I can write about something that will interest you. If you have any feedback, suggestions or questions please let me know in whatever way suits you most.
 
 ---
@@ -49,16 +53,21 @@ So, if you've made it this far, thank you and I hope I can write about something
 {{% /blocks/section %}}
 
 p.s. I have three cats, so I might slip photos of them in my posts to sweeten the pot.
+
 {{< cardpane >}}
+
 {{< imgproc nodame Resize "x450" >}}
+
 <center><strong>Nodame</strong></center>
 {{< /imgproc >}}
 
 {{< imgproc lilith Resize "x450" >}}
+
 <center><strong>Lilith</strong></center>
 {{< /imgproc >}}
 
 {{< imgproc jellybeans Resize "450x" >}}
+
 <center><strong>Jellybeans</strong></center>
 {{< /imgproc >}}
 {{< /cardpane >}}

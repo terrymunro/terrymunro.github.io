@@ -1,4 +1,5 @@
 ---
+categories: []
 aliases: 
 tags: 
 title: "Knowledge Base"
@@ -10,11 +11,5 @@ menu:
   main:
     weight: 20
 date created: Friday, March 18th 2022, 4:53:03 pm
-date modified: Wednesday, May 25th 2022, 11:42:16 pm
+date modified: Wednesday, January 4th 2023, 11:18:57 pm
 ---
-
-{{% pageinfo %}}
-This knowledge base is as full as my brain is. Soz.
-{{% /pageinfo %}}
-
-Something, something, data, something something insights.
