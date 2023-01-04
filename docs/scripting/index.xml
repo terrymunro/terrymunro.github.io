@@ -1,0 +1,9 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Scripting</title><link>https://tm.gg/docs/scripting/</link><description>Recent content in Scripting on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/docs/scripting/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Bash</title><link>https://tm.gg/docs/scripting/bash/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/scripting/bash/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://aosabook.org/en/bash.html">AOSA: Bourne-Again Shell&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/ko1nksm/getoptions">getoptions&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/getopts.1p.html">getopts&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item></channel></rss>

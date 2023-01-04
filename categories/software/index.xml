@@ -26,7 +26,18 @@
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
-&lt;/div></description></item><item><title>Docs: CQRS</title><link>https://tm.gg/docs/patterns/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/cqrs/</guid><description>
+&lt;/div></description></item><item><title>Docs: Course Structure</title><link>https://tm.gg/docs/functional-programming/scala/course-structure/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/course-structure/</guid><description>
+&lt;h2 id="course-structure">Course Structure&lt;/h2>
+&lt;p>The course is fast paced and we will cover a lot of ground over the next 4 days:&lt;/p>
+&lt;ul>
+&lt;li>Day 1: Basic Scala, types and inference.&lt;/li>
+&lt;li>Day 2: Pattern matching, standard library, enums and immutable data classes&lt;/li>
+&lt;li>Day 3: Traits, Type Constructors, Testing and Error Handling&lt;/li>
+&lt;li>Day 4: ??? Profit&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>Look I don&amp;rsquo;t know why I&amp;rsquo;m just cloning this other guide but rewriting it for scala, I&amp;rsquo;m shit and need something to give me reasonable structure because I have no idea what I&amp;rsquo;m doing.&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: CQRS</title><link>https://tm.gg/docs/patterns/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/cqrs/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
@@ -40,16 +51,39 @@
 &lt;/div></description></item><item><title>Docs: Functional Programming</title><link>https://tm.gg/docs/functional-programming/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/</guid><description/></item><item><title>Docs: Haskell</title><link>https://tm.gg/docs/functional-programming/haskell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/haskell/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
-&lt;/div></description></item><item><title>Docs: Patterns</title><link>https://tm.gg/docs/patterns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/</guid><description/></item><item><title>Docs: Saga</title><link>https://tm.gg/docs/patterns/saga/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/saga/</guid><description>
+&lt;ul>
+&lt;li>&lt;a href="http://aosabook.org/en/posa/warp.html">AOSA: Warp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://aosabook.org/en/yesod.html">AOSA: Yesod&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://aosabook.org/en/ghc.html">AOSA: GHC&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://haskellbook.com/">Book: Haskell Programming from First Principles&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://learnyouahaskell.com/">Book: Learn you a Haskell&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Saga</title><link>https://tm.gg/docs/patterns/saga/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/saga/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/saga/saga">Saga distributed transactions pattern&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/div></description></item><item><title>Docs: Scala</title><link>https://tm.gg/docs/functional-programming/scala/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/</guid><description>
-&lt;div class="pageinfo pageinfo-primary">
-&lt;p>WIP: Placeholder page&lt;/p>
-&lt;/div></description></item><item><title>Docs: Sharding</title><link>https://tm.gg/docs/patterns/sharding/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/sharding/</guid><description>
+&lt;/div></description></item><item><title>Docs: sbt</title><link>https://tm.gg/docs/functional-programming/scala/sbt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/sbt/</guid><description>
+&lt;p>&lt;a href="https://get-coursier.io/">Coursier&lt;/a>&lt;/p></description></item><item><title>Docs: Scala</title><link>https://tm.gg/docs/functional-programming/scala/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/</guid><description>
+&lt;p>This is a four day Scala course loosely based off &lt;a href="https://google.github.io/comprehensive-rust/">Google&amp;rsquo;s Comprehensive Rust&lt;/a>. The course will attempt to cover the full spectrum of Scala 3, from basic syntax to advanced topics like higher-kinded types, effect libraries and tagless final style programs.&lt;/p>
+&lt;h2 id="goals">Goals&lt;/h2>
+&lt;p>The goals of the course is to get you to a working understanding of advanced Scala. In this course I will assume you don&amp;rsquo;t know anything about Scala and I hope to:&lt;/p>
+&lt;ul>
+&lt;li>Give you a rough understanding of Scala&amp;rsquo;s advanced features&lt;/li>
+&lt;li>Enable you to read and contribute to Scala programs that use these features&lt;/li>
+&lt;li>Hopefully convince you that writing software like this is &lt;strong>productive&lt;/strong>, rewarding and all around fun 😹&lt;/li>
+&lt;/ul>
+&lt;h2 id="non-goals">Non-Goals&lt;/h2>
+&lt;p>Unless you already have experience with other FP languages like Haskell, it is probably going to take more than a few days to completely learn Scala. So some non-goals of this course are:&lt;/p>
+&lt;ul>
+&lt;li>Learn about a lot of the &lt;a href="https://docs.scala-lang.org/scala3/book/domain-modeling-oop.html">OOP side of Scala&lt;/a>&lt;/li>
+&lt;li>Learn how to use &lt;a href="https://akka.io/">Akka&lt;/a>&lt;/li>
+&lt;li>Learn about &lt;a href="https://docs.scala-lang.org/scala3/book/types-variance.html">variance&lt;/a> (&lt;a href="https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)">Wikipedia&lt;/a>)&lt;/li>
+&lt;/ul>
+&lt;h2 id="assumptions">Assumptions&lt;/h2>
+&lt;p>This course assumes that you already know how to program. Scala is a statically typed language and there might be some comparative references to Haskell but I will also try to use TypeScript in-case that&amp;rsquo;s easier.&lt;/p>
+&lt;p>You don&amp;rsquo;t have to know functional programming, but it will be the primary paradigm used in this course.&lt;/p></description></item><item><title>Docs: Sharding</title><link>https://tm.gg/docs/patterns/sharding/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/sharding/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
@@ -64,13 +98,17 @@
 &lt;li>&lt;a href="https://dianadarie.medium.com/the-strangler-fig-migration-pattern-2e20a7350511">The Strangler Fig Migration Pattern&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://shopify.engineering/refactoring-legacy-code-strangler-fig-pattern">Refactoring Legacy Code with the Strangler Fig Pattern&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/div></description></item><item><title>Docs: CRDTs</title><link>https://tm.gg/docs/crdts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/crdts/</guid><description>
+&lt;/div></description></item><item><title>Docs: Day 1</title><link>https://tm.gg/docs/functional-programming/scala/day1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/day1/</guid><description/></item><item><title>Docs: Patterns</title><link>https://tm.gg/docs/patterns/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/</guid><description/></item><item><title>Docs: Bash</title><link>https://tm.gg/docs/scripting/bash/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/scripting/bash/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Wikipedia: Conflict-free replicated data type&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://crdt.tech/">Conflict-free Replicated Data Types&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://aosabook.org/en/bash.html">AOSA: Bourne-Again Shell&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/ko1nksm/getoptions">getoptions&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/getopts.1p.html">getopts&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;/div></description></item><item><title>Docs: Scripting</title><link>https://tm.gg/docs/scripting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/scripting/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
 &lt;/div></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page for streaming systems&lt;/p>
@@ -161,4 +199,11 @@
 &lt;/ul>
 &lt;/div>
 &lt;/div>
-&lt;/section></description></item></channel></rss>
+&lt;/section></description></item><item><title>Docs: CRDTs</title><link>https://tm.gg/docs/crdts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/crdts/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Wikipedia: Conflict-free replicated data type&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://crdt.tech/">Conflict-free Replicated Data Types&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item></channel></rss>

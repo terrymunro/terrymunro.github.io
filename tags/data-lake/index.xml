@@ -2,8 +2,8 @@
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>These are just quick n dirty notes, will fill this out with more substance another time.&lt;/p>
 &lt;/div>
-&lt;h1 id="medallion-architecture">Medallion Architecture&lt;/h1>
-&lt;h2 id="bronze">Bronze&lt;/h2>
+&lt;h2 id="medallion-architecture">Medallion Architecture&lt;/h2>
+&lt;h3 id="bronze">Bronze&lt;/h3>
 &lt;ul>
 &lt;li>Append only&lt;/li>
 &lt;li>Retain everything&lt;/li>
@@ -11,7 +11,7 @@
 &lt;li>Hard-deletes if required by regulatory reasons&lt;/li>
 &lt;li>Don&amp;rsquo;t parse the underlying data,&lt;/li>
 &lt;/ul>
-&lt;h2 id="silver">Silver&lt;/h2>
+&lt;h3 id="silver">Silver&lt;/h3>
 &lt;ul>
 &lt;li>Ease of query&lt;/li>
 &lt;li>Clean data&lt;/li>
@@ -27,7 +27,7 @@
 &lt;li>Eliminates duplicate records&lt;/li>
 &lt;li>Enforce production schema&lt;/li>
 &lt;/ul>
-&lt;h2 id="gold-layer">Gold Layer&lt;/h2>
+&lt;h3 id="gold-layer">Gold Layer&lt;/h3>
 &lt;ul>
 &lt;li>Designed for a particular user community&lt;/li>
 &lt;li>Reduces costs associated with ad hoc queries&lt;/li>

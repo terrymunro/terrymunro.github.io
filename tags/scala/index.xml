@@ -1,4 +1,31 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – scala</title><link>https://tm.gg/tags/scala/</link><description>Recent content in scala on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/tags/scala/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Scala</title><link>https://tm.gg/docs/functional-programming/scala/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/</guid><description>
-&lt;div class="pageinfo pageinfo-primary">
-&lt;p>WIP: Placeholder page&lt;/p>
-&lt;/div></description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – scala</title><link>https://tm.gg/tags/scala/</link><description>Recent content in scala on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/tags/scala/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Course Structure</title><link>https://tm.gg/docs/functional-programming/scala/course-structure/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/course-structure/</guid><description>
+&lt;h2 id="course-structure">Course Structure&lt;/h2>
+&lt;p>The course is fast paced and we will cover a lot of ground over the next 4 days:&lt;/p>
+&lt;ul>
+&lt;li>Day 1: Basic Scala, types and inference.&lt;/li>
+&lt;li>Day 2: Pattern matching, standard library, enums and immutable data classes&lt;/li>
+&lt;li>Day 3: Traits, Type Constructors, Testing and Error Handling&lt;/li>
+&lt;li>Day 4: ??? Profit&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>Look I don&amp;rsquo;t know why I&amp;rsquo;m just cloning this other guide but rewriting it for scala, I&amp;rsquo;m shit and need something to give me reasonable structure because I have no idea what I&amp;rsquo;m doing.&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: sbt</title><link>https://tm.gg/docs/functional-programming/scala/sbt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/sbt/</guid><description>
+&lt;p>&lt;a href="https://get-coursier.io/">Coursier&lt;/a>&lt;/p></description></item><item><title>Docs: Scala</title><link>https://tm.gg/docs/functional-programming/scala/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/</guid><description>
+&lt;p>This is a four day Scala course loosely based off &lt;a href="https://google.github.io/comprehensive-rust/">Google&amp;rsquo;s Comprehensive Rust&lt;/a>. The course will attempt to cover the full spectrum of Scala 3, from basic syntax to advanced topics like higher-kinded types, effect libraries and tagless final style programs.&lt;/p>
+&lt;h2 id="goals">Goals&lt;/h2>
+&lt;p>The goals of the course is to get you to a working understanding of advanced Scala. In this course I will assume you don&amp;rsquo;t know anything about Scala and I hope to:&lt;/p>
+&lt;ul>
+&lt;li>Give you a rough understanding of Scala&amp;rsquo;s advanced features&lt;/li>
+&lt;li>Enable you to read and contribute to Scala programs that use these features&lt;/li>
+&lt;li>Hopefully convince you that writing software like this is &lt;strong>productive&lt;/strong>, rewarding and all around fun 😹&lt;/li>
+&lt;/ul>
+&lt;h2 id="non-goals">Non-Goals&lt;/h2>
+&lt;p>Unless you already have experience with other FP languages like Haskell, it is probably going to take more than a few days to completely learn Scala. So some non-goals of this course are:&lt;/p>
+&lt;ul>
+&lt;li>Learn about a lot of the &lt;a href="https://docs.scala-lang.org/scala3/book/domain-modeling-oop.html">OOP side of Scala&lt;/a>&lt;/li>
+&lt;li>Learn how to use &lt;a href="https://akka.io/">Akka&lt;/a>&lt;/li>
+&lt;li>Learn about &lt;a href="https://docs.scala-lang.org/scala3/book/types-variance.html">variance&lt;/a> (&lt;a href="https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)">Wikipedia&lt;/a>)&lt;/li>
+&lt;/ul>
+&lt;h2 id="assumptions">Assumptions&lt;/h2>
+&lt;p>This course assumes that you already know how to program. Scala is a statically typed language and there might be some comparative references to Haskell but I will also try to use TypeScript in-case that&amp;rsquo;s easier.&lt;/p>
+&lt;p>You don&amp;rsquo;t have to know functional programming, but it will be the primary paradigm used in this course.&lt;/p></description></item><item><title>Docs: Day 1</title><link>https://tm.gg/docs/functional-programming/scala/day1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/day1/</guid><description/></item></channel></rss>

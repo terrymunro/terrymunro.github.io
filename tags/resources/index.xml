@@ -16,7 +16,7 @@
 &lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-s3.html">Auto Loader | Databricks on AWS&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.databricks.com/delta/optimizations/file-mgmt.html">Optimize performance with file management | Databricks on AWS&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="-other-resources">📇 Other Resources&lt;/h2>
+&lt;h3 id="-other-resources">📇 Other Resources&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://academy.databricks.com/">Databricks Academy - Home - Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://databricks.com/discover/demos/delta-live-tables-demo">Delta Live Tables Demo - Databricks&lt;/a>&lt;/li>
@@ -39,12 +39,12 @@
 &lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-schema.html">Auto-Loader Schema Inference&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs">Databricks Terraform Docs&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="videos">Videos&lt;/h2>
+&lt;h3 id="videos">Videos&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://vimeo.com/databricks">Vimeo | Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://youtu.be/FVtITxOabxg">Introduction to Instance Pools&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="training-notebooks">Training Notebooks&lt;/h2>
+&lt;h3 id="training-notebooks">Training Notebooks&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/databricks-academy/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/databricks-academy/apache-spark-programming-with-databricks">Apache Spark Programming with Databricks&lt;/a>&lt;/li>
@@ -52,13 +52,13 @@
 &lt;li>&lt;a href="https://github.com/databricks-academy/advanced-data-engineering-with-databricks">Advanced Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/databricks-academy/ml-in-production">ML In Production&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="self-paced-courses">Self-Paced Courses&lt;/h2>
+&lt;h3 id="self-paced-courses">Self-Paced Courses&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/course/internal/view/elearning/62/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/learning_plan/view/10/data-engineer-learning-plan">Data Engineering Learning Plan&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/catalog">Partner Learning Catalog&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="unsorted">Unsorted&lt;/h2>
+&lt;h3 id="unsorted">Unsorted&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/Intro%202022%20-%20Welcome%20to%20Databricks%20Lakehouse.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZheWXQX7WHl28F_Sosv2dGvkO2zPSGdl7wDm9ahC9azRaueWRq5XWqHt6Z5La8LWChX-rCuy1Snwh6HiVk9Ay4ONZHSjImTfviKlI-IrGex4">Slides - Welcome to Databricks Lakehouse&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/DE%20-%202022%20-%20CSE%20In%20person%20workshop%20%281%29.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZhcSv2LStdPhsCRzIP2HS9pqioaEck6hwYt7-pvoPiUQPHwf16hDo9kYkctLhZP9Hm0Nt5aq-Q4X26ESY5hFpNASsr0YS9KGuxO2whlGVL9w">Slides - Data Engineering Technical Overview&lt;/a>&lt;/li>

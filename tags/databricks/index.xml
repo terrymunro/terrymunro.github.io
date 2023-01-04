@@ -2,8 +2,16 @@
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;/div>
-&lt;p>Databricks was founded by the original creators of Apache Spark an open-source
-unified analytics engine for large-scale data processing.&lt;/p></description></item><item><title>Docs: DE Associate</title><link>https://tm.gg/docs/databricks/de-associate/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-associate/</guid><description>
+&lt;p>Databricks was founded by the original creators of Apache Spark an open-source&lt;/p>
+&lt;p>unified analytics engine for large-scale data processing.&lt;/p></description></item><item><title>Docs: Data Engineer Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://partner-academy.databricks.com/">Partner Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://customer-academy.databricks.com/">Customer Academy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tm.gg/docs/databricks/de-associate/">Data Engineering - Associate Notes&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Date Engineer Associate</title><link>https://tm.gg/docs/databricks/de-associate/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-associate/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
@@ -15,20 +23,12 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>&lt;a href="https://files.training.databricks.com/lms/docebo/databricks-academy-faq.pdf">Databricks Academy FAQ&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://tm.gg/docs/databricks/de-professional/">Data Engineering - Professional Notes&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/div></description></item><item><title>Docs: DE Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
-&lt;div class="pageinfo pageinfo-primary">
-&lt;p>WIP: Placeholder page&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://partner-academy.databricks.com/">Partner Academy&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://customer-academy.databricks.com/">Customer Academy&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://tm.gg/docs/databricks/de-associate/">Data Engineering - Associate Notes&lt;/a>&lt;/li>
-&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Medallion Architecture</title><link>https://tm.gg/docs/databricks/medallion-architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/medallion-architecture/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>These are just quick n dirty notes, will fill this out with more substance another time.&lt;/p>
 &lt;/div>
-&lt;h1 id="medallion-architecture">Medallion Architecture&lt;/h1>
-&lt;h2 id="bronze">Bronze&lt;/h2>
+&lt;h2 id="medallion-architecture">Medallion Architecture&lt;/h2>
+&lt;h3 id="bronze">Bronze&lt;/h3>
 &lt;ul>
 &lt;li>Append only&lt;/li>
 &lt;li>Retain everything&lt;/li>
@@ -36,7 +36,7 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>Hard-deletes if required by regulatory reasons&lt;/li>
 &lt;li>Don&amp;rsquo;t parse the underlying data,&lt;/li>
 &lt;/ul>
-&lt;h2 id="silver">Silver&lt;/h2>
+&lt;h3 id="silver">Silver&lt;/h3>
 &lt;ul>
 &lt;li>Ease of query&lt;/li>
 &lt;li>Clean data&lt;/li>
@@ -52,7 +52,7 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>Eliminates duplicate records&lt;/li>
 &lt;li>Enforce production schema&lt;/li>
 &lt;/ul>
-&lt;h2 id="gold-layer">Gold Layer&lt;/h2>
+&lt;h3 id="gold-layer">Gold Layer&lt;/h3>
 &lt;ul>
 &lt;li>Designed for a particular user community&lt;/li>
 &lt;li>Reduces costs associated with ad hoc queries&lt;/li>
@@ -77,7 +77,7 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-s3.html">Auto Loader | Databricks on AWS&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.databricks.com/delta/optimizations/file-mgmt.html">Optimize performance with file management | Databricks on AWS&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="-other-resources">📇 Other Resources&lt;/h2>
+&lt;h3 id="-other-resources">📇 Other Resources&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://academy.databricks.com/">Databricks Academy - Home - Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://databricks.com/discover/demos/delta-live-tables-demo">Delta Live Tables Demo - Databricks&lt;/a>&lt;/li>
@@ -100,12 +100,12 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>&lt;a href="https://docs.databricks.com/spark/latest/structured-streaming/auto-loader-schema.html">Auto-Loader Schema Inference&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://registry.terraform.io/providers/databrickslabs/databricks/latest/docs">Databricks Terraform Docs&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="videos">Videos&lt;/h2>
+&lt;h3 id="videos">Videos&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://vimeo.com/databricks">Vimeo | Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://youtu.be/FVtITxOabxg">Introduction to Instance Pools&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="training-notebooks">Training Notebooks&lt;/h2>
+&lt;h3 id="training-notebooks">Training Notebooks&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://github.com/databricks-academy/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/databricks-academy/apache-spark-programming-with-databricks">Apache Spark Programming with Databricks&lt;/a>&lt;/li>
@@ -113,13 +113,13 @@ unified analytics engine for large-scale data processing.&lt;/p></description></
 &lt;li>&lt;a href="https://github.com/databricks-academy/advanced-data-engineering-with-databricks">Advanced Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/databricks-academy/ml-in-production">ML In Production&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="self-paced-courses">Self-Paced Courses&lt;/h2>
+&lt;h3 id="self-paced-courses">Self-Paced Courses&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/course/internal/view/elearning/62/data-engineering-with-databricks">Data Engineering with Databricks&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/learning_plan/view/10/data-engineer-learning-plan">Data Engineering Learning Plan&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://partner-academy.databricks.com/learn/catalog">Partner Learning Catalog&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;h2 id="unsorted">Unsorted&lt;/h2>
+&lt;h3 id="unsorted">Unsorted&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/Intro%202022%20-%20Welcome%20to%20Databricks%20Lakehouse.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZheWXQX7WHl28F_Sosv2dGvkO2zPSGdl7wDm9ahC9azRaueWRq5XWqHt6Z5La8LWChX-rCuy1Snwh6HiVk9Ay4ONZHSjImTfviKlI-IrGex4">Slides - Welcome to Databricks Lakehouse&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://pages.databricks.com/rs/094-YMS-629/images/DE%20-%202022%20-%20CSE%20In%20person%20workshop%20%281%29.pdf?mkt_tok=MDk0LVlNUy02MjkAAAGEoZMZhcSv2LStdPhsCRzIP2HS9pqioaEck6hwYt7-pvoPiUQPHwf16hDo9kYkctLhZP9Hm0Nt5aq-Q4X26ESY5hFpNASsr0YS9KGuxO2whlGVL9w">Slides - Data Engineering Technical Overview&lt;/a>&lt;/li>
