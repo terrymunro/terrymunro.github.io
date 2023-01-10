@@ -21,11 +21,16 @@
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead">Bulkhead pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/div></description></item><item><title>Docs: Circuit Breaker</title><link>https://tm.gg/docs/patterns/circuit_breaker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/circuit_breaker/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
-&lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/how-to-implement-circuit-breaker-in-rust/">How to Implement Circuit Breaker in Rust&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Course Structure</title><link>https://tm.gg/docs/functional-programming/scala/course-structure/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/course-structure/</guid><description>
 &lt;h2 id="course-structure">Course Structure&lt;/h2>
 &lt;p>The course is fast paced and we will cover a lot of ground over the next 4 days:&lt;/p>
@@ -78,12 +83,109 @@
 &lt;li>&lt;a href="https://github.com/ko1nksm/getoptions">getoptions&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/getopts.1p.html">getopts&lt;/a>&lt;/li>
 &lt;/ul>
+&lt;/div></description></item><item><title>Docs: Rust</title><link>https://tm.gg/docs/functional-programming/rust/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/rust/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.rust-lang.org/book/">Book: The Rust Programming Language&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://google.github.io/comprehensive-rust/">Google: Comprehensive Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hummusonrails.hashnode.dev/from-high-level-to-systems-programming-a-practical-guide-to-rust">From High-Level to Systems Programming - A Practical Guide to Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://this-week-in-rust.org/">This Week in Rust&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: CRDTs</title><link>https://tm.gg/docs/crdts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/crdts/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Wikipedia: Conflict-free replicated data type&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://crdt.tech/">Conflict-free Replicated Data Types&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Julia</title><link>https://tm.gg/docs/functional-programming/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/julia/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://julialang.org/">Julia Lang&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: ETL vs ELT</title><link>https://tm.gg/docs/etl-vs-elt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/etl-vs-elt/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Incomplete.&lt;/p>
+&lt;p>We worked on this for the Thinkathon in 2023 Aginic Bootcamp and while it was an entertaining exercise I felt unsatisfied with the brief overview we were able to cover. I personally would like a more thorough analysis of the differences, reasons and best practices regarding the topic.&lt;/p>
+&lt;p>What do you think? Leave a comment below if you feel this would be worthwhile.&lt;/p>
+&lt;/div>
+&lt;p>Extract Transform Load vs Extract Load Transform&lt;/p>
+&lt;h2 id="extract-transform-load-etl">Extract Transform Load (ETL)&lt;/h2>
+&lt;ul>
+&lt;li>Has been used by data engineers since the 1970s. &lt;a href="https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference">₁&lt;/a>&lt;/li>
+&lt;li>Primarily used for relational data warehouses where the sources may be varied but the destination only supports structured data.&lt;/li>
+&lt;/ul>
+&lt;h3 id="pros">Pros&lt;/h3>
+&lt;ul>
+&lt;li>Cheaper storage&lt;/li>
+&lt;li>The extract and transform stages are typically combined, allowing for faster access to insights because the data is immediately available once it is loaded&lt;/li>
+&lt;/ul>
+&lt;h3 id="cons--challenges">Cons / Challenges&lt;/h3>
+&lt;ul>
+&lt;li>Potential loss of data, when transformation fails on highly volatile data&lt;/li>
+&lt;li>If the source data is changing, it can be impossible to re-run the process on the original data when a problem is discovered changes&lt;/li>
+&lt;li>Multiple downstream sources might need same source data, increasing pressure on source system&lt;/li>
+&lt;/ul>
+&lt;h2 id="extract-load-transform-elt">Extract Load Transform (ELT)&lt;/h2>
+&lt;blockquote>
+&lt;p>It&amp;rsquo;s probably more like ELTLTLTL&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="pros-1">Pros&lt;/h3>
+&lt;ul>
+&lt;li>Can be more robust as replicating data is less complex than transforming and so if the pipeline has problems in the transformation stage, it can be rerun from the raw data without disturbing&lt;/li>
+&lt;li>Can re-run pipelines on the same data if anything goes wrong&lt;/li>
+&lt;li>Process is more staged&lt;/li>
+&lt;/ul>
+&lt;h3 id="cons--challenges-1">Cons / Challenges&lt;/h3>
+&lt;ul>
+&lt;li>Increased storage cost, keeping raw data&lt;/li>
+&lt;li>Governance (GDPR / HIPAA / CCPA) can be more difficult to do right:
+&lt;ul>
+&lt;li>TODO: Re-find the article that made this argument&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="references">References&lt;/h2></description></item><item><title>Docs: TLA+</title><link>https://tm.gg/docs/tla+/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/tla+/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://lamport.azurewebsites.net/tla/tla.html">The TLA+ Home Page&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.learntla.com/index.html">Learn TLA+&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://lamport.azurewebsites.net/tla/formal-methods-amazon.pdf">Use of Formal Methods at AWS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;h2 id="tla">TLA+&lt;/h2>
+&lt;h3 id="pluscal">PlusCal&lt;/h3>
+&lt;pre tabindex="0">&lt;code>---- MODULE pluscal ----
+EXTENDS Integers, TLC
+(* --algorithm pluscal
+variables
+x = 2;
+y = TRUE;
+begin
+A:
+x := x + 1;
+B:
+x := x + 1;
+y := FALSE;
+end algorithm; *)
+====
+&lt;/code>&lt;/pre>&lt;h3 id="labels">Labels&lt;/h3>
+&lt;h3 id="invariants">Invariants&lt;/h3>
+&lt;h3 id="specifications">Specifications&lt;/h3></description></item><item><title>Docs: WebAssembly</title><link>https://tm.gg/docs/webassembly/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/webassembly/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Concepts">WebAssembly: Concepts&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://webassembly.github.io/spec/core/intro/overview.html">WebAssembly: Intro&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs:</title><link>https://tm.gg/docs/books/how-to-read-a-book/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/books/how-to-read-a-book/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://tm.gg/resources/527389409-How-to-Read-A-Book.pdf" download>Book: Mortimer J. Adler - How to Read a Book&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/div></description></item><item><title>Docs: Data Engineer Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">

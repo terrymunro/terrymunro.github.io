@@ -21,11 +21,16 @@
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead">Bulkhead pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/div></description></item><item><title>Docs: Circuit Breaker</title><link>https://tm.gg/docs/patterns/circuit_breaker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/circuit_breaker/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
-&lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/how-to-implement-circuit-breaker-in-rust/">How to Implement Circuit Breaker in Rust&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: CQRS</title><link>https://tm.gg/docs/patterns/cqrs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/cqrs/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>

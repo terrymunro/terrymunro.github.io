@@ -1,0 +1,43 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – elt</title><link>https://tm.gg/tags/elt/</link><description>Recent content in elt on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/tags/elt/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: ETL vs ELT</title><link>https://tm.gg/docs/etl-vs-elt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/etl-vs-elt/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Incomplete.&lt;/p>
+&lt;p>We worked on this for the Thinkathon in 2023 Aginic Bootcamp and while it was an entertaining exercise I felt unsatisfied with the brief overview we were able to cover. I personally would like a more thorough analysis of the differences, reasons and best practices regarding the topic.&lt;/p>
+&lt;p>What do you think? Leave a comment below if you feel this would be worthwhile.&lt;/p>
+&lt;/div>
+&lt;p>Extract Transform Load vs Extract Load Transform&lt;/p>
+&lt;h2 id="extract-transform-load-etl">Extract Transform Load (ETL)&lt;/h2>
+&lt;ul>
+&lt;li>Has been used by data engineers since the 1970s. &lt;a href="https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference">₁&lt;/a>&lt;/li>
+&lt;li>Primarily used for relational data warehouses where the sources may be varied but the destination only supports structured data.&lt;/li>
+&lt;/ul>
+&lt;h3 id="pros">Pros&lt;/h3>
+&lt;ul>
+&lt;li>Cheaper storage&lt;/li>
+&lt;li>The extract and transform stages are typically combined, allowing for faster access to insights because the data is immediately available once it is loaded&lt;/li>
+&lt;/ul>
+&lt;h3 id="cons--challenges">Cons / Challenges&lt;/h3>
+&lt;ul>
+&lt;li>Potential loss of data, when transformation fails on highly volatile data&lt;/li>
+&lt;li>If the source data is changing, it can be impossible to re-run the process on the original data when a problem is discovered changes&lt;/li>
+&lt;li>Multiple downstream sources might need same source data, increasing pressure on source system&lt;/li>
+&lt;/ul>
+&lt;h2 id="extract-load-transform-elt">Extract Load Transform (ELT)&lt;/h2>
+&lt;blockquote>
+&lt;p>It&amp;rsquo;s probably more like ELTLTLTL&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="pros-1">Pros&lt;/h3>
+&lt;ul>
+&lt;li>Can be more robust as replicating data is less complex than transforming and so if the pipeline has problems in the transformation stage, it can be rerun from the raw data without disturbing&lt;/li>
+&lt;li>Can re-run pipelines on the same data if anything goes wrong&lt;/li>
+&lt;li>Process is more staged&lt;/li>
+&lt;/ul>
+&lt;h3 id="cons--challenges-1">Cons / Challenges&lt;/h3>
+&lt;ul>
+&lt;li>Increased storage cost, keeping raw data&lt;/li>
+&lt;li>Governance (GDPR / HIPAA / CCPA) can be more difficult to do right:
+&lt;ul>
+&lt;li>TODO: Re-find the article that made this argument&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="references">References&lt;/h2></description></item></channel></rss>

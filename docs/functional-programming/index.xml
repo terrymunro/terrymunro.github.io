@@ -1,14 +1,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – Functional Programming</title><link>https://tm.gg/docs/functional-programming/</link><description>Recent content in Functional Programming on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/docs/functional-programming/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Category Theory</title><link>https://tm.gg/docs/functional-programming/category_theory/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/category_theory/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page - Will focus on the parts of Category Theory that have been found to be most useful to Functional Programming.&lt;/p>
-&lt;p>&lt;a href="https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/">Bartosz Milewski - Category Theory for Programmers&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://www.youtube.com/watch?v=I8LbkfSSR58&amp;amp;list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_">YouTube: Bartosz Milewski - Category Theory&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://github.com/BartoszMilewski/Publications/blob/master/TheDaoOfFP/DaoFP.pdf">Bartosz Milewski - The Dao of Functional Programming&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://youtu.be/IBeceQHz2x8">YouTube: David Spivak - Category Theory&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://www.youtube.com/@TheCatsters">YouTube: TheCatsers&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://ncatlab.org/nlab/show/type+theory">nLab: Type Theory&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://ncatlab.org/homotopytypetheory/files/proposal2009.pdf">Steven Awodey - Homotopy and Type Theory&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://github.com/HoTT/book/wiki/Nightly-Builds">Book: Steven Awodey - Homotopy and Type Theory&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/">Bartosz Milewski - Category Theory for Programmers&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=I8LbkfSSR58&amp;amp;list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_">YouTube: Bartosz Milewski - Category Theory&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/BartoszMilewski/Publications/blob/master/TheDaoOfFP/DaoFP.pdf">Bartosz Milewski - The Dao of Functional Programming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://youtu.be/IBeceQHz2x8">YouTube: David Spivak - Category Theory&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/@TheCatsters">YouTube: TheCatsers&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ncatlab.org/nlab/show/type+theory">nLab: Type Theory&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ncatlab.org/homotopytypetheory/files/proposal2009.pdf">Steven Awodey - Homotopy and Type Theory&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/HoTT/book/wiki/Nightly-Builds">Book: Steven Awodey - Homotopy and Type Theory&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence">Curry-Howard correspondence&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Cartesian_closed_category">Cartesian closed category&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tm.gg/resources/ConceptualMathematics2ndEd.pdf" download>Book: Lawvere &amp;amp; Schanuel - Conceptual Mathematics, 2nd edition&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Haskell</title><link>https://tm.gg/docs/functional-programming/haskell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/haskell/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
@@ -37,4 +42,19 @@
 &lt;/ul>
 &lt;h2 id="assumptions">Assumptions&lt;/h2>
 &lt;p>This course assumes that you already know how to program. Scala is a statically typed language and there might be some comparative references to Haskell but I will also try to use TypeScript in-case that&amp;rsquo;s easier.&lt;/p>
-&lt;p>You don&amp;rsquo;t have to know functional programming, but it will be the primary paradigm used in this course.&lt;/p></description></item></channel></rss>
+&lt;p>You don&amp;rsquo;t have to know functional programming, but it will be the primary paradigm used in this course.&lt;/p></description></item><item><title>Docs: Rust</title><link>https://tm.gg/docs/functional-programming/rust/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/rust/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.rust-lang.org/book/">Book: The Rust Programming Language&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://google.github.io/comprehensive-rust/">Google: Comprehensive Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hummusonrails.hashnode.dev/from-high-level-to-systems-programming-a-practical-guide-to-rust">From High-Level to Systems Programming - A Practical Guide to Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://this-week-in-rust.org/">This Week in Rust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: Julia</title><link>https://tm.gg/docs/functional-programming/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/julia/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://julialang.org/">Julia Lang&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item></channel></rss>

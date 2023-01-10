@@ -21,11 +21,16 @@
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead">Bulkhead pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;/div></description></item><item><title>Docs: Circuit Breaker</title><link>https://tm.gg/docs/patterns/circuit_breaker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/patterns/circuit_breaker/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
-&lt;p>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Circuit Breaker pattern&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/">Microservice Governance - Resillience Patterns - Part 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.softwheel.io/how-to-implement-circuit-breaker-in-rust/">How to Implement Circuit Breaker in Rust&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Course Structure</title><link>https://tm.gg/docs/functional-programming/scala/course-structure/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/scala/course-structure/</guid><description>
 &lt;h2 id="course-structure">Course Structure&lt;/h2>
 &lt;p>The course is fast paced and we will cover a lot of ground over the next 4 days:&lt;/p>
@@ -109,6 +114,15 @@
 &lt;/div></description></item><item><title>Docs: Scripting</title><link>https://tm.gg/docs/scripting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/scripting/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
+&lt;/div></description></item><item><title>Docs: Rust</title><link>https://tm.gg/docs/functional-programming/rust/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/rust/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.rust-lang.org/book/">Book: The Rust Programming Language&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://google.github.io/comprehensive-rust/">Google: Comprehensive Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hummusonrails.hashnode.dev/from-high-level-to-systems-programming-a-practical-guide-to-rust">From High-Level to Systems Programming - A Practical Guide to Rust&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://this-week-in-rust.org/">This Week in Rust&lt;/a>&lt;/li>
+&lt;/ul>
 &lt;/div></description></item><item><title>Docs: Streaming Systems</title><link>https://tm.gg/docs/streaming_systems/</link><pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/streaming_systems/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>This is a placeholder page for streaming systems&lt;/p>
@@ -154,6 +168,7 @@
 &lt;li>&lt;a href="https://docs.microsoft.com/en-us/learn/modules/introduction-to-data-streaming/">Microsoft - Intro to Data Streaming&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://databricks.com/glossary/what-is-spark-streaming">Databricks - What is Spark Streaming&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html">How Uplift built CDC and Multiplexing data pipelines with Databricks Delta Live Tables&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dzone.com/articles/a-table-tennis-success-story-built-with-apache-kaf?fromrel=true">Table Tennis Success Story with Apache Kafka&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="existing-tools">Existing Tools&lt;/h2>
 &lt;ul>
@@ -206,4 +221,37 @@
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Wikipedia: Conflict-free replicated data type&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://crdt.tech/">Conflict-free Replicated Data Types&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;/div></description></item></channel></rss>
+&lt;/div></description></item><item><title>Docs: Julia</title><link>https://tm.gg/docs/functional-programming/julia/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/functional-programming/julia/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://julialang.org/">Julia Lang&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div></description></item><item><title>Docs: TLA+</title><link>https://tm.gg/docs/tla+/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/tla+/</guid><description>
+&lt;div class="pageinfo pageinfo-primary">
+&lt;p>WIP: Placeholder page&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://lamport.azurewebsites.net/tla/tla.html">The TLA+ Home Page&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.learntla.com/index.html">Learn TLA+&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://lamport.azurewebsites.net/tla/formal-methods-amazon.pdf">Use of Formal Methods at AWS&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;h2 id="tla">TLA+&lt;/h2>
+&lt;h3 id="pluscal">PlusCal&lt;/h3>
+&lt;pre tabindex="0">&lt;code>---- MODULE pluscal ----
+EXTENDS Integers, TLC
+(* --algorithm pluscal
+variables
+x = 2;
+y = TRUE;
+begin
+A:
+x := x + 1;
+B:
+x := x + 1;
+y := FALSE;
+end algorithm; *)
+====
+&lt;/code>&lt;/pre>&lt;h3 id="labels">Labels&lt;/h3>
+&lt;h3 id="invariants">Invariants&lt;/h3>
+&lt;h3 id="specifications">Specifications&lt;/h3></description></item></channel></rss>
