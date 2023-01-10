@@ -15,5 +15,6 @@ date modified: Wednesday, January 4th 2023, 11:19:14 pm
 WIP: Placeholder page
 
 * [Bulkhead pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead)
+* [Microservice Governance - Resillience Patterns - Part 2](https://blog.softwheel.io/microservice-governance-resilience-patterns-part-2/)
 
 {{% /pageinfo %}}

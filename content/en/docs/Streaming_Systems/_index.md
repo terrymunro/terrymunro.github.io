@@ -3,12 +3,12 @@ tags: []
 categories: ["Data", "Software"]
 title: "Streaming Systems"
 linkTitle: "Streaming Systems"
-weight: 4
+weight: 5
 date: 2022-05-26
 description: >
   Streaming systems are computer systems designed to continuously process and analyze data as it is generated or received in real time, allowing organizations to extract insights and take action on data as it becomes available, rather than having to wait for data to be stored and processed in batch.
 date created: Friday, December 23rd 2022, 6:59:55 pm
-date modified: Wednesday, January 4th 2023, 11:20:16 pm
+date modified: Thursday, January 5th 2023, 2:31:29 pm
 ---
 
 {{% pageinfo %}}
@@ -56,6 +56,7 @@ This is a placeholder page for streaming systems
 * [Microsoft - Intro to Data Streaming](https://docs.microsoft.com/en-us/learn/modules/introduction-to-data-streaming/)
 * [Databricks - What is Spark Streaming](https://databricks.com/glossary/what-is-spark-streaming)
 * [How Uplift built CDC and Multiplexing data pipelines with Databricks Delta Live Tables](https://www.databricks.com/blog/2022/04/27/how-uplift-built-cdc-and-multiplexing-data-pipelines-with-databricks-delta-live-tables.html)
+* [Table Tennis Success Story with Apache Kafka](https://dzone.com/articles/a-table-tennis-success-story-built-with-apache-kaf?fromrel=true)
 
 ## Existing Tools
 
