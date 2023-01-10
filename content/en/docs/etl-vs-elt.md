@@ -1,4 +1,6 @@
 ---
+author: Terence Munro
+date: 
 categories: [Data]
 tags: [etl, elt]
 title: ETL vs ELT
@@ -7,7 +9,7 @@ weight: 11
 description: >
     Extract, Transform and Load (where the transform phase and load phase can be swapped) refers to processes for organising a data pipeline into conceptual or actual phases or stages.
 date created: Thursday, January 5th 2023, 11:20:56 am
-date modified: Tuesday, January 10th 2023, 11:39:14 am
+date modified: Tuesday, January 10th 2023, 12:17:10 pm
 ---
 
 {{% pageinfo %}}
@@ -24,7 +26,7 @@ Extract Transform Load vs Extract Load Transform
 
 ## Extract Transform Load (ETL)
 
-* Has been used by data engineers since the 1970s. [₁][1]
+* Has been used by data engineers since the 1970s. [^1]
 * Primarily used for relational data warehouses where the sources may be varied but the destination only supports structured data.
 
 ### Pros
@@ -52,13 +54,18 @@ Extract Transform Load vs Extract Load Transform
 
 * Increased storage cost, keeping raw data
 * Governance (GDPR / HIPAA / CCPA) can be more difficult to do right:
-    * TODO: Re-find the article that made this argument
+    * TODO: Re-find the article that made this argument [^2] [^3] [^4] [^5] [^6]
 
 ## References
 
-[1]: https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference
-[2]:https://rivery.io/blog/etl-vs-elt/
-[3]: https://www.guru99.com/etl-vs-elt.html
-[4]: https://www.integrate.io/blog/etl-vs-elt/
-[5]: https://www.snowflake.com/guides/etl-vs-elt
-[6]: https://visualbi.com/blogs/featured/data-architecture-engineering/evolution-of-etl-to-elt/
+[^1]: https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference
+
+[^2]:https://rivery.io/blog/etl-vs-elt/
+
+[^3]: https://www.guru99.com/etl-vs-elt.html
+
+[^4]: https://www.integrate.io/blog/etl-vs-elt/
+
+[^5]: https://www.snowflake.com/guides/etl-vs-elt
+
+[^6]: https://visualbi.com/blogs/featured/data-architecture-engineering/evolution-of-etl-to-elt/
