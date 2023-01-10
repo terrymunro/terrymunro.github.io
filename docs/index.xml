@@ -114,7 +114,7 @@
 &lt;p>Extract Transform Load vs Extract Load Transform&lt;/p>
 &lt;h2 id="extract-transform-load-etl">Extract Transform Load (ETL)&lt;/h2>
 &lt;ul>
-&lt;li>Has been used by data engineers since the 1970s. &lt;a href="https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference">₁&lt;/a>&lt;/li>
+&lt;li>Has been used by data engineers since the 1970s. &lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/li>
 &lt;li>Primarily used for relational data warehouses where the sources may be varied but the destination only supports structured data.&lt;/li>
 &lt;/ul>
 &lt;h3 id="pros">Pros&lt;/h3>
@@ -143,11 +143,34 @@
 &lt;li>Increased storage cost, keeping raw data&lt;/li>
 &lt;li>Governance (GDPR / HIPAA / CCPA) can be more difficult to do right:
 &lt;ul>
-&lt;li>TODO: Re-find the article that made this argument&lt;/li>
+&lt;li>TODO: Re-find the article that made this argument &lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup> &lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup> &lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup> &lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup> &lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h2 id="references">References&lt;/h2></description></item><item><title>Docs: TLA+</title><link>https://tm.gg/docs/tla+/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/tla+/</guid><description>
+&lt;h2 id="references">References&lt;/h2>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>&lt;a href="https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference">https://www.ibm.com/cloud/blog/elt-vs-etl-whats-the-difference&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>&lt;a href="https://rivery.io/blog/etl-vs-elt/">https://rivery.io/blog/etl-vs-elt/&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>&lt;a href="https://www.guru99.com/etl-vs-elt.html">https://www.guru99.com/etl-vs-elt.html&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4">
+&lt;p>&lt;a href="https://www.integrate.io/blog/etl-vs-elt/">https://www.integrate.io/blog/etl-vs-elt/&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:5">
+&lt;p>&lt;a href="https://www.snowflake.com/guides/etl-vs-elt">https://www.snowflake.com/guides/etl-vs-elt&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:6">
+&lt;p>&lt;a href="https://visualbi.com/blogs/featured/data-architecture-engineering/evolution-of-etl-to-elt/">https://visualbi.com/blogs/featured/data-architecture-engineering/evolution-of-etl-to-elt/&lt;/a>&amp;#160;&lt;a href="#fnref:6" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Docs: TLA+</title><link>https://tm.gg/docs/tla+/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/tla+/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
