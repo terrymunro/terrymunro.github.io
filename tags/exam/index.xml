@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – exam</title><link>https://tm.gg/tags/exam/</link><description>Recent content in exam on Terence Munro</description><generator>Hugo -- gohugo.io</generator><atom:link href="https://tm.gg/tags/exam/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Data Engineer Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Terence Munro – exam</title><link>https://tm.gg/tags/exam/</link><description>Recent content in exam on Terence Munro</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://tm.gg/tags/exam/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Data Engineer Professional</title><link>https://tm.gg/docs/databricks/de-professional/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://tm.gg/docs/databricks/de-professional/</guid><description>
 &lt;div class="pageinfo pageinfo-primary">
 &lt;p>WIP: Placeholder page&lt;/p>
 &lt;ul>
@@ -14,7 +14,6 @@
 &lt;li>&lt;a href="https://customer-academy.databricks.com/">Customer Academy&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.databricks.com/learn/certification/data-engineer-associate">Databricks Certified Data Engineer Associate&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://files.training.databricks.com/assessments/practice-exams/PracticeExam-DataEngineerAssociate.pdf">Practice Exam&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://tm.gg/resources/DataBricks Associate Data Engineer Prep - Notes.pdf" download>DataBricks Associate Data Engineer Prep - Notes.pdf&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://files.training.databricks.com/lms/docebo/databricks-academy-faq.pdf">Databricks Academy FAQ&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://tm.gg/docs/databricks/de-professional/">Data Engineering - Professional Notes&lt;/a>&lt;/li>
 &lt;/ul>
