@@ -1,0 +1,3220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11120f">
+  <meta name="description" content="THE ABYSS: a brutal, five-module browser puzzle gauntlet.">
+  <title>THE ABYSS — A Brutal Puzzle Gauntlet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --ink: #11120f;
+      --ink-soft: #22231f;
+      --paper: #f1efe7;
+      --paper-deep: #e5e1d6;
+      --white: #fbfaf5;
+      --acid: #d8ff3e;
+      --acid-dim: #b8dc2c;
+      --danger: #ff5c3b;
+      --blue: #8ca7ff;
+      --muted: #73736b;
+      --line: rgba(17, 18, 15, 0.18);
+      --line-dark: rgba(241, 239, 231, 0.18);
+      --shadow: 0 18px 60px rgba(17, 18, 15, 0.12);
+      --radius-sm: 5px;
+      --radius-md: 10px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(rgba(17, 18, 15, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 18, 15, 0.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    ::selection {
+      color: var(--ink);
+      background: var(--acid);
+    }
+
+    .mono {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 64px 1fr;
+    }
+
+    .topbar {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      display: grid;
+      grid-template-columns: 240px 1fr auto;
+      min-height: 64px;
+      color: var(--paper);
+      border-bottom: 1px solid var(--line-dark);
+      background: rgba(17, 18, 15, 0.97);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand,
+    .topbar-center,
+    .run-stats {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand {
+      gap: 12px;
+      padding: 0 20px;
+      border-right: 1px solid var(--line-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 27px;
+      height: 27px;
+      border: 1px solid var(--paper);
+      transform: rotate(45deg);
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      position: absolute;
+      content: "";
+      background: var(--acid);
+    }
+
+    .brand-mark::before {
+      width: 9px;
+      height: 9px;
+      inset: 8px;
+    }
+
+    .brand-mark::after {
+      width: 1px;
+      height: 35px;
+      top: -5px;
+      left: 12px;
+    }
+
+    .topbar-center {
+      gap: 10px;
+      padding: 0 22px;
+      color: #a9aaa2;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 0 0 0 5px rgba(216, 255, 62, 0.1);
+      animation: pulse 2s infinite;
+    }
+
+    .run-stats {
+      height: 100%;
+    }
+
+    .stat {
+      min-width: 94px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 18px;
+      border-left: 1px solid var(--line-dark);
+    }
+
+    .stat-label {
+      margin-bottom: 3px;
+      color: #898a83;
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      color: var(--paper);
+      font: 600 14px/1.2 "IBM Plex Mono", monospace;
+    }
+
+    .stat-value.integrity-low {
+      color: var(--danger);
+    }
+
+    .icon-button {
+      width: 58px;
+      height: 100%;
+      border: 0;
+      border-left: 1px solid var(--line-dark);
+      color: var(--paper);
+      background: transparent;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .icon-button:hover {
+      color: var(--ink);
+      background: var(--acid);
+    }
+
+    .shell {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 240px minmax(480px, 1fr) 316px;
+    }
+
+    .rail {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--line);
+      background: rgba(241, 239, 231, 0.88);
+      backdrop-filter: blur(8px);
+    }
+
+    .rail-head {
+      padding: 28px 20px 18px;
+    }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font: 500 10px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .rail-title {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .module-nav {
+      display: grid;
+      border-top: 1px solid var(--line);
+    }
+
+    .module-button {
+      position: relative;
+      width: 100%;
+      min-height: 72px;
+      display: grid;
+      grid-template-columns: 34px 1fr 20px;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 17px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      background: transparent;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .module-button::before {
+      position: absolute;
+      width: 3px;
+      height: 0;
+      content: "";
+      left: 0;
+      top: 50%;
+      background: var(--acid);
+      transform: translateY(-50%);
+      transition: height .25s var(--ease);
+    }
+
+    .module-button:hover {
+      background: rgba(255, 255, 255, 0.52);
+    }
+
+    .module-button.active {
+      color: var(--paper);
+      background: var(--ink);
+    }
+
+    .module-button.active::before {
+      height: 100%;
+    }
+
+    .module-button.locked {
+      color: #98988f;
+      cursor: not-allowed;
+    }
+
+    .module-index {
+      font: 500 11px/1 "IBM Plex Mono", monospace;
+    }
+
+    .module-copy {
+      min-width: 0;
+    }
+
+    .module-name {
+      display: block;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .module-type {
+      display: block;
+      margin-top: 4px;
+      overflow: hidden;
+      color: #83847c;
+      font: 500 8px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .1em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .module-button.active .module-type {
+      color: #a7a99f;
+    }
+
+    .module-status {
+      width: 17px;
+      height: 17px;
+      display: grid;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      font: 600 9px/1 "IBM Plex Mono", monospace;
+    }
+
+    .module-button[data-state="solved"] .module-status {
+      color: var(--ink);
+      border-color: var(--acid);
+      background: var(--acid);
+    }
+
+    .module-button[data-state="revealed"] .module-status {
+      color: var(--paper);
+      border-color: var(--danger);
+      background: var(--danger);
+    }
+
+    .shard-panel {
+      margin-top: auto;
+      padding: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .shard-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    .shard {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      color: #b1b1a9;
+      background: rgba(255,255,255,.36);
+      font: 600 14px/1 "IBM Plex Mono", monospace;
+    }
+
+    .shard.recovered {
+      color: var(--ink);
+      border-color: var(--ink);
+      background: var(--acid);
+    }
+
+    .progress-copy {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      color: var(--muted);
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      height: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+      background: rgba(17,18,15,.12);
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: var(--ink);
+      transition: width .45s var(--ease);
+    }
+
+    .stage {
+      min-width: 0;
+      padding: clamp(30px, 4vw, 64px);
+      background: rgba(251, 250, 245, .66);
+      scroll-margin-top: 64px;
+    }
+
+    .stage-inner {
+      width: min(100%, 920px);
+      margin: 0 auto;
+    }
+
+    .puzzle-header {
+      position: relative;
+      padding-right: 96px;
+    }
+
+    .puzzle-code {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font: 600 10px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .puzzle-code::before {
+      width: 24px;
+      height: 2px;
+      content: "";
+      background: var(--danger);
+    }
+
+    .puzzle-number {
+      position: absolute;
+      top: -18px;
+      right: 0;
+      color: rgba(17, 18, 15, .07);
+      font: 600 clamp(78px, 8vw, 116px)/.8 "IBM Plex Mono", monospace;
+      letter-spacing: -.09em;
+      pointer-events: none;
+    }
+
+    .puzzle-title {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(42px, 5.1vw, 76px);
+      font-weight: 600;
+      line-height: .92;
+      letter-spacing: -.065em;
+    }
+
+    .puzzle-title:focus {
+      outline: none;
+    }
+
+    .puzzle-deck {
+      max-width: 670px;
+      margin: 22px 0 0;
+      color: #5c5c55;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .puzzle-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 25px;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      color: var(--muted);
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .meta-tag strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .workspace {
+      position: relative;
+      margin-top: 38px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .workspace-top {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .workspace-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .workspace-label::before {
+      width: 7px;
+      height: 7px;
+      content: "";
+      border-radius: 50%;
+      background: var(--acid-dim);
+    }
+
+    .attempt-count {
+      color: var(--muted);
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .puzzle-body {
+      min-height: 300px;
+      padding: clamp(20px, 3vw, 34px);
+    }
+
+    .workspace-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 70px;
+      padding: 12px 14px 12px 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .feedback {
+      flex: 1;
+      min-width: 0;
+      color: var(--muted);
+      font: 500 10px/1.45 "IBM Plex Mono", monospace;
+    }
+
+    .feedback.error {
+      color: #c53720;
+    }
+
+    .feedback.success {
+      color: #4b6800;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .button {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .18s var(--ease), background .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 rgba(17,18,15,.14);
+    }
+
+    .button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .button-primary {
+      color: var(--ink);
+      background: var(--acid);
+    }
+
+    .button-primary:hover {
+      background: #e2ff70;
+    }
+
+    .button-secondary {
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .button-ghost {
+      min-height: 34px;
+      padding: 7px 10px;
+      border-color: var(--line);
+      color: var(--muted);
+      background: transparent;
+      font-size: 10px;
+    }
+
+    .button-danger {
+      color: var(--paper);
+      border-color: var(--danger);
+      background: var(--danger);
+    }
+
+    .button[disabled] {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .brief {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      border-left: 1px solid var(--line);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .brief-section {
+      padding: 25px 23px;
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .brief .section-kicker {
+      color: #8e9087;
+    }
+
+    .brief-title {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+    }
+
+    .brief-copy {
+      margin: 0;
+      color: #b9bab2;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .clue-list {
+      display: grid;
+      gap: 0;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: clue;
+    }
+
+    .clue-list li {
+      position: relative;
+      padding: 10px 0 10px 27px;
+      border-top: 1px solid rgba(241,239,231,.09);
+      color: #c8c9c0;
+      font-size: 11px;
+      line-height: 1.5;
+      counter-increment: clue;
+    }
+
+    .clue-list li::before {
+      position: absolute;
+      top: 11px;
+      left: 0;
+      color: var(--acid);
+      content: counter(clue, decimal-leading-zero);
+      font: 500 9px/1.5 "IBM Plex Mono", monospace;
+    }
+
+    .hint-stack {
+      display: grid;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .hint-card {
+      padding: 11px 12px;
+      border-left: 2px solid var(--acid);
+      color: #d8d9d0;
+      background: rgba(255,255,255,.055);
+      font-size: 11px;
+      line-height: 1.55;
+      animation: reveal .3s var(--ease);
+    }
+
+    .brief .button {
+      width: 100%;
+      margin-top: 12px;
+      border-color: rgba(241,239,231,.28);
+      color: var(--paper);
+      background: transparent;
+    }
+
+    .brief .button:hover {
+      color: var(--ink);
+      border-color: var(--acid);
+      background: var(--acid);
+      box-shadow: none;
+    }
+
+    .failsafe-copy {
+      margin: 8px 0 0;
+      color: #8e9087;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    /* Switchyard */
+    .switchyard {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(110px, 1fr));
+      gap: 10px;
+      padding-top: 17px;
+    }
+
+    .switchyard::before {
+      position: absolute;
+      height: 2px;
+      content: "";
+      top: 39px;
+      left: 6%;
+      right: 6%;
+      background: var(--ink);
+    }
+
+    .slot-card {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      padding: 0 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--white);
+    }
+
+    .slot-node {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      margin: -17px auto 16px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--acid);
+      font: 600 12px/1 "IBM Plex Mono", monospace;
+    }
+
+    .field-label {
+      display: block;
+      margin: 0 0 6px;
+      color: var(--muted);
+      font: 500 8px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .slot-card select {
+      width: 100%;
+      height: 36px;
+      margin-bottom: 9px;
+      padding: 0 27px 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--ink);
+      background: var(--paper);
+      font-size: 11px;
+    }
+
+    .slot-card select:last-child {
+      margin-bottom: 0;
+    }
+
+    .micro-note {
+      margin: 20px 0 0;
+      color: var(--muted);
+      font: 500 9px/1.6 "IBM Plex Mono", monospace;
+    }
+
+    /* Cipher */
+    .cipher-console {
+      padding: 2px 0 4px;
+    }
+
+    .cipher-words {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 22px 12px;
+    }
+
+    .cipher-word {
+      display: grid;
+      gap: 7px;
+    }
+
+    .cipher-glyph {
+      color: var(--ink);
+      font: 600 15px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .15em;
+      text-align: center;
+    }
+
+    .cipher-input {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 5px;
+      border: 0;
+      border-bottom: 2px solid var(--ink);
+      border-radius: 0;
+      color: var(--ink);
+      background: rgba(216,255,62,.16);
+      font: 600 14px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .frequency-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .frequency-pill {
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      color: var(--muted);
+      font: 500 9px/1 "IBM Plex Mono", monospace;
+    }
+
+    .frequency-pill strong {
+      color: var(--ink);
+    }
+
+    /* Arithmetic lattice */
+    .kenken-wrap {
+      display: grid;
+      place-items: center;
+    }
+
+    .kenken {
+      width: min(100%, 410px);
+      aspect-ratio: 1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border: 3px solid var(--ink);
+      background: var(--ink);
+    }
+
+    .ken-cell {
+      position: relative;
+      display: grid;
+      place-items: center;
+      border-style: solid;
+      border-color: var(--ink);
+      background: var(--white);
+    }
+
+    .ken-cell input {
+      width: 68%;
+      height: 68%;
+      padding: 9px 0 0;
+      border: 0;
+      border-radius: 50%;
+      color: var(--ink);
+      background: transparent;
+      font: 600 clamp(20px, 3vw, 30px)/1 "IBM Plex Mono", monospace;
+      text-align: center;
+    }
+
+    .ken-cell input:focus {
+      background: rgba(216,255,62,.42);
+    }
+
+    .cage-label {
+      position: absolute;
+      z-index: 2;
+      top: 5px;
+      left: 6px;
+      font: 600 9px/1 "IBM Plex Mono", monospace;
+      pointer-events: none;
+    }
+
+    /* Tomography */
+    .nonogram-wrap {
+      overflow-x: auto;
+      padding: 4px;
+    }
+
+    .nonogram {
+      --nono-cell: 38px;
+      --nono-clue: 66px;
+      width: max-content;
+      display: grid;
+      grid-template-columns: var(--nono-clue) repeat(var(--nono-size), var(--nono-cell));
+      grid-template-rows: var(--nono-clue) repeat(var(--nono-size), var(--nono-cell));
+      margin: 0 auto;
+      border-right: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      background: var(--white);
+    }
+
+    .nono-corner {
+      display: grid;
+      place-items: center;
+      border-right: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      color: var(--muted);
+      font: 500 8px/1.3 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .nono-clue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      background: var(--paper);
+      font: 600 10px/1.3 "IBM Plex Mono", monospace;
+    }
+
+    .nono-clue.top {
+      flex-direction: column;
+      border-right: 1px solid var(--line);
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .nono-clue.left {
+      gap: 5px;
+      border-right: 2px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nono-clue.lost {
+      color: var(--danger);
+      background:
+        repeating-linear-gradient(135deg, transparent 0 5px, rgba(255,92,59,.1) 5px 6px),
+        var(--paper);
+      font-size: 16px;
+    }
+
+    .nono-cell {
+      position: relative;
+      border: 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--white);
+      cursor: crosshair;
+    }
+
+    .nono-cell:hover {
+      background: rgba(216,255,62,.28);
+    }
+
+    .nono-cell.filled {
+      background: var(--ink);
+    }
+
+    .nono-cell.marked::before,
+    .nono-cell.marked::after {
+      position: absolute;
+      width: 1px;
+      height: 20px;
+      content: "";
+      top: 50%;
+      left: 50%;
+      background: #a6a69e;
+    }
+
+    .nono-cell.marked::before {
+      transform: translate(-50%,-50%) rotate(45deg);
+    }
+
+    .nono-cell.marked::after {
+      transform: translate(-50%,-50%) rotate(-45deg);
+    }
+
+    /* Truth array */
+    .choir-sequence {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .code-slot {
+      position: relative;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--paper);
+    }
+
+    .code-slot::after {
+      position: absolute;
+      content: "→";
+      top: 50%;
+      right: -8px;
+      z-index: 2;
+      color: var(--muted);
+      font: 600 11px/1 "IBM Plex Mono", monospace;
+      transform: translateY(-50%);
+    }
+
+    .code-slot:last-child::after {
+      display: none;
+    }
+
+    .code-slot select {
+      width: 100%;
+      height: 40px;
+      padding: 0 25px 0 9px;
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      color: var(--ink);
+      background: var(--white);
+      font: 600 12px/1 "IBM Plex Mono", monospace;
+    }
+
+    .call-sign-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 11px;
+      margin: 0 0 27px;
+      color: var(--muted);
+      font: 500 8px/1.5 "IBM Plex Mono", monospace;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .carrier-bank {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 7px;
+      margin-bottom: 26px;
+    }
+
+    .carrier {
+      min-width: 0;
+      padding: 12px 5px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--muted);
+      background: var(--paper);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .carrier:hover {
+      border-color: var(--ink);
+    }
+
+    .carrier.selected {
+      color: var(--ink);
+      border-color: var(--ink);
+      background: var(--acid);
+      box-shadow: inset 0 0 0 1px var(--ink);
+    }
+
+    .carrier-letter {
+      display: block;
+      margin-bottom: 6px;
+      font: 600 18px/1 "IBM Plex Mono", monospace;
+    }
+
+    .carrier-name {
+      display: block;
+      overflow: hidden;
+      font-size: 9px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+    }
+
+    .log-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .log {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--ink);
+      background: var(--white);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .log:hover {
+      border-color: var(--ink);
+    }
+
+    .log.selected {
+      border-color: var(--danger);
+      background: rgba(255,92,59,.09);
+    }
+
+    .log-index {
+      color: var(--muted);
+      font: 500 10px/1 "IBM Plex Mono", monospace;
+    }
+
+    .log-copy {
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .log-state {
+      padding: 4px 6px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      color: var(--muted);
+      font: 500 8px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .log.selected .log-state {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    /* Resolved and final states */
+    .resolved-card {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border: 1px solid var(--ink);
+      border-radius: 7px;
+      color: var(--paper);
+      background: var(--ink);
+    }
+
+    .resolved-card::after {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      content: "";
+      right: -80px;
+      bottom: -80px;
+      border: 34px solid rgba(216,255,62,.13);
+      border-radius: 50%;
+    }
+
+    .resolved-label {
+      color: var(--acid);
+      font: 600 9px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .resolved-title {
+      margin: 14px 0 10px;
+      font-size: 29px;
+      letter-spacing: -.045em;
+    }
+
+    .resolved-copy {
+      max-width: 600px;
+      margin: 0;
+      color: #b9bab2;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .recovered-glyph {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      margin-top: 23px;
+      border: 1px solid var(--acid);
+      color: var(--ink);
+      background: var(--acid);
+      font: 600 35px/1 "IBM Plex Mono", monospace;
+    }
+
+    .solution-detail {
+      margin-top: 19px;
+      padding-top: 17px;
+      border-top: 1px solid rgba(241,239,231,.16);
+      color: #c7c8bf;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .final-gate {
+      display: grid;
+      gap: 26px;
+      justify-items: center;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .gate-visual {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .gate-visual::before,
+    .gate-visual::after {
+      position: absolute;
+      content: "";
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .gate-visual::before {
+      width: 110px;
+      height: 110px;
+      border-style: dashed;
+      animation: spin 12s linear infinite;
+    }
+
+    .gate-visual::after {
+      width: 48px;
+      height: 48px;
+      border-width: 8px;
+      border-color: var(--acid);
+      background: var(--ink);
+    }
+
+    .gate-mark {
+      position: relative;
+      z-index: 1;
+      color: var(--paper);
+      font: 600 17px/1 "IBM Plex Mono", monospace;
+    }
+
+    .passphrase {
+      width: min(100%, 390px);
+      height: 64px;
+      padding: 0 20px;
+      border: 2px solid var(--ink);
+      border-radius: 5px;
+      color: var(--ink);
+      background: rgba(216,255,62,.2);
+      font: 600 clamp(22px, 5vw, 34px)/1 "IBM Plex Mono", monospace;
+      letter-spacing: .32em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .fragment-display {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+    }
+
+    .fragment-display .shard {
+      width: 39px;
+      aspect-ratio: 1;
+    }
+
+    .victory {
+      position: relative;
+      overflow: hidden;
+      padding: 42px clamp(24px, 6vw, 68px);
+      border-radius: 8px;
+      color: var(--paper);
+      background: var(--ink);
+      text-align: left;
+    }
+
+    .victory::before {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      content: "";
+      top: -130px;
+      right: -70px;
+      border: 46px solid var(--acid);
+      border-radius: 50%;
+      opacity: .9;
+    }
+
+    .victory-title {
+      position: relative;
+      max-width: 560px;
+      margin: 15px 0 17px;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: .88;
+      letter-spacing: -.075em;
+    }
+
+    .victory-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 31px;
+      background: rgba(241,239,231,.18);
+    }
+
+    .victory-stat {
+      padding: 16px;
+      background: var(--ink-soft);
+    }
+
+    .victory-stat span {
+      display: block;
+    }
+
+    .victory-stat .big {
+      margin-bottom: 5px;
+      color: var(--acid);
+      font: 600 22px/1 "IBM Plex Mono", monospace;
+    }
+
+    .victory-stat .small {
+      color: #95978e;
+      font: 500 8px/1.3 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Boot, modal, toast */
+    .boot {
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      color: var(--paper);
+      background: var(--ink);
+      transition: opacity .5s var(--ease), visibility .5s;
+    }
+
+    .boot.hidden {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .boot-main {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: clamp(28px, 6vw, 82px);
+      border-right: 1px solid var(--line-dark);
+    }
+
+    .boot-main::before {
+      position: absolute;
+      width: min(50vw, 650px);
+      height: min(50vw, 650px);
+      content: "";
+      right: -22%;
+      bottom: -40%;
+      border: clamp(48px, 7vw, 105px) solid var(--acid);
+      border-radius: 50%;
+      opacity: .95;
+    }
+
+    .boot-main::after {
+      position: absolute;
+      width: 1px;
+      height: 160%;
+      content: "";
+      top: -30%;
+      right: 29%;
+      background: rgba(241,239,231,.22);
+      transform: rotate(34deg);
+    }
+
+    .boot-brand {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font: 600 11px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .boot-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    .boot-kicker {
+      margin-bottom: 18px;
+      color: var(--acid);
+      font: 600 10px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .boot-title {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(74px, 11vw, 178px);
+      font-weight: 600;
+      line-height: .72;
+      letter-spacing: -.1em;
+    }
+
+    .boot-subtitle {
+      max-width: 560px;
+      margin: 32px 0 0;
+      color: #b7b8b0;
+      font-size: clamp(14px, 1.5vw, 18px);
+      line-height: 1.6;
+    }
+
+    .boot-aside {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(30px, 5vw, 68px);
+      background:
+        linear-gradient(rgba(241,239,231,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(241,239,231,.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .boot-manifest {
+      display: grid;
+      margin: 18px 0 28px;
+      border-top: 1px solid var(--line-dark);
+    }
+
+    .manifest-row {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line-dark);
+      font-size: 12px;
+    }
+
+    .manifest-index {
+      color: var(--acid);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .manifest-type {
+      color: #85877e;
+      font: 500 8px/1.5 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .enter-button {
+      min-height: 55px;
+      border: 1px solid var(--acid);
+      border-radius: 5px;
+      color: var(--ink);
+      background: var(--acid);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s var(--ease), box-shadow .2s ease;
+    }
+
+    .enter-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 0 rgba(216,255,62,.24);
+    }
+
+    .boot-warning {
+      margin: 14px 0 0;
+      color: #7f8178;
+      font: 500 9px/1.55 "IBM Plex Mono", monospace;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 200;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      visibility: hidden;
+      background: rgba(17,18,15,.76);
+      opacity: 0;
+      backdrop-filter: blur(8px);
+      transition: opacity .2s ease, visibility .2s;
+    }
+
+    .modal-backdrop.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal {
+      width: min(100%, 430px);
+      padding: 28px;
+      border: 1px solid var(--ink);
+      border-radius: 8px;
+      color: var(--ink);
+      background: var(--paper);
+      box-shadow: 0 25px 90px rgba(0,0,0,.35);
+      transform: translateY(12px);
+      transition: transform .25s var(--ease);
+    }
+
+    .modal-backdrop.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal h2 {
+      margin: 8px 0 10px;
+      font-size: 27px;
+      letter-spacing: -.045em;
+    }
+
+    .modal p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .toast-region {
+      position: fixed;
+      z-index: 300;
+      right: 20px;
+      bottom: 20px;
+      display: grid;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      width: min(340px, calc(100vw - 40px));
+      padding: 13px 15px;
+      border: 1px solid var(--ink);
+      border-radius: 5px;
+      color: var(--paper);
+      background: var(--ink);
+      box-shadow: 0 14px 40px rgba(0,0,0,.2);
+      font: 500 10px/1.5 "IBM Plex Mono", monospace;
+      animation: toast-in .35s var(--ease);
+    }
+
+    .toast.bad {
+      border-color: var(--danger);
+    }
+
+    .toast.good {
+      color: var(--ink);
+      border-color: var(--acid);
+      background: var(--acid);
+    }
+
+    .shake {
+      animation: shake .38s ease;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .35; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(3px); }
+    }
+
+    @media (max-width: 1180px) {
+      .shell {
+        grid-template-columns: 210px minmax(460px, 1fr) 280px;
+      }
+
+      .topbar {
+        grid-template-columns: 210px 1fr auto;
+      }
+
+      .switchyard {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 28px;
+      }
+
+      .switchyard::before {
+        display: none;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: 58px 1fr;
+      }
+
+      .topbar {
+        width: 100%;
+        min-width: 0;
+        grid-template-columns: 1fr auto;
+        min-height: 58px;
+      }
+
+      .topbar-center {
+        display: none;
+      }
+
+      .brand {
+        border-right: 0;
+      }
+
+      .stat:first-child {
+        display: none;
+      }
+
+      .shell {
+        width: 100%;
+        min-width: 0;
+        display: block;
+      }
+
+      .rail {
+        position: sticky;
+        z-index: 15;
+        top: 58px;
+        width: 100%;
+        height: auto;
+        display: block;
+        overflow: hidden;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .rail-head,
+      .shard-panel {
+        display: none;
+      }
+
+      .module-nav {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        overflow-x: auto;
+        border-top: 0;
+        scrollbar-width: thin;
+      }
+
+      .module-button {
+        min-width: 150px;
+        min-height: 60px;
+        grid-template-columns: 25px 1fr 17px;
+        padding: 10px 12px;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+      }
+
+      .module-button::before {
+        width: 0;
+        height: 3px;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        transform: none;
+      }
+
+      .module-button.active::before {
+        width: 100%;
+        height: 3px;
+      }
+
+      .module-type {
+        display: none;
+      }
+
+      .stage {
+        padding: 38px clamp(20px, 5vw, 48px);
+        scroll-margin-top: 118px;
+      }
+
+      .brief {
+        position: static;
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-top: 1px solid var(--ink);
+        border-left: 0;
+      }
+
+      .brief-section {
+        border-right: 1px solid var(--line-dark);
+      }
+
+      .boot {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+
+      .boot-main {
+        min-height: 58vh;
+        border-right: 0;
+        border-bottom: 1px solid var(--line-dark);
+      }
+
+      .boot-aside {
+        padding-block: 40px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand {
+        padding: 0 13px;
+      }
+
+      .brand-mark {
+        width: 23px;
+        height: 23px;
+      }
+
+      .brand-mark::before {
+        inset: 6px;
+      }
+
+      .brand-mark::after {
+        top: -7px;
+        left: 10px;
+      }
+
+      .stat {
+        min-width: 76px;
+        padding: 0 10px;
+      }
+
+      .icon-button {
+        width: 45px;
+      }
+
+      .puzzle-header {
+        padding-right: 0;
+      }
+
+      .puzzle-number {
+        display: none;
+      }
+
+      .puzzle-title {
+        font-size: 46px;
+      }
+
+      .puzzle-body {
+        padding: 18px 13px;
+      }
+
+      .workspace-actions {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 13px;
+      }
+
+      .button-row {
+        display: grid;
+        grid-template-columns: .8fr 1.2fr;
+      }
+
+      .switchyard {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .slot-card:last-child {
+        grid-column: 1 / -1;
+        width: calc(50% - 5px);
+        justify-self: center;
+      }
+
+      .carrier-bank {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .log {
+        grid-template-columns: 29px 1fr;
+      }
+
+      .log-state {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .brief {
+        display: block;
+      }
+
+      .brief-section {
+        border-right: 0;
+      }
+
+      .nonogram {
+        --nono-cell: 32px;
+        --nono-clue: 54px;
+      }
+
+      .choir-sequence {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .code-slot::after {
+        display: none;
+      }
+
+      .ken-cell input {
+        padding-top: 5px;
+      }
+
+      .cage-label {
+        top: 3px;
+        left: 4px;
+        font-size: 7px;
+      }
+
+      .victory-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .boot-main {
+        min-height: 55vh;
+        padding: 28px 22px 42px;
+      }
+
+      .boot-title {
+        margin-top: 70px;
+        font-size: clamp(70px, 28vw, 118px);
+      }
+
+      .boot-main::before {
+        width: 330px;
+        height: 330px;
+        right: -190px;
+        bottom: -180px;
+      }
+
+      .boot-aside {
+        padding: 34px 22px 46px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="The Abyss">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>THE//ABYSS</span>
+      </div>
+      <div class="topbar-center">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>Brutal protocol engaged</span>
+      </div>
+      <div class="run-stats">
+        <div class="stat">
+          <span class="stat-label">Elapsed</span>
+          <span class="stat-value" id="timer">00:00</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Integrity</span>
+          <span class="stat-value" id="integrity">100%</span>
+        </div>
+        <button class="icon-button" id="resetRun" type="button" aria-label="Reset the entire run" title="Reset run">↻</button>
+      </div>
+    </header>
+
+    <div class="shell">
+      <aside class="rail" aria-label="Puzzle modules">
+        <div class="rail-head">
+          <p class="section-kicker">Case index</p>
+          <h2 class="rail-title">Five locks. One exit.</h2>
+        </div>
+        <nav class="module-nav" id="moduleNav"></nav>
+        <div class="shard-panel">
+          <p class="section-kicker">Recovered fragments</p>
+          <div class="shard-row" id="shardRow" aria-label="Recovered passphrase fragments"></div>
+          <div class="progress-copy">
+            <span>Extraction</span>
+            <span id="progressText">0 / 5</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="stage" id="stage">
+        <div class="stage-inner" id="stageInner"></div>
+      </main>
+
+      <aside class="brief" id="brief" aria-label="Puzzle rules and hints"></aside>
+    </div>
+  </div>
+
+  <section class="boot" id="bootScreen" aria-labelledby="bootTitle">
+    <div class="boot-main">
+      <div class="boot-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Black archive // instance 08</span>
+      </div>
+      <div class="boot-copy">
+        <p class="boot-kicker">A hostile puzzle collection</p>
+        <h1 class="boot-title" id="bootTitle">THE<br>ABYSS</h1>
+        <p class="boot-subtitle">Five systems are lying to you in five different languages. Break each one. Recover the fragments. Do not expect mercy.</p>
+      </div>
+    </div>
+    <div class="boot-aside">
+      <p class="section-kicker">Target manifest</p>
+      <div class="boot-manifest" aria-label="Puzzle types">
+        <div class="manifest-row"><span class="manifest-index">01</span><span>Switchyard Null</span><span class="manifest-type">Logic</span></div>
+        <div class="manifest-row"><span class="manifest-index">02</span><span>Dead Language</span><span class="manifest-type">Word</span></div>
+        <div class="manifest-row"><span class="manifest-index">03</span><span>Pressure Lattice</span><span class="manifest-type">Number</span></div>
+        <div class="manifest-row"><span class="manifest-index">04</span><span>Blind Tomography</span><span class="manifest-type">Spatial</span></div>
+        <div class="manifest-row"><span class="manifest-index">05</span><span>False Choir</span><span class="manifest-type">Relational</span></div>
+      </div>
+      <button class="enter-button" id="beginRun" type="button">ENTER THE ARRAY →</button>
+      <p class="boot-warning">Mistakes damage run integrity. Hints cost less. Every module includes a failsafe solution; surrender never blocks the exit.</p>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalCopy">
+    <div class="modal">
+      <p class="section-kicker" id="modalKicker">Confirm action</p>
+      <h2 id="modalTitle">Are you certain?</h2>
+      <p id="modalCopy"></p>
+      <div class="modal-actions">
+        <button class="button button-secondary" id="modalCancel" type="button">Cancel</button>
+        <button class="button button-danger" id="modalConfirm" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "the-abyss-state-v3";
+      const CONTENT_VERSION = 4;
+      const PEOPLE = ["Rook", "Vesper", "Ibis", "Moth", "Vale"];
+      const SIGNALS = ["Amber", "Cobalt", "Ivory", "Sable", "Violet"];
+      const CIPHER_WORDS = ["Q", "LIQKH", "DOFR", "ITQKL", "ZIT", "LOSTFET", "WTZVTTF", "LOUFQSL"];
+      const PLAIN_WORDS = ["A", "SHARP", "MIND", "HEARS", "THE", "SILENCE", "BETWEEN", "SIGNALS"];
+      const LATIN_SOLUTION = [
+        [1, 2, 3, 4, 5],
+        [3, 4, 5, 1, 2],
+        [5, 1, 2, 3, 4],
+        [2, 3, 4, 5, 1],
+        [4, 5, 1, 2, 3]
+      ];
+      const CAGES = [
+        { label: "2×", cells: [[0,0],[0,1]] },
+        { label: "7+", cells: [[0,2],[0,3]] },
+        { label: "3−", cells: [[0,4],[1,4]] },
+        { label: "8+", cells: [[1,0],[2,0]] },
+        { label: "9+", cells: [[1,1],[1,2]] },
+        { label: "2−", cells: [[1,3],[2,3]] },
+        { label: "3+", cells: [[2,1],[2,2]] },
+        { label: "3−", cells: [[2,4],[3,4]] },
+        { label: "8×", cells: [[3,0],[4,0]] },
+        { label: "1−", cells: [[3,1],[3,2]] },
+        { label: "30×", cells: [[3,3],[4,3],[4,4]] },
+        { label: "5÷", cells: [[4,1],[4,2]] }
+      ];
+      const NONO_SOLUTION = [
+        "1111000110",
+        "1000011000",
+        "0110101001",
+        "0110011011",
+        "1101001001",
+        "1100010000",
+        "0001000011",
+        "1010101100",
+        "1110010110",
+        "0111011011"
+      ];
+      const NONO_ROWS = [[4,2],[1,2],[2,1,1,1],[2,2,2],[2,1,1,1],[2,1],[1,2],[1,1,1,2],[3,1,2],[3,2,2]];
+      const NONO_COLS = [[2,2,2],null,[1,2,3],[1,1,1,1],[1,1],[1,1,1,2],[4,1,1],null,[1,1,1,2],[3,1,1]];
+      const NONO_SIZE = NONO_SOLUTION.length;
+      const CARRIERS = [
+        { letter: "A", name: "Ark" },
+        { letter: "B", name: "Bell" },
+        { letter: "C", name: "Crow" },
+        { letter: "D", name: "Dusk" },
+        { letter: "E", name: "Echo" },
+        { letter: "F", name: "Flint" }
+      ];
+      const LOGS = [
+        "Ark and Bell are adjacent.",
+        "Dusk occupies one of the first two slots.",
+        "Crow appears before Echo.",
+        "Bell occupies one of the first two slots.",
+        "Crow and Flint are adjacent.",
+        "Exactly one of Ark or Bell appears in the sequence.",
+        "Echo occupies an odd-numbered slot.",
+        "Slot 03 contains either Dusk or Flint.",
+        "Echo appears before Flint."
+      ];
+      const CHOIR_FALSE_COUNT = 3;
+      const CHOIR_CODE_LENGTH = 4;
+
+      const MODULES = [
+        {
+          id: "switchyard",
+          index: "01",
+          title: "Switchyard Null",
+          type: "Relational logic",
+          time: "≈ 12 min",
+          fragment: "A",
+          deck: "Five handlers crossed a relay in five consecutive slots, each carrying a different signal. Reconstruct both layers of the sequence before the trace is burned.",
+          rules: "Assign one handler and one signal to each slot. Every handler and signal is used exactly once. All five intercepted facts are simultaneously true.",
+          clues: [
+            "Cobalt entered immediately before Ivory.",
+            "Rook carried Amber.",
+            "Moth carried neither Sable nor Violet.",
+            "Ibis, Vale, and Rook entered consecutively, in that order.",
+            "Sable entered after Amber."
+          ],
+          hints: [
+            "Treat Ibis → Vale → Rook as one rigid three-slot block. Rook carries Amber, and Sable must still fit somewhere later.",
+            "The block cannot start in slot 3 because Sable needs a later slot. If it starts in slot 1, both remaining handlers are trapped with Sable and Violet.",
+            "The block therefore occupies slots 2–4. Test where Cobalt → Ivory can fit without leaving Moth with Violet or Sable."
+          ],
+          solution: "Slots 01–05 are Moth/Cobalt, Ibis/Ivory, Vale/Violet, Rook/Amber, and Vesper/Sable. The ordered three-handler block cannot start in slot 3 because Sable must follow Rook's Amber. Starting it in slot 1 strands Moth with either Sable or Violet, both forbidden, so the block fills slots 2–4. Sable then occupies slot 5, and the Cobalt–Ivory pair can only occupy slots 1–2. These five facts are the unique minimum subset of the original ten: removing any one leaves multiple solutions."
+        },
+        {
+          id: "cipher",
+          index: "02",
+          title: "Dead Language",
+          type: "Word cipher",
+          time: "≈ 10 min",
+          fragment: "B",
+          deck: "A sentence survived the purge, but its alphabet did not. Recover the message by teaching the console what each repeated glyph means.",
+          rules: "This is a monoalphabetic substitution: every encrypted letter always represents the same plaintext letter. Word breaks and repeated-letter patterns are preserved. Type one decoded word beneath each encrypted word.",
+          clues: [
+            "The message is an English maxim of eight words.",
+            "Repeated glyphs always decode identically—even across words.",
+            "The one-letter word must be A or I.",
+            "The most common encrypted glyph is T.",
+            "No plaintext letter maps to more than one encrypted letter."
+          ],
+          hints: [
+            "The recurring three-letter word ZIT decodes to THE.",
+            "The opening pair is A SHARP. Apply those mappings everywhere before guessing again.",
+            "The full cadence is: A SHARP MIND / HEARS THE SILENCE / BETWEEN SIGNALS."
+          ],
+          solution: "A SHARP MIND HEARS THE SILENCE BETWEEN SIGNALS. The substitution uses a fixed keyboard-order cipher alphabet, so Q=A, L=S, I=H, T=E, and each solved letter propagates consistently."
+        },
+        {
+          id: "lattice",
+          index: "03",
+          title: "Pressure Lattice",
+          type: "Arithmetic logic",
+          time: "≈ 15 min",
+          fragment: "Y",
+          deck: "The lock distributes pressure across a five-by-five numerical membrane. Every row, column, and outlined chamber is part of the same equation.",
+          rules: "Fill every cell with 1–5. Each row and column must contain each digit exactly once. Cells inside a heavy outlined cage must combine to its target using the shown operation; subtraction and division may be in either order.",
+          clues: [
+            "A cage target applies to all cells inside its heavy border.",
+            "A 2× cage must be 1 and 2.",
+            "A 5÷ cage must be 1 and 5.",
+            "Duplicates are forbidden in every row and column.",
+            "There are no guesses required: cage restrictions and Latin-square elimination are sufficient."
+          ],
+          hints: [
+            "Start with 2× at the top left and 5÷ at the bottom. Those cages have only one unordered pair each.",
+            "The 9+ cage must be 4 and 5. The 8+ vertical cage must be 3 and 5.",
+            "The first row resolves to 1, 2, 3, 4, 5; use column elimination from there."
+          ],
+          solution: "Rows from top to bottom are 1 2 3 4 5 / 3 4 5 1 2 / 5 1 2 3 4 / 2 3 4 5 1 / 4 5 1 2 3. This is the only grid satisfying every cage and row/column constraint."
+        },
+        {
+          id: "tomography",
+          index: "04",
+          title: "Blind Tomography",
+          type: "Spatial logic",
+          time: "≈ 28 min",
+          fragment: "S",
+          deck: "Eighteen surviving scans describe a ten-by-ten object the system refuses to show. Two column scanners are dead. Rebuild the exact mass profile without their readings.",
+          rules: "Each visible clue gives the lengths of filled runs in that row or column, in order. Separate runs require at least one empty cell. A × header is a destroyed scan and imposes no constraint. Click a cell to cycle empty → filled → marked.",
+          clues: [
+            "Column scans 02 and 08 are unavailable; infer them entirely from crossings.",
+            "Only the eighteen displayed run lists constrain the image—do not assume symmetry or a recognizable silhouette.",
+            "The strongest opening overlaps are in rows 01, 09, and 10, plus columns 03, 04, 06, 07, and 09.",
+            "Once row 08 begins to resolve, rescan columns 01, 05, 07, and 09; their new exclusions open the lower half."
+          ],
+          hints: [
+            "Opening overlap forces filled cells at R1C4, R9C3, and R10C2/C3/C6/C9. Columns 03, 04, 06, 07, and 09 also expose several certain fills and exclusions.",
+            "Use the new marks in columns 03, 06, and 09 against row 08's 1·1·1·2 clue. Row 08 then resolves without guessing; immediately rescan its crossing columns.",
+            "Late in the chain, column 09 fixes R1C9. That settles row 01, which in turn resolves columns 06 and 07 and finally the two cells hidden behind the dead scans."
+          ],
+          solution: "The rows are 1111000110 / 1000011000 / 0110101001 / 0110011011 / 1101001001 / 1100010000 / 0001000011 / 1010101100 / 1110010110 / 0111011011. A line-consistency solver completes all 100 cells in ten propagation rounds with no branching. Exactly one grid satisfies the eighteen visible scans; every displayed scan is necessary, and an exhaustive audit of all 1,140 seventeen-scan subsets found none with a unique solution."
+        },
+        {
+          id: "choir",
+          index: "05",
+          title: "False Choir",
+          type: "Truth-state logic",
+          time: "≈ 24 min",
+          fragment: "S",
+          deck: "Four of six operatives form the exit sequence. Nine logs describe their membership and order, but exactly three logs were poisoned. Recover the sequence and identify every lie.",
+          rules: "Build an ordered four-operative sequence with no repeats, then mark exactly three logs FALSE. A relational statement mentioning an absent operative is false. Your sequence must make the marked logs false and every unmarked log true.",
+          clues: [
+            "Exactly four of A–F appear, with no repeated operative.",
+            "Exactly three of the nine logs are false.",
+            "First half means slots 01–02; odd-numbered means slots 01 or 03.",
+            "Adjacent operatives occupy consecutive slots in either order.",
+            "Before/adjacent claims are false when either named operative is absent.",
+            "All nine logs are necessary: dropping any one leaves between two and seventeen valid sequences."
+          ],
+          hints: [
+            "Do not judge logs in isolation. Assume a three-log lie set, then propagate the surviving position claims; contradictions discard the entire branch.",
+            "A consistent branch marks logs 01, 02, and 03 false. Log 06 then includes Bell and excludes Ark; logs 07–09 constrain Echo and Flint.",
+            "The unique sequence is Echo → Bell → Flint → Crow. Logs 01, 02, and 03 are false."
+          ],
+          solution: "The sequence is Echo–Bell–Flint–Crow (E–B–F–C); logs 01, 02, and 03 are false. The remaining logs verify Bell in the first half, Crow adjacent to Flint, Bell present without Ark, Echo in odd slot 01, Flint in slot 03, and Echo before Flint. Exhaustive audit across all 360 four-of-six sequences finds exactly one solution; removing any log leaves 2–17 candidates."
+        }
+      ];
+
+      const FINAL_MODULE = {
+        id: "final",
+        index: "Ω",
+        title: "The Mouth",
+        type: "Final synthesis",
+        time: "≈ 1 min",
+        deck: "The five recovered fragments are not trophies. They are the teeth of the last lock. Assemble them in case-index order and tell the archive what it is.",
+        rules: "Read the five recovered fragments in module order, 01 through 05. Enter the resulting five-letter passphrase. Overrides still recover their fragment, so surrendering a module never creates a dead end.",
+        clues: [
+          "The rail preserves module order.",
+          "There is no anagram step.",
+          "The answer is a five-letter noun—and the name of what you entered."
+        ],
+        hints: [
+          "Read the fragments from left to right.",
+          "The pattern is A · B · Y · S · S.",
+          "The passphrase is ABYSS."
+        ],
+        solution: "The fragments read A-B-Y-S-S in case order. The final passphrase is ABYSS."
+      };
+
+      function makeDefaultEntries() {
+        return {
+          switchyard: {
+            status: "open",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: {
+              people: ["", "", "", "", ""],
+              signals: ["", "", "", "", ""]
+            }
+          },
+          cipher: {
+            status: "open",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: { words: Array(8).fill("") }
+          },
+          lattice: {
+            status: "open",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: { cells: Array(25).fill("") }
+          },
+          tomography: {
+            status: "open",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: { cells: Array(NONO_SIZE * NONO_SIZE).fill(0) }
+          },
+          choir: {
+            status: "open",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: { code: Array(CHOIR_CODE_LENGTH).fill(""), falseLogs: [] }
+          },
+          final: {
+            status: "locked",
+            attempts: 0,
+            hints: 0,
+            feedback: "",
+            answer: { passphrase: "" }
+          }
+        };
+      }
+
+      function defaultState() {
+        return {
+          contentVersion: CONTENT_VERSION,
+          started: false,
+          current: "switchyard",
+          integrity: 100,
+          startTime: null,
+          completedAt: null,
+          entries: makeDefaultEntries()
+        };
+      }
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!saved || !saved.entries) return defaultState();
+          const clean = defaultState();
+          const merged = {
+            ...clean,
+            ...saved,
+            contentVersion: CONTENT_VERSION,
+            integrity: Math.max(0, Math.min(100, Number(saved.integrity) || 0)),
+            entries: Object.fromEntries(
+              Object.entries(clean.entries).map(([id, base]) => [
+                id,
+                {
+                  ...base,
+                  ...(saved.entries[id] || {}),
+                  answer: {
+                    ...base.answer,
+                    ...((saved.entries[id] || {}).answer || {})
+                  }
+                }
+              ])
+            )
+          };
+          if (Number(saved.contentVersion || 3) < CONTENT_VERSION) {
+            merged.entries.tomography = clean.entries.tomography;
+            merged.entries.final = clean.entries.final;
+            merged.completedAt = null;
+            if (merged.current === "final") merged.current = "tomography";
+          }
+          return merged;
+        } catch {
+          return defaultState();
+        }
+      }
+
+      let state = loadState();
+      let modalAction = null;
+      let lastFocusedElement = null;
+
+      const dom = {
+        boot: document.getElementById("bootScreen"),
+        begin: document.getElementById("beginRun"),
+        nav: document.getElementById("moduleNav"),
+        stage: document.getElementById("stage"),
+        stageInner: document.getElementById("stageInner"),
+        brief: document.getElementById("brief"),
+        timer: document.getElementById("timer"),
+        integrity: document.getElementById("integrity"),
+        reset: document.getElementById("resetRun"),
+        shardRow: document.getElementById("shardRow"),
+        progressText: document.getElementById("progressText"),
+        progressFill: document.getElementById("progressFill"),
+        modalBackdrop: document.getElementById("modalBackdrop"),
+        modalKicker: document.getElementById("modalKicker"),
+        modalTitle: document.getElementById("modalTitle"),
+        modalCopy: document.getElementById("modalCopy"),
+        modalCancel: document.getElementById("modalCancel"),
+        modalConfirm: document.getElementById("modalConfirm"),
+        toasts: document.getElementById("toastRegion")
+      };
+
+      function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function moduleById(id) {
+        return id === "final" ? FINAL_MODULE : MODULES.find(module => module.id === id);
+      }
+
+      function isResolved(entry) {
+        return entry.status === "solved" || entry.status === "revealed";
+      }
+
+      function solvedCount() {
+        return MODULES.filter(module => isResolved(state.entries[module.id])).length;
+      }
+
+      function formatTime(totalSeconds) {
+        const seconds = Math.max(0, Math.floor(totalSeconds));
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainder = seconds % 60;
+        return hours > 0
+          ? [hours, minutes, remainder].map(value => String(value).padStart(2, "0")).join(":")
+          : [minutes, remainder].map(value => String(value).padStart(2, "0")).join(":");
+      }
+
+      function elapsedSeconds() {
+        if (!state.startTime) return 0;
+        const end = state.completedAt || Date.now();
+        return (end - state.startTime) / 1000;
+      }
+
+      function updateTimer() {
+        dom.timer.textContent = formatTime(elapsedSeconds());
+      }
+
+      function damageIntegrity(amount) {
+        state.integrity = Math.max(0, state.integrity - amount);
+        saveState();
+        renderStats();
+      }
+
+      function renderStats() {
+        updateTimer();
+        dom.integrity.textContent = `${state.integrity}%`;
+        dom.integrity.classList.toggle("integrity-low", state.integrity < 40);
+      }
+
+      function statusMark(entry, locked = false) {
+        if (locked) return "×";
+        if (entry.status === "solved") return "✓";
+        if (entry.status === "revealed") return "!";
+        return "·";
+      }
+
+      function renderNav() {
+        const allResolved = solvedCount() === MODULES.length;
+        if (allResolved && state.entries.final.status === "locked") {
+          state.entries.final.status = "open";
+          saveState();
+        }
+        const items = [...MODULES, FINAL_MODULE];
+        dom.nav.innerHTML = items.map(module => {
+          const entry = state.entries[module.id];
+          const locked = module.id === "final" && !allResolved;
+          const isActive = state.current === module.id;
+          return `
+            <button
+              class="module-button ${isActive ? "active" : ""} ${locked ? "locked" : ""}"
+              data-module="${module.id}"
+              data-state="${locked ? "locked" : entry.status}"
+              type="button"
+              ${locked ? 'aria-disabled="true"' : ""}
+              ${isActive ? 'aria-current="page"' : ""}
+            >
+              <span class="module-index">${module.index}</span>
+              <span class="module-copy">
+                <span class="module-name">${module.title}</span>
+                <span class="module-type">${module.type}</span>
+              </span>
+              <span class="module-status" aria-label="${locked ? "Locked" : entry.status}">${statusMark(entry, locked)}</span>
+            </button>
+          `;
+        }).join("");
+
+        dom.nav.querySelectorAll("[data-module]").forEach(button => {
+          button.addEventListener("click", () => {
+            const id = button.dataset.module;
+            if (id === "final" && solvedCount() < MODULES.length) {
+              toast("The final gate needs all five fragments.", "bad");
+              return;
+            }
+            state.current = id;
+            saveState();
+            render();
+            dom.stage.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        });
+      }
+
+      function renderProgress() {
+        const count = solvedCount();
+        dom.shardRow.innerHTML = MODULES.map(module => {
+          const recovered = isResolved(state.entries[module.id]);
+          return `<span class="shard ${recovered ? "recovered" : ""}" aria-label="Module ${module.index} fragment ${recovered ? module.fragment : "not recovered"}">${recovered ? module.fragment : "·"}</span>`;
+        }).join("");
+        dom.progressText.textContent = `${count} / ${MODULES.length}`;
+        dom.progressFill.style.width = `${(count / MODULES.length) * 100}%`;
+      }
+
+      function renderHeader(module, entry) {
+        const statusLabel = entry.status === "solved"
+          ? "Resolved without override"
+          : entry.status === "revealed"
+            ? "Resolved by failsafe"
+            : "Unresolved";
+        return `
+          <header class="puzzle-header">
+            <div class="puzzle-code">Module ${module.index} // ${module.type}</div>
+            <div class="puzzle-number" aria-hidden="true">${module.index}</div>
+            <h1 class="puzzle-title" tabindex="-1">${module.title}</h1>
+            <p class="puzzle-deck">${module.deck}</p>
+            <div class="puzzle-meta">
+              <span class="meta-tag">Difficulty <strong>Brutal</strong></span>
+              <span class="meta-tag">Target <strong>${module.time}</strong></span>
+              <span class="meta-tag">State <strong>${statusLabel}</strong></span>
+            </div>
+          </header>
+        `;
+      }
+
+      function renderBrief(module, entry) {
+        const visibleHints = module.hints.slice(0, entry.hints);
+        const canHint = entry.hints < module.hints.length && !isResolved(entry) && entry.status !== "complete";
+        const solvedFinal = module.id === "final" && entry.status === "solved";
+        dom.brief.innerHTML = `
+          <section class="brief-section">
+            <p class="section-kicker">Operating rule</p>
+            <h2 class="brief-title">How this lock works</h2>
+            <p class="brief-copy">${module.rules}</p>
+          </section>
+          <section class="brief-section">
+            <p class="section-kicker">Intercepted facts</p>
+            <h2 class="brief-title">${module.id === "final" ? "Assembly notes" : "Evidence set"}</h2>
+            <ol class="clue-list">
+              ${module.clues.map(clue => `<li>${clue}</li>`).join("")}
+            </ol>
+          </section>
+          <section class="brief-section">
+            <p class="section-kicker">Controlled leakage</p>
+            <h2 class="brief-title">Hints ${entry.hints}/${module.hints.length}</h2>
+            <p class="brief-copy">Each hint costs 3% integrity. They escalate from a nudge to near-disclosure.</p>
+            <div class="hint-stack">
+              ${visibleHints.map((hint, index) => `<div class="hint-card"><span class="mono">H${index + 1}</span> — ${hint}</div>`).join("")}
+            </div>
+            ${canHint ? `<button class="button" id="revealHint" type="button">Reveal hint −3%</button>` : ""}
+          </section>
+          ${!solvedFinal ? `
+            <section class="brief-section">
+              <p class="section-kicker">Failsafe</p>
+              <h2 class="brief-title">${isResolved(entry) ? "Solution disclosed" : "No dead ends"}</h2>
+              <p class="brief-copy">${isResolved(entry) ? module.solution : "If the lock wins, disclose the complete answer and its reasoning. The module will count as overridden, but the campaign can continue."}</p>
+              ${!isResolved(entry) ? `<button class="button" id="revealSolution" type="button">Reveal complete solution</button>` : ""}
+              ${!isResolved(entry) ? `<p class="failsafe-copy">Override is irreversible for this run. Reset the run to attempt a clean record.</p>` : ""}
+            </section>
+          ` : ""}
+        `;
+
+        document.getElementById("revealHint")?.addEventListener("click", () => {
+          entry.hints += 1;
+          damageIntegrity(3);
+          entry.feedback = `Hint ${entry.hints} disclosed. Integrity reduced.`;
+          saveState();
+          render();
+        });
+
+        document.getElementById("revealSolution")?.addEventListener("click", () => {
+          openModal({
+            kicker: "Failsafe disclosure",
+            title: module.id === "final" ? "Open the final gate for you?" : "Burn this module?",
+            copy: `The complete solution will be shown and this ${module.id === "final" ? "gate" : "module"} will be marked as overridden. You can still finish the campaign.`,
+            confirmLabel: "Reveal solution",
+            action: () => revealSolution(module.id)
+          });
+        });
+      }
+
+      function workspaceShell(body, entry, options = {}) {
+        const resolved = isResolved(entry) || entry.status === "solved";
+        return `
+          <section class="workspace ${options.className || ""}" id="workspace">
+            <div class="workspace-top">
+              <span class="workspace-label">${options.label || "Live reconstruction"}</span>
+              <span class="attempt-count">${entry.attempts} failed ${entry.attempts === 1 ? "check" : "checks"}</span>
+            </div>
+            <div class="puzzle-body">${body}</div>
+            ${resolved ? "" : `
+              <div class="workspace-actions">
+                <div class="feedback ${entry.feedback ? "error" : ""}" id="feedback" aria-live="polite">${entry.feedback || options.feedback || "The console only judges complete submissions."}</div>
+                <div class="button-row">
+                  <button class="button button-secondary" id="clearPuzzle" type="button">Clear</button>
+                  <button class="button button-primary" id="checkPuzzle" type="button">${options.checkLabel || "Verify solution"} →</button>
+                </div>
+              </div>
+            `}
+          </section>
+        `;
+      }
+
+      function resolvedBody(module, entry) {
+        const clean = entry.status === "solved";
+        return `
+          <div class="resolved-card">
+            <div class="resolved-label">${clean ? "Lock dismantled" : "Failsafe override accepted"}</div>
+            <h2 class="resolved-title">${clean ? "The archive blinked first." : "The archive showed its hand."}</h2>
+            <p class="resolved-copy">${clean ? "Your reconstruction satisfies every constraint. The fragment has been extracted." : "The full answer is exposed below. Study the reasoning; the recovered fragment still opens the path forward."}</p>
+            <div class="recovered-glyph" aria-label="Recovered fragment ${module.fragment}">${module.fragment}</div>
+            <div class="solution-detail"><strong class="mono">SOLUTION TRACE</strong><br>${module.solution}</div>
+          </div>
+        `;
+      }
+
+      function renderSwitchyard(entry) {
+        if (isResolved(entry)) return workspaceShell(resolvedBody(moduleById("switchyard"), entry), entry, { label: "Trace resolved" });
+        const options = (items, selected, placeholder) => `
+          <option value="">${placeholder}</option>
+          ${items.map(item => `<option value="${item}" ${selected === item ? "selected" : ""}>${item}</option>`).join("")}
+        `;
+        const body = `
+          <div class="switchyard">
+            ${Array.from({ length: 5 }, (_, slot) => `
+              <div class="slot-card">
+                <div class="slot-node">${String(slot + 1).padStart(2, "0")}</div>
+                <label class="field-label" for="person-${slot}">Handler</label>
+                <select id="person-${slot}" data-kind="people" data-index="${slot}">
+                  ${options(PEOPLE, entry.answer.people[slot], "Unknown")}
+                </select>
+                <label class="field-label" for="signal-${slot}">Signal</label>
+                <select id="signal-${slot}" data-kind="signals" data-index="${slot}">
+                  ${options(SIGNALS, entry.answer.signals[slot], "Unknown")}
+                </select>
+              </div>
+            `).join("")}
+          </div>
+          <p class="micro-note">SEQUENCE DIRECTION → EARLIEST TO LATEST. DUPLICATE ASSIGNMENTS WILL BE REJECTED.</p>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Commit trace", label: "Relay reconstruction" });
+      }
+
+      function renderCipher(entry) {
+        if (isResolved(entry)) return workspaceShell(resolvedBody(moduleById("cipher"), entry), entry, { label: "Message recovered" });
+        const frequencies = [
+          ["T", 7], ["L", 5], ["Q", 4], ["F", 4], ["I", 3], ["O", 3], ["K", 2], ["Z", 2]
+        ];
+        const body = `
+          <div class="cipher-console">
+            <div class="cipher-words">
+              ${CIPHER_WORDS.map((word, index) => `
+                <label class="cipher-word">
+                  <span class="cipher-glyph" aria-hidden="true">${word}</span>
+                  <span class="sr-only">Plaintext for cipher word ${word}</span>
+                  <input
+                    class="cipher-input"
+                    data-word="${index}"
+                    value="${escapeHtml(entry.answer.words[index] || "")}"
+                    maxlength="${word.length}"
+                    size="${Math.max(1, word.length)}"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    aria-label="Plaintext for ${word}, ${word.length} letters"
+                  >
+                </label>
+              `).join("")}
+            </div>
+            <div class="frequency-strip" aria-label="Most frequent cipher letters">
+              <span class="field-label" style="width:100%; margin-bottom:2px;">Glyph frequency</span>
+              ${frequencies.map(([letter, count]) => `<span class="frequency-pill"><strong>${letter}</strong> × ${count}</span>`).join("")}
+            </div>
+          </div>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Parse language", label: "Substitution console" });
+      }
+
+      function cageIndexFor(row, col) {
+        return CAGES.findIndex(cage => cage.cells.some(([r, c]) => r === row && c === col));
+      }
+
+      function renderLattice(entry) {
+        if (isResolved(entry)) return workspaceShell(resolvedBody(moduleById("lattice"), entry), entry, { label: "Pressure stable" });
+        const cells = [];
+        for (let row = 0; row < 5; row += 1) {
+          for (let col = 0; col < 5; col += 1) {
+            const cageIndex = cageIndexFor(row, col);
+            const cage = CAGES[cageIndex];
+            const isFirst = cage.cells[0][0] === row && cage.cells[0][1] === col;
+            const topSame = row > 0 && cageIndexFor(row - 1, col) === cageIndex;
+            const rightSame = col < 4 && cageIndexFor(row, col + 1) === cageIndex;
+            const bottomSame = row < 4 && cageIndexFor(row + 1, col) === cageIndex;
+            const leftSame = col > 0 && cageIndexFor(row, col - 1) === cageIndex;
+            const border = `${topSame ? 1 : 3}px ${rightSame ? 1 : 3}px ${bottomSame ? 1 : 3}px ${leftSame ? 1 : 3}px`;
+            const index = row * 5 + col;
+            cells.push(`
+              <label class="ken-cell" style="border-width:${border}">
+                ${isFirst ? `<span class="cage-label">${cage.label}</span>` : ""}
+                <span class="sr-only">Row ${row + 1}, column ${col + 1}</span>
+                <input
+                  data-cell="${index}"
+                  value="${escapeHtml(entry.answer.cells[index] || "")}"
+                  inputmode="numeric"
+                  pattern="[1-5]"
+                  maxlength="1"
+                  autocomplete="off"
+                  aria-label="Row ${row + 1}, column ${col + 1}"
+                >
+              </label>
+            `);
+          }
+        }
+        const body = `
+          <div class="kenken-wrap">
+            <div class="kenken" role="group" aria-label="Five by five arithmetic lattice">
+              ${cells.join("")}
+            </div>
+          </div>
+          <p class="micro-note">DIGITS 1–5 ONLY // NO REPEATS PER ROW OR COLUMN // HEAVY LINES DEFINE CAGES</p>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Equalize pressure", label: "Numerical membrane" });
+      }
+
+      function renderTomography(entry) {
+        if (isResolved(entry)) return workspaceShell(resolvedBody(moduleById("tomography"), entry), entry, { label: "Silhouette recovered" });
+        const clueMarkup = (clue, axis, index) => clue
+          ? `<div class="nono-clue ${axis}" aria-label="${axis === "top" ? "Column" : "Row"} clue ${clue.join(", ")}">${clue.map(n => `<span>${n}</span>`).join("")}</div>`
+          : `<div class="nono-clue ${axis} lost" aria-label="${axis === "top" ? "Column" : "Row"} ${index + 1} scan unavailable"><span>×</span></div>`;
+        const body = `
+          <div class="nonogram-wrap">
+            <div class="nonogram" style="--nono-size:${NONO_SIZE}" role="grid" aria-label="${NONO_SIZE} by ${NONO_SIZE} tomography grid">
+              <div class="nono-corner">scan<br>runs</div>
+              ${NONO_COLS.map((clue, index) => clueMarkup(clue, "top", index)).join("")}
+              ${NONO_ROWS.map((clue, row) => `
+                ${clueMarkup(clue, "left", row)}
+                ${Array.from({ length: NONO_SIZE }, (_, col) => {
+                  const index = row * NONO_SIZE + col;
+                  const value = entry.answer.cells[index] || 0;
+                  const stateLabel = value === 1 ? "filled" : value === 2 ? "marked empty" : "unknown";
+                  return `<button class="nono-cell ${value === 1 ? "filled" : value === 2 ? "marked" : ""}" data-nono="${index}" type="button" role="gridcell" aria-label="Row ${row + 1}, column ${col + 1}: ${stateLabel}" aria-pressed="${value === 1}"></button>`;
+                }).join("")}
+              `).join("")}
+            </div>
+          </div>
+          <p class="micro-note">CLICK: UNKNOWN → FILLED → MARKED EMPTY // × MEANS NO SCAN CONSTRAINT // ONLY FILLED CELLS COUNT.</p>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Render object", label: "Blind scan matrix" });
+      }
+
+      function renderChoir(entry) {
+        if (isResolved(entry)) return workspaceShell(resolvedBody(moduleById("choir"), entry), entry, { label: "Sequence identified" });
+        const body = `
+          <span class="field-label">Build the four-operative sequence</span>
+          <div class="choir-sequence">
+            ${Array.from({ length: CHOIR_CODE_LENGTH }, (_, index) => `
+              <label class="code-slot">
+                <span class="field-label">Slot ${String(index + 1).padStart(2, "0")}</span>
+                <select data-code="${index}" aria-label="Sequence slot ${index + 1}">
+                  <option value="">Unknown</option>
+                  ${CARRIERS.map(carrier => `<option value="${carrier.letter}" ${entry.answer.code[index] === carrier.letter ? "selected" : ""}>${carrier.letter} — ${carrier.name}</option>`).join("")}
+                </select>
+              </label>
+            `).join("")}
+          </div>
+          <div class="call-sign-key">${CARRIERS.map(carrier => `<span>${carrier.letter} = ${carrier.name}</span>`).join("")}</div>
+          <span class="field-label">Mark exactly ${CHOIR_FALSE_COUNT} poisoned logs</span>
+          <div class="log-list">
+            ${LOGS.map((log, index) => {
+              const selected = entry.answer.falseLogs.includes(index);
+              return `
+                <button class="log ${selected ? "selected" : ""}" data-log="${index}" type="button" aria-pressed="${selected}">
+                  <span class="log-index">L${String(index + 1).padStart(2, "0")}</span>
+                  <span class="log-copy">${log}</span>
+                  <span class="log-state">${selected ? "False" : "True"}</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Audit testimony", label: "Truth-state audit" });
+      }
+
+      function renderFinal(entry) {
+        if (entry.status === "solved") {
+          const cleanCount = MODULES.filter(module => state.entries[module.id].status === "solved").length;
+          const overrideCount = MODULES.length - cleanCount;
+          return `
+            <section class="workspace">
+              <div class="puzzle-body">
+                <div class="victory">
+                  <div class="resolved-label">Protocol terminated // exit granted</div>
+                  <h2 class="victory-title">YOU LOOKED<br>BACK.</h2>
+                  <p class="resolved-copy">The archive is open. It has recorded the shape of your attention and, against policy, found it adequate.</p>
+                  <div class="victory-grid">
+                    <div class="victory-stat"><span class="big">${state.integrity}%</span><span class="small">Final integrity</span></div>
+                    <div class="victory-stat"><span class="big">${formatTime(elapsedSeconds())}</span><span class="small">Elapsed time</span></div>
+                    <div class="victory-stat"><span class="big">${cleanCount}/${MODULES.length}</span><span class="small">Clean breaks${overrideCount ? ` // ${overrideCount} override${overrideCount === 1 ? "" : "s"}` : ""}</span></div>
+                  </div>
+                  <button class="button button-primary" id="restartVictory" type="button" style="position:relative; margin-top:24px;">Run it again</button>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+        const fragments = MODULES.map(module => module.fragment);
+        const body = `
+          <div class="final-gate">
+            <div class="gate-visual" aria-hidden="true"><span class="gate-mark">Ω</span></div>
+            <div>
+              <span class="field-label">Recovered sequence</span>
+              <div class="fragment-display" aria-label="Recovered fragments ${fragments.join(" ")}">
+                ${fragments.map(fragment => `<span class="shard recovered">${fragment}</span>`).join("")}
+              </div>
+            </div>
+            <label>
+              <span class="sr-only">Final five-letter passphrase</span>
+              <input class="passphrase" id="passphrase" value="${escapeHtml(entry.answer.passphrase || "")}" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="•••••">
+            </label>
+          </div>
+        `;
+        return workspaceShell(body, entry, { checkLabel: "Open the mouth", label: "Terminal lock" });
+      }
+
+      function renderPuzzle() {
+        const module = moduleById(state.current);
+        const entry = state.entries[state.current];
+        let workspace = "";
+        if (module.id === "switchyard") workspace = renderSwitchyard(entry);
+        if (module.id === "cipher") workspace = renderCipher(entry);
+        if (module.id === "lattice") workspace = renderLattice(entry);
+        if (module.id === "tomography") workspace = renderTomography(entry);
+        if (module.id === "choir") workspace = renderChoir(entry);
+        if (module.id === "final") workspace = renderFinal(entry);
+        dom.stageInner.innerHTML = renderHeader(module, entry) + workspace;
+        renderBrief(module, entry);
+        bindPuzzleEvents(module, entry);
+      }
+
+      function bindPuzzleEvents(module, entry) {
+        if (isResolved(entry) || entry.status === "solved") {
+          document.getElementById("restartVictory")?.addEventListener("click", confirmReset);
+          return;
+        }
+
+        if (module.id === "switchyard") {
+          dom.stageInner.querySelectorAll("select[data-kind]").forEach(select => {
+            select.addEventListener("change", () => {
+              entry.answer[select.dataset.kind][Number(select.dataset.index)] = select.value;
+              entry.feedback = "";
+              saveState();
+            });
+          });
+        }
+
+        if (module.id === "cipher") {
+          dom.stageInner.querySelectorAll("[data-word]").forEach(input => {
+            input.addEventListener("input", () => {
+              input.value = input.value.replace(/[^a-z]/gi, "").toUpperCase();
+              entry.answer.words[Number(input.dataset.word)] = input.value;
+              entry.feedback = "";
+              saveState();
+              if (input.value.length === Number(input.maxLength)) {
+                const next = input.closest(".cipher-word")?.nextElementSibling?.querySelector("input");
+                next?.focus();
+              }
+            });
+          });
+        }
+
+        if (module.id === "lattice") {
+          dom.stageInner.querySelectorAll("[data-cell]").forEach(input => {
+            input.addEventListener("input", () => {
+              input.value = input.value.replace(/[^1-5]/g, "").slice(-1);
+              entry.answer.cells[Number(input.dataset.cell)] = input.value;
+              entry.feedback = "";
+              saveState();
+              if (input.value) {
+                const nextIndex = Number(input.dataset.cell) + 1;
+                dom.stageInner.querySelector(`[data-cell="${nextIndex}"]`)?.focus();
+              }
+            });
+            input.addEventListener("keydown", event => {
+              if (event.key === "Backspace" && !input.value) {
+                const previous = Number(input.dataset.cell) - 1;
+                dom.stageInner.querySelector(`[data-cell="${previous}"]`)?.focus();
+              }
+            });
+          });
+        }
+
+        if (module.id === "tomography") {
+          dom.stageInner.querySelectorAll("[data-nono]").forEach(button => {
+            button.addEventListener("click", () => {
+              const index = Number(button.dataset.nono);
+              entry.answer.cells[index] = ((entry.answer.cells[index] || 0) + 1) % 3;
+              entry.feedback = "";
+              saveState();
+              updateNonoButton(button, entry.answer.cells[index], index);
+            });
+            button.addEventListener("contextmenu", event => {
+              event.preventDefault();
+              const index = Number(button.dataset.nono);
+              entry.answer.cells[index] = entry.answer.cells[index] === 2 ? 0 : 2;
+              entry.feedback = "";
+              saveState();
+              updateNonoButton(button, entry.answer.cells[index], index);
+            });
+          });
+        }
+
+        if (module.id === "choir") {
+          dom.stageInner.querySelectorAll("[data-code]").forEach(select => {
+            select.addEventListener("change", () => {
+              entry.answer.code[Number(select.dataset.code)] = select.value;
+              entry.feedback = "";
+              saveState();
+            });
+          });
+          dom.stageInner.querySelectorAll("[data-log]").forEach(button => {
+            button.addEventListener("click", () => {
+              const index = Number(button.dataset.log);
+              const selected = entry.answer.falseLogs;
+              if (selected.includes(index)) {
+                entry.answer.falseLogs = selected.filter(value => value !== index);
+              } else if (selected.length < CHOIR_FALSE_COUNT) {
+                entry.answer.falseLogs = [...selected, index];
+              } else {
+                toast(`Only ${CHOIR_FALSE_COUNT} logs can be marked false.`, "bad");
+                return;
+              }
+              entry.feedback = "";
+              saveState();
+              renderPuzzle();
+            });
+          });
+        }
+
+        if (module.id === "final") {
+          document.getElementById("passphrase")?.addEventListener("input", event => {
+            event.target.value = event.target.value.replace(/[^a-z]/gi, "").toUpperCase();
+            entry.answer.passphrase = event.target.value;
+            entry.feedback = "";
+            saveState();
+          });
+        }
+
+        document.getElementById("checkPuzzle")?.addEventListener("click", () => checkPuzzle(module.id));
+        document.getElementById("clearPuzzle")?.addEventListener("click", () => clearPuzzle(module.id));
+      }
+
+      function updateNonoButton(button, value, index) {
+        const row = Math.floor(index / NONO_SIZE) + 1;
+        const col = (index % NONO_SIZE) + 1;
+        const label = value === 1 ? "filled" : value === 2 ? "marked empty" : "unknown";
+        button.classList.toggle("filled", value === 1);
+        button.classList.toggle("marked", value === 2);
+        button.setAttribute("aria-pressed", String(value === 1));
+        button.setAttribute("aria-label", `Row ${row}, column ${col}: ${label}`);
+      }
+
+      function validateSwitchyard(answer) {
+        if (answer.people.some(value => !value) || answer.signals.some(value => !value)) {
+          return { complete: false, ok: false, message: "The trace has empty slots." };
+        }
+        if (new Set(answer.people).size !== 5 || new Set(answer.signals).size !== 5) {
+          return { complete: true, ok: false, message: "A handler or signal appears more than once." };
+        }
+        const personAt = Object.fromEntries(answer.people.map((person, index) => [person, index]));
+        const signalAt = Object.fromEntries(answer.signals.map((signal, index) => [signal, index]));
+        const carriedBy = Object.fromEntries(answer.people.map((person, index) => [person, answer.signals[index]]));
+        const facts = [
+          signalAt.Ivory === signalAt.Cobalt + 1,
+          carriedBy.Rook === "Amber",
+          carriedBy.Moth !== "Sable" && carriedBy.Moth !== "Violet",
+          personAt.Vale === personAt.Ibis + 1 && personAt.Rook === personAt.Vale + 1,
+          signalAt.Sable > signalAt.Amber
+        ];
+        const ok = facts.every(Boolean);
+        return { complete: true, ok, message: ok ? "" : "The sequence contradicts at least one intercepted fact." };
+      }
+
+      function validateCipher(answer) {
+        if (answer.words.some((word, index) => (word || "").length !== PLAIN_WORDS[index].length)) {
+          return { complete: false, ok: false, message: "Every cipher word needs a complete plaintext entry." };
+        }
+        const ok = answer.words.map(word => word.toUpperCase()).join(" ") === PLAIN_WORDS.join(" ");
+        return { complete: true, ok, message: ok ? "" : "The sentence breaks the substitution mapping or the English cadence." };
+      }
+
+      function validateLattice(answer) {
+        if (answer.cells.some(value => !/^[1-5]$/.test(String(value)))) {
+          return { complete: false, ok: false, message: "The membrane still contains empty or invalid cells." };
+        }
+        const values = answer.cells.map(Number);
+        const expected = LATIN_SOLUTION.flat();
+        const ok = values.every((value, index) => value === expected[index]);
+        return { complete: true, ok, message: ok ? "" : "At least one row, column, or cage is under the wrong pressure." };
+      }
+
+      function validateTomography(answer) {
+        const filled = answer.cells.map(value => value === 1 ? "1" : "0");
+        const submittedRows = Array.from({ length: NONO_SIZE }, (_, row) => filled.slice(row * NONO_SIZE, row * NONO_SIZE + NONO_SIZE).join(""));
+        const submittedCols = Array.from({ length: NONO_SIZE }, (_, col) => submittedRows.map(row => row[col]).join(""));
+        const runsFor = line => {
+          const matches = line.match(/1+/g);
+          return matches ? matches.map(run => run.length) : [0];
+        };
+        const matchesClue = (line, clue) => !clue || runsFor(line).join(",") === clue.join(",");
+        const ok = submittedRows.every((line, index) => matchesClue(line, NONO_ROWS[index]))
+          && submittedCols.every((line, index) => matchesClue(line, NONO_COLS[index]));
+        const hasAny = answer.cells.some(value => value === 1);
+        return {
+          complete: hasAny,
+          ok,
+          message: hasAny ? "The mass profile conflicts with one or more scan runs." : "No mass has been plotted yet."
+        };
+      }
+
+      function choirLogTruth(code) {
+        const position = letter => code.indexOf(letter);
+        const appears = letter => position(letter) >= 0;
+        const adjacent = (left, right) => appears(left) && appears(right) && Math.abs(position(left) - position(right)) === 1;
+        const before = (left, right) => appears(left) && appears(right) && position(left) < position(right);
+        return [
+          adjacent("A", "B"),
+          appears("D") && position("D") < 2,
+          before("C", "E"),
+          appears("B") && position("B") < 2,
+          adjacent("C", "F"),
+          appears("A") !== appears("B"),
+          appears("E") && position("E") % 2 === 0,
+          ["D", "F"].includes(code[2]),
+          before("E", "F")
+        ];
+      }
+
+      function validateChoir(answer) {
+        if (answer.code.some(value => !value) || answer.falseLogs.length !== CHOIR_FALSE_COUNT) {
+          return { complete: false, ok: false, message: `Build all four slots and mark exactly ${CHOIR_FALSE_COUNT} false logs.` };
+        }
+        if (new Set(answer.code).size !== CHOIR_CODE_LENGTH) {
+          return { complete: true, ok: false, message: "An operative appears more than once in the sequence." };
+        }
+        const actualFalse = choirLogTruth(answer.code).map((truth, index) => truth ? null : index).filter(index => index !== null);
+        const markedFalse = [...answer.falseLogs].sort((left, right) => left - right);
+        const ok = actualFalse.length === CHOIR_FALSE_COUNT
+          && actualFalse.every((index, position) => index === markedFalse[position]);
+        return { complete: true, ok, message: ok ? "" : "The sequence does not make precisely the three marked logs false." };
+      }
+
+      function validateFinal(answer) {
+        if ((answer.passphrase || "").length < 5) {
+          return { complete: false, ok: false, message: "The mouth requires five letters." };
+        }
+        const ok = answer.passphrase.toUpperCase() === "ABYSS";
+        return { complete: true, ok, message: ok ? "" : "The fragments reject that ordering." };
+      }
+
+      function validate(id, answer) {
+        if (id === "switchyard") return validateSwitchyard(answer);
+        if (id === "cipher") return validateCipher(answer);
+        if (id === "lattice") return validateLattice(answer);
+        if (id === "tomography") return validateTomography(answer);
+        if (id === "choir") return validateChoir(answer);
+        return validateFinal(answer);
+      }
+
+      function checkPuzzle(id) {
+        const entry = state.entries[id];
+        const result = validate(id, entry.answer);
+        if (result.ok) {
+          entry.status = "solved";
+          entry.feedback = "";
+          if (id === "final") {
+            state.completedAt = Date.now();
+            celebrate();
+          } else {
+            fragmentBurst();
+            toast(`Fragment ${moduleById(id).fragment} recovered.`, "good");
+          }
+          saveState();
+          render();
+          return;
+        }
+
+        if (result.complete) {
+          entry.attempts += 1;
+          damageIntegrity(id === "final" ? 5 : 8);
+          entry.feedback = `${result.message} −${id === "final" ? 5 : 8}% integrity.`;
+          toast(entry.feedback, "bad");
+          const workspace = document.getElementById("workspace");
+          workspace?.classList.remove("shake");
+          requestAnimationFrame(() => workspace?.classList.add("shake"));
+        } else {
+          entry.feedback = result.message;
+          toast(result.message, "bad");
+        }
+        saveState();
+        const feedback = document.getElementById("feedback");
+        if (feedback) {
+          feedback.textContent = entry.feedback;
+          feedback.classList.add("error");
+        }
+        const attemptCount = document.querySelector(".attempt-count");
+        if (attemptCount) {
+          attemptCount.textContent = `${entry.attempts} failed ${entry.attempts === 1 ? "check" : "checks"}`;
+        }
+        renderStats();
+        renderNav();
+      }
+
+      function clearPuzzle(id) {
+        const fresh = makeDefaultEntries()[id].answer;
+        state.entries[id].answer = fresh;
+        state.entries[id].feedback = "";
+        saveState();
+        renderPuzzle();
+        toast("Current entries cleared.");
+      }
+
+      function revealSolution(id) {
+        const entry = state.entries[id];
+        entry.status = id === "final" ? "solved" : "revealed";
+        entry.feedback = "";
+        if (id === "switchyard") {
+          entry.answer.people = ["Moth", "Ibis", "Vale", "Rook", "Vesper"];
+          entry.answer.signals = ["Cobalt", "Ivory", "Violet", "Amber", "Sable"];
+        }
+        if (id === "cipher") entry.answer.words = [...PLAIN_WORDS];
+        if (id === "lattice") entry.answer.cells = LATIN_SOLUTION.flat().map(String);
+        if (id === "tomography") entry.answer.cells = NONO_SOLUTION.join("").split("").map(Number);
+        if (id === "choir") entry.answer = { code: ["E", "B", "F", "C"], falseLogs: [0, 1, 2] };
+        if (id === "final") {
+          entry.answer.passphrase = "ABYSS";
+          state.completedAt = Date.now();
+        }
+        saveState();
+        closeModal();
+        toast(id === "final" ? "Final solution disclosed." : `Module ${moduleById(id).index} overridden.`, "bad");
+        render();
+      }
+
+      function fragmentBurst() {
+        if (typeof window.confetti !== "function") return;
+        window.confetti({
+          particleCount: 42,
+          spread: 55,
+          origin: { y: .65 },
+          colors: ["#d8ff3e", "#11120f", "#ff5c3b"],
+          scalar: .75,
+          disableForReducedMotion: true
+        });
+      }
+
+      function celebrate() {
+        if (typeof window.confetti !== "function") return;
+        const end = Date.now() + 1200;
+        const colors = ["#d8ff3e", "#f1efe7", "#ff5c3b"];
+        const frame = () => {
+          window.confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0 }, colors, disableForReducedMotion: true });
+          window.confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1 }, colors, disableForReducedMotion: true });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        };
+        frame();
+      }
+
+      function toast(message, type = "") {
+        const element = document.createElement("div");
+        element.className = `toast ${type}`;
+        element.textContent = message;
+        dom.toasts.append(element);
+        window.setTimeout(() => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(8px)";
+          window.setTimeout(() => element.remove(), 250);
+        }, 3400);
+      }
+
+      function openModal({ kicker, title, copy, confirmLabel, action }) {
+        lastFocusedElement = document.activeElement;
+        modalAction = action;
+        dom.modalKicker.textContent = kicker;
+        dom.modalTitle.textContent = title;
+        dom.modalCopy.textContent = copy;
+        dom.modalConfirm.textContent = confirmLabel;
+        dom.modalBackdrop.classList.add("open");
+        window.setTimeout(() => dom.modalCancel.focus(), 10);
+      }
+
+      function closeModal() {
+        dom.modalBackdrop.classList.remove("open");
+        modalAction = null;
+        lastFocusedElement?.focus?.();
+      }
+
+      function confirmReset() {
+        openModal({
+          kicker: "Destroy run",
+          title: "Erase all progress?",
+          copy: "Every answer, fragment, hint, mistake, and timer record in this browser will be erased. This cannot be undone.",
+          confirmLabel: "Erase the run",
+          action: () => {
+            localStorage.removeItem(STORAGE_KEY);
+            state = defaultState();
+            closeModal();
+            render();
+            dom.boot.classList.remove("hidden");
+            window.setTimeout(() => dom.begin.focus(), 100);
+          }
+        });
+      }
+
+      function render() {
+        if (state.started) dom.boot.classList.add("hidden");
+        renderStats();
+        renderNav();
+        renderProgress();
+        renderPuzzle();
+      }
+
+      dom.begin.addEventListener("click", () => {
+        state.started = true;
+        state.startTime = state.startTime || Date.now();
+        saveState();
+        dom.boot.classList.add("hidden");
+        render();
+        window.setTimeout(() => dom.stageInner.querySelector("h1")?.focus?.(), 500);
+      });
+
+      dom.reset.addEventListener("click", confirmReset);
+      dom.modalCancel.addEventListener("click", closeModal);
+      dom.modalConfirm.addEventListener("click", () => modalAction?.());
+      dom.modalBackdrop.addEventListener("click", event => {
+        if (event.target === dom.modalBackdrop) closeModal();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && dom.modalBackdrop.classList.contains("open")) closeModal();
+      });
+
+      render();
+      window.setInterval(updateTimer, 1000);
+    })();
+  </script>
+</body>
+</html>
