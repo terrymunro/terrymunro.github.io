@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cartographer's Descent</title>
+<meta name="description" content="Nine sealed chambers. Nine mechanisms. One true name.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================== tokens ============================== */
+:root{
+  --bg:#0a0b0d;
+  --bg-lift:#0e1013;
+  --panel:#111318;
+  --panel-2:#161920;
+  --line:rgba(255,255,255,.085);
+  --line-mid:rgba(255,255,255,.16);
+  --line-hard:rgba(255,255,255,.34);
+  --ink:#e9e7e2;
+  --ink-dim:#9a9aa4;
+  --ink-faint:#63646d;
+  --wax:#d9a24e;
+  --wax-soft:rgba(217,162,78,.13);
+  --wax-line:rgba(217,162,78,.42);
+  --cool:#7fa8cf;
+  --cool-soft:rgba(127,168,207,.12);
+  --bad:#c9615c;
+  --bad-soft:rgba(201,97,92,.15);
+  --good:#7fae86;
+  --shadow:0 22px 60px -28px rgba(0,0,0,.85);
+  --r-sm:6px; --r:10px; --r-lg:16px;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Inter",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"Spectral",Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1100px 700px at 78% -12%, rgba(217,162,78,.055), transparent 60%),
+    radial-gradient(900px 620px at 8% 108%, rgba(127,168,207,.05), transparent 62%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+::selection{background:var(--wax-soft);color:#fff}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;font-weight:400}
+a{color:var(--cool)}
+
+/* ============================== chrome ============================== */
+.shell{max-width:1200px;margin:0 auto;padding:0 24px 96px}
+.topbar{
+  display:flex;align-items:center;gap:18px;
+  padding:22px 0 20px;margin-bottom:8px;
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+  background:linear-gradient(to bottom,var(--bg) 62%,rgba(10,11,13,.86));
+  backdrop-filter:blur(8px);
+}
+.brand{display:flex;align-items:baseline;gap:12px;min-width:0}
+.brand .mark{
+  font-family:var(--serif);font-size:19px;letter-spacing:.055em;
+  text-transform:uppercase;white-space:nowrap;
+}
+.brand .mark b{font-weight:600;color:var(--wax)}
+.brand .sub{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);
+  white-space:nowrap;
+}
+.topbar .spring{flex:1}
+.shards{display:flex;gap:5px;align-items:center}
+.shard{
+  width:23px;height:27px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  border:1px solid var(--line);border-radius:3px;
+  color:var(--ink-faint);background:var(--panel);
+  clip-path:polygon(12% 0,100% 0,88% 100%,0 100%);
+  transition:.35s ease;
+}
+.shard.have{color:#151107;background:var(--wax);border-color:var(--wax);box-shadow:0 0 18px -6px var(--wax)}
+.shard.forced{color:var(--wax);background:var(--wax-soft);border-color:var(--wax-line)}
+.tick{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.06em;white-space:nowrap}
+
+/* ============================== atrium ============================== */
+.hero{padding:52px 0 40px;max-width:660px}
+.hero h1{
+  font-family:var(--serif);font-size:clamp(34px,5.6vw,54px);line-height:1.04;
+  letter-spacing:-.015em;margin-bottom:20px;font-weight:300;
+}
+.hero h1 em{font-style:italic;color:var(--wax)}
+.hero p{color:var(--ink-dim);font-size:16px;margin:0 0 12px;font-family:var(--serif);font-weight:300}
+.hero .rule{width:56px;height:1px;background:var(--wax-line);margin:26px 0}
+.hero .meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+
+.grid-label{
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-faint);margin:8px 0 18px;
+}
+.grid-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.chambers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{
+  position:relative;text-align:left;
+  background:linear-gradient(160deg,var(--panel) 0%,var(--bg-lift) 100%);
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:20px 20px 18px;min-height:158px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:.25s cubic-bezier(.2,.7,.3,1);
+  overflow:hidden;
+}
+.card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(340px 180px at 100% 0%,rgba(255,255,255,.035),transparent 70%);
+}
+.card:not(.locked):hover{border-color:var(--line-mid);transform:translateY(-2px);box-shadow:var(--shadow)}
+.card .num{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink-faint);
+}
+.card h3{font-family:var(--serif);font-size:20px;line-height:1.2;letter-spacing:-.005em}
+.card .kind{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cool);opacity:.8;
+}
+.card .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card .state{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.card.solved{border-color:var(--wax-line)}
+.card.solved .state{color:var(--wax)}
+.card.forced .state{color:var(--bad)}
+.card.locked{opacity:.4;cursor:not-allowed}
+.card.locked .kind{color:var(--ink-faint)}
+.seal{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--line-mid);display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-faint);
+  flex:none;
+}
+.card.solved .seal{background:var(--wax);border-color:var(--wax);color:#151107}
+.card.forced .seal{background:var(--wax-soft);border-color:var(--wax-line);color:var(--wax)}
+.card.final{grid-column:1/-1;min-height:auto;flex-direction:row;align-items:center;gap:20px;padding:22px 24px}
+.card.final .body{flex:1}
+.card.final h3{font-size:23px}
+
+/* ============================== chamber view ============================== */
+.chead{display:flex;align-items:flex-start;gap:20px;padding:30px 0 0;flex-wrap:wrap}
+.chead .body{flex:1;min-width:260px}
+.chead .num{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--ink-faint);margin-bottom:6px}
+.chead h2{font-family:var(--serif);font-size:clamp(26px,3.6vw,36px);font-weight:300;letter-spacing:-.012em}
+.chead .kind{
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cool);margin-top:8px;
+}
+.epigraph{
+  font-family:var(--serif);font-style:italic;font-weight:300;color:var(--ink-dim);
+  font-size:16px;margin:14px 0 0;max-width:62ch;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 15px;border:1px solid var(--line-mid);border-radius:var(--r-sm);
+  font-size:12.5px;letter-spacing:.04em;color:var(--ink-dim);
+  transition:.18s ease;white-space:nowrap;background:var(--panel);
+}
+.btn:hover{color:var(--ink);border-color:var(--line-hard);background:var(--panel-2)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.primary{background:var(--wax);border-color:var(--wax);color:#141005;font-weight:600}
+.btn.primary:hover{background:#e5ae5b;color:#141005}
+.btn.danger:hover{color:var(--bad);border-color:rgba(201,97,92,.5)}
+.btn.ghost{background:transparent;border-color:transparent;padding:9px 6px}
+.btn.ghost:hover{color:var(--ink);background:transparent}
+
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:34px;margin-top:30px;align-items:start}
+.board-wrap{
+  background:linear-gradient(170deg,var(--panel) 0%,var(--bg-lift) 100%);
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:28px;min-height:300px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  overflow-x:auto;
+}
+.side{display:flex;flex-direction:column;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.panel > h4{
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-faint);padding:13px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.panel .body{padding:14px 16px}
+.panel .body p{margin:0 0 9px;font-size:13.2px;color:var(--ink-dim);line-height:1.62}
+.panel .body p:last-child{margin-bottom:0}
+.panel .body strong{color:var(--ink);font-weight:500}
+.clues{list-style:none;margin:0;padding:0}
+.clues li{
+  display:flex;gap:11px;padding:9px 16px;font-size:13.2px;color:var(--ink-dim);
+  border-bottom:1px solid var(--line);cursor:pointer;transition:.15s;line-height:1.5;
+}
+.clues li:last-child{border-bottom:none}
+.clues li:hover{background:var(--panel-2);color:var(--ink)}
+.clues li .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);flex:none;padding-top:2px}
+.clues li.used{color:var(--ink-faint);text-decoration:line-through;text-decoration-color:var(--wax-line)}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+.controls .btn{flex:1;justify-content:center}
+.hintlog{font-size:12.5px;color:var(--wax);font-family:var(--serif);font-style:italic}
+
+/* ============================== shared board bits ============================== */
+.gridbox{border-collapse:collapse;font-family:var(--mono);user-select:none}
+.gridbox td{padding:0;text-align:center;vertical-align:middle}
+.cell{
+  width:46px;height:46px;border:1px solid var(--line-mid);
+  background:#15181e;font-size:17px;color:var(--ink);
+  transition:background .12s,color .12s;cursor:pointer;
+  display:grid;place-items:center;
+}
+.cell:hover{background:#20252d}
+.cell.sel{outline:2px solid var(--wax);outline-offset:-2px;z-index:2;position:relative}
+.cell.given{color:var(--wax);background:var(--wax-soft)}
+.cell.bad{color:var(--bad);background:var(--bad-soft)}
+.rim{
+  width:46px;height:46px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:14px;color:var(--cool);
+}
+.rim.blank{color:transparent}
+.legend{font-size:12px;color:var(--ink-faint);text-align:center;max-width:46ch;line-height:1.6}
+/* on-screen entry pad — the puzzles that take typed input must work on touch too */
+.pad{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:352px}
+.pad button{
+  min-width:38px;height:38px;padding:0 9px;border:1px solid var(--line-mid);border-radius:var(--r-sm);
+  background:var(--panel);font-family:var(--mono);font-size:15px;color:var(--ink-dim);transition:.15s;
+}
+.pad button:hover{border-color:var(--wax);color:var(--ink);background:var(--panel-2)}
+.pad button.wide{font-family:var(--sans);font-size:11.5px;letter-spacing:.05em;color:var(--ink-faint)}
+.pad.letters{max-width:428px;gap:5px}
+.pad.letters button{min-width:30px;height:32px;font-size:13px;padding:0 6px}
+.legend kbd{
+  font-family:var(--mono);font-size:11px;border:1px solid var(--line-mid);border-radius:4px;
+  padding:1px 5px;color:var(--ink-dim);background:var(--panel-2);
+}
+
+/* ============================== toast / modal ============================== */
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);
+  background:var(--panel-2);border:1px solid var(--line-mid);border-radius:var(--r);
+  padding:13px 22px;font-family:var(--serif);font-size:15px;color:var(--ink);
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s cubic-bezier(.2,.7,.3,1);
+  z-index:90;max-width:min(90vw,520px);text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.good{border-color:var(--wax-line)}
+.toast.bad{border-color:rgba(201,97,92,.45)}
+.scrim{
+  position:fixed;inset:0;background:rgba(4,5,7,.8);backdrop-filter:blur(6px);
+  display:grid;place-items:center;padding:24px;z-index:100;opacity:0;pointer-events:none;transition:.25s;
+}
+.scrim.show{opacity:1;pointer-events:auto}
+.modal{
+  background:linear-gradient(165deg,var(--panel) 0%,var(--bg-lift) 100%);
+  border:1px solid var(--line-mid);border-radius:var(--r-lg);
+  padding:34px;max-width:560px;width:100%;box-shadow:var(--shadow);
+  transform:translateY(12px) scale(.985);transition:.25s cubic-bezier(.2,.7,.3,1);
+}
+.scrim.show .modal{transform:none}
+.modal h3{font-family:var(--serif);font-size:27px;font-weight:300;margin-bottom:12px}
+.modal p{color:var(--ink-dim);margin:0 0 12px;font-size:14px}
+.modal .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+
+@media (max-width:940px){
+  .stage{grid-template-columns:1fr}
+  .side{position:static}
+  .chambers{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:700px){
+  .shell{padding:0 14px 80px}
+  .chambers{grid-template-columns:1fr}
+  .card.final{flex-direction:column;align-items:flex-start}
+  .board-wrap{padding:16px 12px}
+  .brand .sub{display:none}
+  .topbar{flex-wrap:wrap;gap:7px 12px;padding:14px 0 12px}
+  .brand{flex:1 1 100%}
+  .brand .mark{font-size:16px;white-space:normal;line-height:1.3}
+  .topbar .spring{display:none}
+  .tick{order:2}
+  .shards{order:3;gap:4px}
+  .shard{width:19px;height:23px;font-size:10px}
+  #resetBtn{order:4;margin-left:auto}
+  .chead{gap:12px;padding-top:20px}
+  .chead .body{min-width:0}
+  .hero{padding:36px 0 30px}
+}
+/* ============================== puzzle: reliquary ============================== */
+.niches{display:flex;gap:10px;justify-content:center;min-width:min-content}
+.niche{
+  width:132px;flex:none;background:var(--bg-lift);border:1px solid var(--line-mid);border-radius:var(--r);
+  overflow:hidden;display:flex;flex-direction:column;
+}
+.niche > .cap{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-faint);
+  text-align:center;padding:8px 0;border-bottom:1px solid var(--line);background:var(--panel);
+}
+.slot{
+  border-bottom:1px solid var(--line);padding:9px 10px;cursor:pointer;transition:.15s;
+  display:flex;flex-direction:column;gap:3px;min-height:58px;justify-content:center;
+}
+.slot:last-child{border-bottom:none}
+.slot:hover{background:var(--panel-2)}
+.slot .lab{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.slot .val{font-family:var(--serif);font-size:14.5px;color:var(--ink);line-height:1.25}
+.slot.empty .val{color:var(--ink-faint);font-style:italic}
+.slot.dupe{background:var(--bad-soft)}
+.slot.dupe .val{color:var(--bad)}
+.slot.locked{background:var(--wax-soft)}
+.slot.locked .val{color:var(--wax)}
+.picker{
+  position:fixed;background:var(--panel-2);border:1px solid var(--line-mid);border-radius:var(--r);
+  box-shadow:var(--shadow);z-index:70;padding:6px;min-width:168px;
+}
+.picker button{
+  display:block;width:100%;text-align:left;padding:8px 12px;border-radius:var(--r-sm);
+  font-size:13.5px;font-family:var(--serif);color:var(--ink-dim);
+}
+.picker button:hover{background:var(--wax-soft);color:var(--ink)}
+.picker button.clear{color:var(--ink-faint);font-style:italic;font-size:12.5px}
+
+/* ============================== puzzle: loom (nonogram) ============================== */
+.loom{border-collapse:collapse;user-select:none;font-family:var(--mono)}
+.loom .cc,.loom .rc{color:var(--cool);font-size:11.5px;line-height:1.25;font-weight:500}
+.loom .cc{vertical-align:bottom;padding:0 0 6px;min-width:26px}
+.loom .rc{text-align:right;padding:0 8px 0 0;white-space:nowrap}
+.loom .cc span.done,.loom .rc span.done{color:var(--ink-faint)}
+.loom .lc{
+  width:26px;height:26px;border:1px solid var(--line);background:var(--bg-lift);cursor:pointer;
+  transition:background .1s;
+}
+.loom .lc.on{background:var(--ink);border-color:var(--ink)}
+.loom .lc.off{background:var(--bg-lift)}
+.loom .lc.off::after{content:"·";color:var(--ink-faint);font-size:15px;display:block;line-height:24px;text-align:center}
+.loom .lc.hi{box-shadow:inset 0 0 0 1px var(--wax-line)}
+.loom .lc.b5{border-left-color:var(--line-hard)}
+.loom .lc.b5t{border-top-color:var(--line-hard)}
+
+/* ============================== puzzle: aqueduct ============================== */
+.aq{display:block;touch-action:manipulation}
+.aq .edge{stroke:transparent;stroke-width:16;cursor:pointer}
+.aq .edge:hover{stroke:rgba(217,162,78,.14)}
+.aq .span{stroke:var(--cool);stroke-width:2;pointer-events:none}
+.aq .span.cross{stroke:var(--bad)}
+.aq .isl{fill:var(--bg-lift);stroke:var(--line-hard);stroke-width:1.4}
+.aq .isl.done{stroke:var(--wax);fill:rgba(217,162,78,.1)}
+.aq .isl.over{stroke:var(--bad);fill:var(--bad-soft)}
+.aq text.deg{
+  fill:var(--ink);font-family:var(--mono);font-size:15px;font-weight:500;
+  text-anchor:middle;dominant-baseline:central;pointer-events:none;
+}
+.aq .dot{fill:rgba(255,255,255,.07)}
+
+/* ============================== puzzle: apothecary (kakuro) ============================== */
+.kak{border-collapse:collapse;font-family:var(--mono);user-select:none}
+.kak td{width:52px;height:52px;padding:0;position:relative;border:1px solid var(--line-mid)}
+.kak td.blk{background:#050607;border-color:rgba(255,255,255,.06)}
+.kak td.void{background:transparent;border-color:transparent}
+.kak td.wht{background:#1c2027;cursor:pointer;text-align:center;font-size:19px;color:var(--ink)}
+.kak td.wht:hover{background:#242932}
+.kak td.wht.sel{outline:2px solid var(--wax);outline-offset:-2px}
+.kak td.wht.given{color:var(--wax);background:var(--wax-soft)}
+.kak .slash{position:absolute;inset:0;pointer-events:none}
+.kak .sright,.kak .sdown{position:absolute;font-size:11.5px;color:var(--cool);line-height:1}
+.kak .sright{top:5px;right:6px}
+.kak .sdown{bottom:5px;left:6px}
+
+/* ============================== puzzle: aviary ============================== */
+.avi{border-collapse:collapse;user-select:none}
+.avi td{padding:0}
+.avi .ac{
+  width:48px;height:48px;background:var(--bg-lift);cursor:pointer;display:grid;place-items:center;
+  font-size:19px;color:var(--ink);transition:background .12s;
+  border:1px solid rgba(255,255,255,.06);
+}
+.avi .ac:hover{background:#1b1f26}
+.avi .ac.bird{color:var(--wax)}
+.avi .ac.dot{color:var(--ink-faint);font-size:15px}
+.avi .ac.bad{background:var(--bad-soft);color:var(--bad)}
+.avi .ac.given{background:var(--wax-soft)}
+.avi .ac.wl{border-left:2px solid var(--line-hard)}
+.avi .ac.wr{border-right:2px solid var(--line-hard)}
+.avi .ac.wt{border-top:2px solid var(--line-hard)}
+.avi .ac.wb{border-bottom:2px solid var(--line-hard)}
+
+/* ============================== puzzle: wax seals ============================== */
+.cryptext{
+  display:flex;flex-wrap:wrap;gap:16px 22px;justify-content:center;max-width:620px;
+}
+.cword{display:flex;gap:4px}
+.glyphcol{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.glyphcol .gy{
+  font-family:var(--serif);font-size:23px;color:var(--cool);line-height:1;
+  width:24px;text-align:center;
+}
+.glyphcol .pl{
+  font-family:var(--mono);font-size:15px;width:24px;height:26px;
+  border-bottom:1.5px solid var(--line-mid);display:grid;place-items:center;
+  color:var(--ink);transition:.15s;
+}
+.glyphcol:hover .pl{border-bottom-color:var(--wax)}
+.glyphcol.sel .pl{border-bottom-color:var(--wax);background:var(--wax-soft)}
+.glyphcol.locked .pl{color:var(--wax);border-bottom-color:var(--wax-line)}
+.glyphcol.dupe .pl{color:var(--bad);border-bottom-color:var(--bad)}
+.ring{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:560px}
+.ringitem{
+  display:flex;align-items:center;gap:6px;padding:5px 9px;border:1px solid var(--line);
+  border-radius:var(--r-sm);background:var(--bg-lift);font-size:12px;cursor:pointer;transition:.15s;
+}
+.ringitem:hover{border-color:var(--line-hard)}
+.ringitem.sel{border-color:var(--wax);background:var(--wax-soft)}
+.ringitem .g{font-family:var(--serif);font-size:17px;color:var(--cool)}
+.ringitem .n{font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+.ringitem .a{font-family:var(--mono);font-size:13px;color:var(--ink);min-width:9px}
+.ringitem.locked{border-color:var(--wax-line)}
+.ringitem.locked .a{color:var(--wax)}
+
+/* ============================== puzzle: stair ============================== */
+.stair{display:flex;flex-direction:column;gap:7px;width:100%;max-width:560px}
+.rung{display:flex;align-items:center;gap:14px}
+.rung .idx{font-family:var(--mono);font-size:11px;color:var(--ink-faint);width:16px;flex:none}
+.rung .boxes{display:flex;gap:5px;flex:none}
+.rung .lb{
+  width:38px;height:44px;border:1px solid var(--line-mid);border-radius:var(--r-sm);
+  background:var(--bg-lift);display:grid;place-items:center;
+  font-family:var(--mono);font-size:19px;cursor:pointer;transition:.15s;
+}
+.rung .lb:hover{border-color:var(--line-hard)}
+.rung .lb.sel{outline:2px solid var(--wax);outline-offset:-2px}
+.rung .lb.fixed{background:var(--wax-soft);color:var(--wax);border-color:var(--wax-line);cursor:default}
+.rung .lb.chg{border-color:var(--cool)}
+.rung .gloss{font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--ink-dim);line-height:1.4}
+.rung.done .gloss{color:var(--ink-faint)}
+
+/* ============================== puzzle: assay ============================== */
+.assay{display:flex;flex-direction:column;gap:22px;align-items:center;width:100%}
+.scales{display:flex;flex-direction:column;gap:10px;width:100%;max-width:620px}
+.scale{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;
+  padding:11px 14px;background:var(--bg-lift);border:1px solid var(--line);border-radius:var(--r);
+}
+.pan{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.pan.right{justify-content:center}
+.chip{
+  display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;
+  border:1px solid var(--line-mid);background:var(--panel);font-size:12px;color:var(--ink-dim);
+}
+.chip b{font-family:var(--mono);font-size:12px;color:var(--wax);font-weight:500}
+.fulcrum{font-family:var(--mono);font-size:15px;color:var(--cool);padding:0 4px}
+.scale.holds{border-color:rgba(127,174,134,.4)}
+.scale.breaks{border-color:rgba(201,97,92,.4)}
+.sigvals{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.sigval{
+  display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 13px;
+  border:1px solid var(--line-mid);border-radius:var(--r);background:var(--bg-lift);cursor:pointer;
+  transition:.15s;min-width:82px;
+}
+.sigval:hover{border-color:var(--line-hard)}
+.sigval.sel{outline:2px solid var(--wax);outline-offset:-2px}
+.sigval .nm{font-size:11.5px;color:var(--ink-dim)}
+.sigval .vv{font-family:var(--mono);font-size:21px;color:var(--ink)}
+.sigval.empty .vv{color:var(--ink-faint)}
+.sigval.dupe{background:var(--bad-soft)}
+.sigval.dupe .vv{color:var(--bad)}
+.sigval.given .vv{color:var(--wax)}
+
+/* ============================== final seal ============================== */
+.finalwrap{display:flex;gap:34px;flex-wrap:wrap;justify-content:center;align-items:center}
+.spiral{position:relative;width:222px;height:222px;flex:none}
+.spiral svg{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.spiral .sgrid{display:grid;grid-template-columns:repeat(3,74px);grid-template-rows:repeat(3,74px)}
+.scell{
+  border:1px solid var(--line-mid);display:grid;place-items:center;cursor:pointer;
+  font-family:var(--mono);font-size:26px;background:var(--bg-lift);transition:.15s;position:relative;
+}
+.scell:hover{background:#1b1f26}
+.scell.sel{outline:2px solid var(--wax);outline-offset:-2px}
+.scell.empty{color:var(--ink-faint)}
+.scell .ord{
+  position:absolute;top:3px;left:5px;font-size:9px;color:var(--ink-faint);font-family:var(--mono);
+}
+.tiles{display:flex;flex-wrap:wrap;gap:7px;max-width:230px;justify-content:center}
+.tile{
+  width:40px;height:46px;border:1px solid var(--line-mid);border-radius:var(--r-sm);
+  background:var(--panel);display:grid;place-items:center;font-family:var(--mono);font-size:20px;
+  cursor:pointer;transition:.15s;
+}
+.tile:hover{border-color:var(--wax)}
+.tile.used{opacity:.24;cursor:default}
+.tile.sel{border-color:var(--wax);background:var(--wax-soft);color:var(--wax)}
+.riddle{
+  font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-dim);
+  line-height:1.85;max-width:44ch;
+}
+.riddle b{color:var(--wax);font-style:normal;font-weight:400}
+.solvedbanner{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--wax);border:1px solid var(--wax-line);border-radius:99px;padding:5px 13px;
+  background:var(--wax-soft);
+}
+.ledger{list-style:none;margin:0;padding:0;font-size:13px}
+.ledger li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);color:var(--ink-dim)}
+.ledger li:last-child{border-bottom:none}
+.ledger li b{font-weight:500;color:var(--ink)}
+.ledger li .v{font-family:var(--mono);font-size:12px}
+.ledger li.forced .v{color:var(--bad)}
+.ledger li.clean .v{color:var(--good)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">The Cartographer's <b>Descent</b></div>
+      <div class="sub">nine seals</div>
+    </div>
+    <div class="spring"></div>
+    <div class="tick" id="tick"></div>
+    <div class="shards" id="shards"></div>
+    <button class="btn ghost" id="resetBtn" title="Abandon the descent and start over">Reset</button>
+  </div>
+  <div id="view"></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="scrim" id="scrim"><div class="modal" id="modal"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script>
+"use strict";
+/* ==========================================================================
+   VERIFIED PUZZLE DATA
+   Every instance below was generated offline and machine-checked to have
+   EXACTLY ONE solution consistent with the clues shown to the player.
+   ========================================================================== */
+const DATA = {
+  logic: {"cats":[{"key":"keeper","label":"Keeper","items":["Aster","Brivel","Corda","Dunmar","Elish"]},{"key":"relic","label":"Relic","items":["Ash Bell","Bone Key","Glass Eye","Iron Tooth","Salt Coin"]},{"key":"hour","label":"Hour","items":["Dusk","Matins","Midnight","Noon","Vespers"]}],"solution":[["Dunmar","Aster","Corda","Brivel","Elish"],["Salt Coin","Iron Tooth","Bone Key","Glass Eye","Ash Bell"],["Midnight","Noon","Dusk","Matins","Vespers"]],"clues":[{"text":"Elish sits at one end of the row."},{"text":"Exactly 2 niches stand between Elish and Noon."},{"text":"The Glass Eye is adjacent to Corda."},{"text":"Dusk lies between the Salt Coin and Elish."},{"text":"Matins lies immediately left of the Ash Bell."},{"text":"Midnight is adjacent to Aster."},{"text":"Exactly 2 niches stand between Midnight and Brivel."},{"text":"The Bone Key lies between Midnight and Elish."},{"text":"Exactly 2 niches stand between Vespers and the Iron Tooth."}]},
+  sluice: {"solution":[[4,2,1,3,5],[5,1,3,2,4],[2,3,4,5,1],[1,5,2,4,3],[3,4,5,1,2]],"clues":{"top":[0,0,4,2,0],"right":[1,0,0,0,2],"bottom":[2,0,0,0,0],"left":[0,1,0,0,3]}},
+  loom: {"w":11,"h":11,"rows":[[11],[1],[9,1],[1,1,1],[1,5,1,1],[1,1,1,1,1],[1,1,1,1,1,1],[1,1,3,1,1],[1,1,1,1],[1,7,1],[1]],"cols":[[1,9],[1,1],[1,1,6],[1,1,1,1],[1,1,1,2,1],[1,1,1,1,1],[1,1,4,1],[1,1,1],[1,8],[1],[10]],"solution":[[1,1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,1,1,0,1,0,1],[1,0,1,0,0,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,1,1,0,1,0,1],[1,0,1,0,0,0,0,0,1,0,1],[1,0,1,1,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0]]},
+  aqueduct: {"n":8,"islands":[{"r":2,"c":4,"deg":4},{"r":4,"c":4,"deg":5},{"r":0,"c":4,"deg":4},{"r":0,"c":7,"deg":2},{"r":0,"c":0,"deg":3},{"r":4,"c":6,"deg":3},{"r":3,"c":7,"deg":2},{"r":3,"c":5,"deg":2},{"r":2,"c":2,"deg":4},{"r":1,"c":5,"deg":1},{"r":4,"c":0,"deg":2},{"r":7,"c":0,"deg":2},{"r":7,"c":4,"deg":2},{"r":5,"c":2,"deg":4},{"r":7,"c":2,"deg":3},{"r":6,"c":6,"deg":1}],"solution":[{"i":0,"j":1,"n":1},{"i":0,"j":2,"n":1},{"i":2,"j":3,"n":1},{"i":2,"j":4,"n":2},{"i":1,"j":5,"n":2},{"i":3,"j":6,"n":1},{"i":6,"j":7,"n":1},{"i":0,"j":8,"n":2},{"i":7,"j":9,"n":1},{"i":4,"j":10,"n":1},{"i":10,"j":11,"n":1},{"i":1,"j":12,"n":2},{"i":8,"j":13,"n":2},{"i":13,"j":14,"n":2},{"i":5,"j":15,"n":1},{"i":11,"j":14,"n":1}]},
+  apothecary: {"size":8,"layout":[[0,0,0,0,0,0,0,0],[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,0,1,1,1,1],[0,1,1,0,0,0,1,1],[0,1,1,1,1,0,1,1],[0,0,0,1,1,1,1,0],[0,0,0,0,1,1,0,0]],"solution":[[0,0,0,0,0,0,0,0],[0,0,0,9,2,0,0,0],[0,0,9,8,7,6,0,0],[0,9,3,0,9,8,2,7],[0,3,1,0,0,0,1,5],[0,7,2,1,4,0,4,9],[0,0,0,5,9,8,3,0],[0,0,0,0,2,4,0,0]],"clues":[{"dir":"h","anchor":[1,2],"sum":11,"len":2},{"dir":"h","anchor":[2,1],"sum":30,"len":4},{"dir":"h","anchor":[3,0],"sum":12,"len":2},{"dir":"h","anchor":[3,3],"sum":26,"len":4},{"dir":"h","anchor":[4,0],"sum":4,"len":2},{"dir":"h","anchor":[4,5],"sum":6,"len":2},{"dir":"h","anchor":[5,0],"sum":14,"len":4},{"dir":"h","anchor":[5,5],"sum":13,"len":2},{"dir":"h","anchor":[6,2],"sum":25,"len":4},{"dir":"h","anchor":[7,3],"sum":6,"len":2},{"dir":"v","anchor":[2,1],"sum":19,"len":3},{"dir":"v","anchor":[1,2],"sum":15,"len":4},{"dir":"v","anchor":[0,3],"sum":17,"len":2},{"dir":"v","anchor":[4,3],"sum":6,"len":2},{"dir":"v","anchor":[0,4],"sum":18,"len":3},{"dir":"v","anchor":[4,4],"sum":15,"len":3},{"dir":"v","anchor":[1,5],"sum":14,"len":2},{"dir":"v","anchor":[5,5],"sum":12,"len":2},{"dir":"v","anchor":[2,6],"sum":10,"len":4},{"dir":"v","anchor":[2,7],"sum":21,"len":3}]},
+  // Cage layout chosen so the solution is reachable by assumption-free
+  // propagation, not merely unique — see tools/deduce-all.mjs.
+  aviary: {"n":8,"regions":[[0,0,0,0,0,2,1,1],[3,0,0,0,0,2,1,4],[3,0,0,3,2,2,1,4],[3,3,3,3,3,2,1,4],[3,7,3,6,6,2,1,4],[3,7,6,6,6,5,5,4],[7,7,6,7,6,6,5,5],[7,7,7,7,6,6,5,5]],"stars":[3,6,4,1,7,5,2,0]},
+  // Chosen so the intended reading is the ONLY decipherment consistent with a
+  // 355k-word lexicon — verified with zero given letters, so the three broken
+  // seals below are a foothold, not a crutch. See tools/verify-shipped.mjs.
+  seals: {"phrase":"WHATEVER THE WALLS WITHHOLD THE ARRANGEMENT ALREADY ADMITTED","map":{"A":"ζ","D":"ξ","E":"ω","G":"χ","H":"μ","I":"δ","L":"π","M":"ϖ","N":"α","O":"β","R":"σ","S":"θ","T":"φ","V":"γ","W":"λ","Y":"ψ"},"given":["E","G","O"]},
+  stair: [
+    {"word":"MAZE","clue":"Given: where you are."},
+    {"word":"MACE","clue":"Nutmeg's outer coat — or a knight's blunt argument."},
+    {"word":"RACE","clue":"A contest settled by speed."},
+    {"word":"RATE","clue":"A tempo, or to appraise worth."},
+    {"word":"RITE","clue":"Ceremony performed by rote."},
+    {"word":"SITE","clue":"Ground chosen for building."},
+    {"word":"SIRE","clue":"To beget — or how one addresses a king."},
+    {"word":"HIRE","clue":"Take on for wages."},
+    {"word":"HERE","clue":"Not there. This very place."}
+  ],
+  assay: {"sigils":["Quill","Thorn","Wheel","Lantern","Anchor","Crescent"],"maxv":9,"solution":[2,5,9,3,4,6],"clues":[{"l":[0,1],"r":[3,4],"op":"="},{"l":[0,3,4],"r":[2],"op":"="},{"l":[0,4],"r":[5],"op":"="},{"l":[0,4,5],"r":[2,3],"op":"="},{"l":[1,4],"r":[2],"op":"="}]}
+};
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+const $ = (sel, root) => (root || document).querySelector(sel);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const range = (n) => Array.from({ length: n }, (_, i) => i);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+let toastTimer = null;
+function toast(msg, kind) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (kind ? ' ' + kind : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = 'toast'; }, 3400);
+}
+function modal(html) {
+  $('#modal').innerHTML = html;
+  $('#scrim').classList.add('show');
+}
+function closeModal() { $('#scrim').classList.remove('show'); }
+$('#scrim').addEventListener('click', (e) => { if (e.target.id === 'scrim') closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); killPicker(); } });
+
+function celebrate(big) {
+  if (typeof confetti !== 'function') return;
+  const base = { colors: ['#d9a24e', '#e9e7e2', '#7fa8cf'], disableForReducedMotion: true };
+  if (big) {
+    confetti(Object.assign({}, base, { particleCount: 150, spread: 100, origin: { y: .6 }, scalar: 1.1 }));
+    setTimeout(() => confetti(Object.assign({}, base, { particleCount: 90, spread: 130, origin: { x: .2, y: .5 } })), 220);
+    setTimeout(() => confetti(Object.assign({}, base, { particleCount: 90, spread: 130, origin: { x: .8, y: .5 } })), 380);
+  } else {
+    confetti(Object.assign({}, base, { particleCount: 55, spread: 62, origin: { y: .68 }, scalar: .9 }));
+  }
+}
+/* On-screen entry pad. The key handlers below take only {key, preventDefault},
+   so a pad button and a real keystroke travel the identical path. */
+function padHtml(keys, letters) {
+  return `<div class="pad${letters ? ' letters' : ''}">`
+    + keys.map((k) => `<button data-pad="${k.key}"${k.wide ? ' class="wide"' : ''}>${k.label}</button>`).join('')
+    + '</div>';
+}
+const digitKeys = (n) => range(n).map((i) => ({ key: String(i + 1), label: String(i + 1) }))
+  .concat([{ key: 'Backspace', label: 'clear', wide: true }]);
+const letterKeys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((ch) => ({ key: ch, label: ch }))
+  .concat([{ key: 'Backspace', label: 'clear', wide: true }]);
+function wirePad(root, handler) {
+  root.querySelectorAll('[data-pad]').forEach((b) => b.addEventListener('click', () => {
+    handler({ key: b.dataset.pad, preventDefault() {} });
+  }));
+}
+
+let picker = null;
+function killPicker() { if (picker) { picker.remove(); picker = null; } }
+document.addEventListener('pointerdown', (e) => {
+  if (picker && !picker.contains(e.target) && !e.target.closest('[data-pickanchor]')) killPicker();
+}, true);
+
+/* ==========================================================================
+   PROGRESS (localStorage)
+   ========================================================================== */
+// v2: the chamber order and the shard letters both changed, so a v1 save would
+// hand out the wrong letters for the finale. A new key retires it cleanly.
+const SAVE_KEY = 'cartographers-descent-v2';
+const DEFAULT_SAVE = { status: {}, boards: {}, hints: {}, notes: {}, started: null, finished: null };
+let SAVE = load();
+function load() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return clone(DEFAULT_SAVE);
+    return Object.assign(clone(DEFAULT_SAVE), JSON.parse(raw));
+  } catch (e) { return clone(DEFAULT_SAVE); }
+}
+function persist() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) { /* private mode */ }
+}
+const statusOf = (id) => SAVE.status[id] || 'sealed';
+const hintsUsed = (id) => SAVE.hints[id] || 0;
+const isDone = (id) => statusOf(id) === 'solved' || statusOf(id) === 'forced';
+const solvedCount = () => CHAMBERS.filter((c) => isDone(c.id)).length;
+const cleanCount = () => CHAMBERS.filter((c) => statusOf(c.id) === 'solved').length;
+
+/* ==========================================================================
+   PUZZLE CONTROLLERS
+   Each controller is: init() -> plain serialisable state; render(root, st, ctx)
+   -> paints + wires; check(st) -> bool; reveal(st); hint(st) -> message.
+   Feedback rule: controllers may flag ILLEGAL states (rule violations) but
+   never mark a legal-but-wrong entry. The player is never told they are close.
+   ========================================================================== */
+const P = {};
+
+/* ---------------------------------------------------------------- 1. Reliquary
+   Logic grid. Five niches; each holds one keeper, one relic, one hour. */
+P.reliquary = {
+  init() { return { a: [Array(5).fill(null), Array(5).fill(null), Array(5).fill(null)], lock: [] }; },
+  check(st) {
+    const S = DATA.logic.solution;
+    return st.a.every((row, cat) => row.every((v, n) => v !== null && DATA.logic.cats[cat].items[v] === S[cat][n]));
+  },
+  reveal(st) {
+    const S = DATA.logic.solution;
+    st.a = S.map((row, cat) => row.map((nm) => DATA.logic.cats[cat].items.indexOf(nm)));
+    st.lock = [];
+    for (let cat = 0; cat < 3; cat++) for (let n = 0; n < 5; n++) st.lock.push(cat + ',' + n);
+  },
+  hint(st) {
+    const S = DATA.logic.solution;
+    const open = [];
+    for (let cat = 0; cat < 3; cat++) for (let n = 0; n < 5; n++) {
+      const want = DATA.logic.cats[cat].items.indexOf(S[cat][n]);
+      if (st.a[cat][n] !== want || !st.lock.includes(cat + ',' + n)) open.push([cat, n, want]);
+    }
+    if (!open.length) return null;
+    const [cat, n, want] = open[Math.floor(Math.random() * open.length)];
+    st.a[cat][n] = want;
+    st.lock.push(cat + ',' + n);
+    const ord = ['first', 'second', 'third', 'fourth', 'fifth'][n];
+    return `Etched deeper: the ${ord} niche answers to ${DATA.logic.cats[cat].items[want]}.`;
+  },
+  render(root, st, ctx) {
+    const D = DATA.logic;
+    const dupes = st.a.map((row) => {
+      const seen = {};
+      row.forEach((v) => { if (v !== null) seen[v] = (seen[v] || 0) + 1; });
+      return row.map((v) => v !== null && seen[v] > 1);
+    });
+    let html = '<div class="niches">';
+    for (let n = 0; n < 5; n++) {
+      html += `<div class="niche"><div class="cap">NICHE ${n + 1}</div>`;
+      for (let cat = 0; cat < 3; cat++) {
+        const v = st.a[cat][n];
+        const cls = ['slot', v === null ? 'empty' : '', dupes[cat][n] ? 'dupe' : '',
+          st.lock.includes(cat + ',' + n) ? 'locked' : ''].filter(Boolean).join(' ');
+        html += `<div class="${cls}" data-cat="${cat}" data-n="${n}" data-pickanchor="1">
+          <div class="lab">${esc(D.cats[cat].label)}</div>
+          <div class="val">${v === null ? '—' : esc(D.cats[cat].items[v])}</div></div>`;
+      }
+      html += '</div>';
+    }
+    html += '</div><div class="legend">Click a line to assign. Repeats are flagged red — each name belongs to exactly one niche. Strike out clues in the margin as you spend them.</div>';
+    root.innerHTML = html;
+    if (ctx.done) return;
+    root.querySelectorAll('.slot').forEach((el) => el.addEventListener('click', (ev) => {
+      const cat = +el.dataset.cat, n = +el.dataset.n;
+      if (st.lock.includes(cat + ',' + n)) { toast('That name was etched by a hint — it will not move.'); return; }
+      killPicker();
+      const box = document.createElement('div');
+      box.className = 'picker';
+      box.innerHTML = D.cats[cat].items.map((it, i) => `<button data-i="${i}">${esc(it)}</button>`).join('')
+        + '<button class="clear" data-i="-1">leave empty</button>';
+      document.body.appendChild(box);
+      const r = el.getBoundingClientRect();
+      box.style.left = Math.min(r.left, window.innerWidth - box.offsetWidth - 12) + 'px';
+      box.style.top = Math.min(r.bottom + 6, window.innerHeight - box.offsetHeight - 12) + 'px';
+      box.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+        const i = +b.dataset.i;
+        st.a[cat][n] = i < 0 ? null : i;
+        killPicker();
+        ctx.update();
+      }));
+      picker = box;
+      ev.stopPropagation();
+    }));
+  },
+};
+
+/* ---------------------------------------------------------------- 2. Sluice Row
+   Skyscrapers. Latin square 1-5; rim numbers count visible gate-tops. */
+P.sluice = {
+  init() { return { g: range(5).map(() => Array(5).fill(0)), given: [], sel: [0, 0] }; },
+  check(st) { return eq(st.g, DATA.sluice.solution); },
+  reveal(st) {
+    st.g = clone(DATA.sluice.solution);
+    st.given = [];
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) st.given.push(r + ',' + c);
+  },
+  hint(st) {
+    const open = [];
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
+      if (st.g[r][c] !== DATA.sluice.solution[r][c] || !st.given.includes(r + ',' + c)) open.push([r, c]);
+    }
+    if (!open.length) return null;
+    const [r, c] = open[Math.floor(Math.random() * open.length)];
+    st.g[r][c] = DATA.sluice.solution[r][c];
+    st.given.push(r + ',' + c);
+    return `The silt settles: row ${r + 1}, column ${c + 1} stands at ${st.g[r][c]}.`;
+  },
+  render(root, st, ctx) {
+    const K = DATA.sluice.clues;
+    const rim = (v) => (v ? `<div class="rim">${v}</div>` : '<div class="rim blank">·</div>');
+    let html = '<table class="gridbox"><tr><td></td>' + range(5).map((c) => `<td>${rim(K.top[c])}</td>`).join('') + '<td></td></tr>';
+    for (let r = 0; r < 5; r++) {
+      html += `<tr><td>${rim(K.left[r])}</td>`;
+      for (let c = 0; c < 5; c++) {
+        const v = st.g[r][c];
+        const cls = ['cell', st.given.includes(r + ',' + c) ? 'given' : '',
+          st.sel && st.sel[0] === r && st.sel[1] === c ? 'sel' : ''].filter(Boolean).join(' ');
+        html += `<td><div class="${cls}" data-r="${r}" data-c="${c}">${v || ''}</div></td>`;
+      }
+      html += `<td>${rim(K.right[r])}</td></tr>`;
+    }
+    html += '<tr><td></td>' + range(5).map((c) => `<td>${rim(K.bottom[c])}</td>`).join('') + '<td></td></tr></table>';
+    if (!ctx.done) html += padHtml(digitKeys(5));
+    html += '<div class="legend">Select a gate, then tap a height or press <kbd>1</kbd>–<kbd>5</kbd>. <kbd>0</kbd> or <kbd>⌫</kbd> clears; arrow keys move.</div>';
+    root.innerHTML = html;
+    if (ctx.done) return;
+    root.querySelectorAll('.cell').forEach((el) => el.addEventListener('click', () => {
+      st.sel = [+el.dataset.r, +el.dataset.c];
+      ctx.update();
+    }));
+    const onKey = (e) => {
+      if (!st.sel) return;
+      let [r, c] = st.sel;
+      if (e.key === 'ArrowUp') r = (r + 4) % 5;
+      else if (e.key === 'ArrowDown') r = (r + 1) % 5;
+      else if (e.key === 'ArrowLeft') c = (c + 4) % 5;
+      else if (e.key === 'ArrowRight') c = (c + 1) % 5;
+      else if (/^[1-5]$/.test(e.key)) {
+        if (st.given.includes(r + ',' + c)) { toast('A hinted gate cannot be moved.'); return; }
+        st.g[r][c] = +e.key;
+      } else if (e.key === '0' || e.key === 'Backspace' || e.key === 'Delete') {
+        if (st.given.includes(r + ',' + c)) return;
+        st.g[r][c] = 0;
+      } else return;
+      e.preventDefault();
+      st.sel = [r, c];
+      ctx.update();
+    };
+    ctx.setKey(onKey);
+    wirePad(root, onKey);
+  },
+};
+
+/* ---------------------------------------------------------------- 3. The Loom
+   Nonogram. Clue lists give run lengths in order. */
+P.loom = {
+  init() { return { g: range(DATA.loom.h).map(() => Array(DATA.loom.w).fill(0)) }; },
+  check(st) {
+    const S = DATA.loom.solution;
+    for (let r = 0; r < DATA.loom.h; r++) for (let c = 0; c < DATA.loom.w; c++) {
+      if ((st.g[r][c] === 1 ? 1 : 0) !== S[r][c]) return false;
+    }
+    return true;
+  },
+  reveal(st) { st.g = DATA.loom.solution.map((row) => row.map((v) => (v ? 1 : 2))); },
+  hint(st) {
+    const S = DATA.loom.solution;
+    const open = [];
+    for (let r = 0; r < DATA.loom.h; r++) for (let c = 0; c < DATA.loom.w; c++) {
+      const want = S[r][c] ? 1 : 2;
+      if (st.g[r][c] !== want) open.push([r, c, want]);
+    }
+    if (!open.length) return null;
+    const [r, c, want] = open[Math.floor(Math.random() * open.length)];
+    st.g[r][c] = want;
+    return `Thread ${r + 1}, warp ${c + 1} is ${want === 1 ? 'knotted' : 'slack'}.`;
+  },
+  render(root, st, ctx) {
+    const D = DATA.loom;
+    const rowSum = (r) => st.g[r].filter((v) => v === 1).length;
+    const colSum = (c) => range(D.h).filter((r) => st.g[r][c] === 1).length;
+    const need = (list) => list.reduce((a, b) => a + b, 0);
+    const maxCol = Math.max.apply(null, D.cols.map((c) => c.length));
+    let html = '<table class="loom">';
+    for (let k = 0; k < maxCol; k++) {
+      html += '<tr><td></td>';
+      for (let c = 0; c < D.w; c++) {
+        const list = D.cols[c];
+        const off = maxCol - list.length;
+        const val = k >= off ? list[k - off] : '';
+        const done = colSum(c) === need(list) && val !== '';
+        html += `<td class="cc"><span class="${done ? 'done' : ''}">${val}</span></td>`;
+      }
+      html += '</tr>';
+    }
+    for (let r = 0; r < D.h; r++) {
+      const done = rowSum(r) === need(D.rows[r]);
+      html += `<tr><td class="rc"><span class="${done ? 'done' : ''}">${D.rows[r].join(' ')}</span></td>`;
+      for (let c = 0; c < D.w; c++) {
+        const v = st.g[r][c];
+        const cls = ['lc', v === 1 ? 'on' : v === 2 ? 'off' : '', c % 5 === 0 && c ? 'b5' : '',
+          r % 5 === 0 && r ? 'b5t' : ''].filter(Boolean).join(' ');
+        html += `<td><div class="${cls}" data-r="${r}" data-c="${c}"></div></td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</table><div class="legend">Drag to knot a run. <kbd>Shift</kbd>-drag or right-click marks slack. Clue numbers grey out once you have knotted that line\'s full count — arithmetic only, not a verdict.</div>';
+    root.innerHTML = html;
+    if (ctx.done) return;
+    let painting = null;
+    const cells = root.querySelectorAll('.lc');
+    const paint = (el) => {
+      const r = +el.dataset.r, c = +el.dataset.c;
+      if (st.g[r][c] === painting.to) return;
+      st.g[r][c] = painting.to;
+      el.className = 'lc' + (painting.to === 1 ? ' on' : painting.to === 2 ? ' off' : '')
+        + (c % 5 === 0 && c ? ' b5' : '') + (r % 5 === 0 && r ? ' b5t' : '');
+    };
+    cells.forEach((el) => {
+      el.addEventListener('contextmenu', (e) => e.preventDefault());
+      el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        const r = +el.dataset.r, c = +el.dataset.c;
+        const slack = e.shiftKey || e.button === 2 || e.ctrlKey;
+        const cur = st.g[r][c];
+        const want = slack ? (cur === 2 ? 0 : 2) : (cur === 1 ? 0 : 1);
+        painting = { to: want };
+        paint(el);
+      });
+      el.addEventListener('pointerenter', () => { if (painting) paint(el); });
+    });
+    const stop = () => { if (painting) { painting = null; ctx.update(); } };
+    root.addEventListener('pointerup', stop);
+    root.addEventListener('pointerleave', stop);
+    window.addEventListener('pointerup', stop, { once: true });
+  },
+};
+
+/* ---------------------------------------------------------------- 4. Aqueduct
+   Hashiwokakero. Straight channels, max two per pair, no crossings, all linked. */
+(function () {
+  const D = DATA.aqueduct;
+  const key = (i, j) => Math.min(i, j) + '-' + Math.max(i, j);
+  const between = (a, b) => {
+    const dr = Math.sign(b.r - a.r), dc = Math.sign(b.c - a.c), out = [];
+    let r = a.r + dr, c = a.c + dc;
+    while (r !== b.r || c !== b.c) { out.push(r + ',' + c); r += dr; c += dc; }
+    return out;
+  };
+  const occupied = new Set(D.islands.map((s) => s.r + ',' + s.c));
+  const EDGES = [];
+  for (let i = 0; i < D.islands.length; i++) for (let j = i + 1; j < D.islands.length; j++) {
+    const a = D.islands[i], b = D.islands[j];
+    if (a.r !== b.r && a.c !== b.c) continue;
+    const mid = between(a, b);
+    if (mid.some((k) => occupied.has(k))) continue;
+    EDGES.push({ i, j, k: key(i, j), horiz: a.r === b.r, mid });
+  }
+  const CROSS = {};
+  EDGES.forEach((e) => { CROSS[e.k] = []; });
+  for (let a = 0; a < EDGES.length; a++) for (let b = a + 1; b < EDGES.length; b++) {
+    if (EDGES[a].horiz === EDGES[b].horiz) continue;
+    if (EDGES[a].mid.some((m) => EDGES[b].mid.includes(m))) {
+      CROSS[EDGES[a].k].push(EDGES[b].k);
+      CROSS[EDGES[b].k].push(EDGES[a].k);
+    }
+  }
+  const SOL = {};
+  D.solution.forEach((s) => { SOL[key(s.i, s.j)] = s.n; });
+
+  P.aqueduct = {
+    init() { return { e: {} }; },
+    check(st) { return EDGES.every((e) => (st.e[e.k] || 0) === (SOL[e.k] || 0)); },
+    reveal(st) { st.e = {}; EDGES.forEach((e) => { if (SOL[e.k]) st.e[e.k] = SOL[e.k]; }); },
+    hint(st) {
+      const open = EDGES.filter((e) => (st.e[e.k] || 0) !== (SOL[e.k] || 0));
+      if (!open.length) return null;
+      const e = open[Math.floor(Math.random() * open.length)];
+      const want = SOL[e.k] || 0;
+      st.e[e.k] = want;
+      if (!want) delete st.e[e.k];
+      const a = D.islands[e.i], b = D.islands[e.j];
+      const nm = (x) => `(${x.r + 1},${x.c + 1})`;
+      return want
+        ? `${nm(a)} and ${nm(b)} carry ${want} channel${want > 1 ? 's' : ''}.`
+        : `No channel ever runs between ${nm(a)} and ${nm(b)}.`;
+    },
+    render(root, st, ctx) {
+      const S = 44, PAD = 26, size = PAD * 2 + (D.n - 1) * S;
+      const X = (c) => PAD + c * S, Y = (r) => PAD + r * S;
+      const deg = D.islands.map(() => 0);
+      EDGES.forEach((e) => { const n = st.e[e.k] || 0; deg[e.i] += n; deg[e.j] += n; });
+      let svg = `<svg class="aq" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+      for (let r = 0; r < D.n; r++) for (let c = 0; c < D.n; c++) {
+        if (!occupied.has(r + ',' + c)) svg += `<circle class="dot" cx="${X(c)}" cy="${Y(r)}" r="1.6"/>`;
+      }
+      EDGES.forEach((e) => {
+        const n = st.e[e.k] || 0;
+        if (!n) return;
+        const a = D.islands[e.i], b = D.islands[e.j];
+        const crossed = CROSS[e.k].some((k2) => (st.e[k2] || 0) > 0);
+        const offs = n === 1 ? [0] : [-3.5, 3.5];
+        offs.forEach((o) => {
+          const x1 = X(a.c) + (e.horiz ? 0 : o), y1 = Y(a.r) + (e.horiz ? o : 0);
+          const x2 = X(b.c) + (e.horiz ? 0 : o), y2 = Y(b.r) + (e.horiz ? o : 0);
+          svg += `<line class="span${crossed ? ' cross' : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        });
+      });
+      if (!ctx.done) {
+        EDGES.forEach((e) => {
+          const a = D.islands[e.i], b = D.islands[e.j];
+          svg += `<line class="edge" data-k="${e.k}" x1="${X(a.c)}" y1="${Y(a.r)}" x2="${X(b.c)}" y2="${Y(b.r)}"/>`;
+        });
+      }
+      D.islands.forEach((s, i) => {
+        const cls = deg[i] === s.deg ? 'isl done' : deg[i] > s.deg ? 'isl over' : 'isl';
+        svg += `<circle class="${cls}" cx="${X(s.c)}" cy="${Y(s.r)}" r="15"/>`;
+        svg += `<text class="deg" x="${X(s.c)}" y="${Y(s.r) + .5}">${s.deg}</text>`;
+      });
+      svg += '</svg>';
+      root.innerHTML = svg + '<div class="legend">Click the line between two cisterns to cycle none → one → two channels. Crossing channels turn red; a cistern rims gold when its count is met. Every cistern must join one single network.</div>';
+      if (ctx.done) return;
+      root.querySelectorAll('.edge').forEach((el) => el.addEventListener('click', () => {
+        const k = el.dataset.k;
+        const n = ((st.e[k] || 0) + 1) % 3;
+        if (n) st.e[k] = n; else delete st.e[k];
+        ctx.update();
+      }));
+    },
+  };
+})();
+
+/* ---------------------------------------------------------------- 5. Apothecary
+   Kakuro. Run sums with no repeated digit inside a run. */
+(function () {
+  const D = DATA.apothecary, N = D.size;
+  const clueAt = {};
+  D.clues.forEach((cl) => {
+    const k = cl.anchor[0] + ',' + cl.anchor[1];
+    clueAt[k] = clueAt[k] || {};
+    clueAt[k][cl.dir] = cl.sum;
+  });
+  const isWhite = (r, c) => r >= 0 && c >= 0 && r < N && c < N && D.layout[r][c] === 1;
+  const cellsList = [];
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (isWhite(r, c)) cellsList.push([r, c]);
+
+  P.apothecary = {
+    init() { return { g: range(N).map(() => Array(N).fill(0)), given: [], sel: cellsList[0].slice() }; },
+    check(st) { return cellsList.every(([r, c]) => st.g[r][c] === D.solution[r][c]); },
+    reveal(st) {
+      st.g = clone(D.solution);
+      st.given = cellsList.map(([r, c]) => r + ',' + c);
+    },
+    hint(st) {
+      const open = cellsList.filter(([r, c]) => st.g[r][c] !== D.solution[r][c] || !st.given.includes(r + ',' + c));
+      if (!open.length) return null;
+      const [r, c] = open[Math.floor(Math.random() * open.length)];
+      st.g[r][c] = D.solution[r][c];
+      st.given.push(r + ',' + c);
+      return `One measure is fixed: row ${r}, column ${c} holds ${st.g[r][c]}.`;
+    },
+    render(root, st, ctx) {
+      let html = '<table class="kak">';
+      for (let r = 0; r < N; r++) {
+        html += '<tr>';
+        for (let c = 0; c < N; c++) {
+          if (isWhite(r, c)) {
+            const v = st.g[r][c];
+            const cls = ['wht', st.given.includes(r + ',' + c) ? 'given' : '',
+              st.sel && st.sel[0] === r && st.sel[1] === c ? 'sel' : ''].filter(Boolean).join(' ');
+            html += `<td class="${cls}" data-r="${r}" data-c="${c}">${v || ''}</td>`;
+          } else {
+            const cl = clueAt[r + ',' + c];
+            const touches = isWhite(r + 1, c) || isWhite(r, c + 1) || isWhite(r - 1, c) || isWhite(r, c - 1);
+            if (!cl && !touches) { html += '<td class="void"></td>'; continue; }
+            let inner = '';
+            if (cl) {
+              inner += '<svg class="slash" viewBox="0 0 52 52" preserveAspectRatio="none">'
+                + '<line x1="0" y1="0" x2="52" y2="52" stroke="rgba(255,255,255,.18)" stroke-width="1"/></svg>';
+              if (cl.h) inner += `<span class="sright">${cl.h}</span>`;
+              if (cl.v) inner += `<span class="sdown">${cl.v}</span>`;
+            }
+            html += `<td class="blk">${inner}</td>`;
+          }
+        }
+        html += '</tr>';
+      }
+      html += '</table>';
+      if (!ctx.done) html += padHtml(digitKeys(9));
+      html += '<div class="legend">Upper-right number = sum of the run to its right. Lower-left = sum of the run below. No digit twice within one run. Select a vial, then tap a digit or press <kbd>1</kbd>–<kbd>9</kbd>.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      root.querySelectorAll('td.wht').forEach((el) => el.addEventListener('click', () => {
+        st.sel = [+el.dataset.r, +el.dataset.c];
+        ctx.update();
+      }));
+      const onKey = (e) => {
+        if (!st.sel) return;
+        let [r, c] = st.sel;
+        const step = (dr, dc) => {
+          for (let k = 1; k <= N; k++) {
+            const nr = (r + dr * k + N) % N, nc = (c + dc * k + N) % N;
+            if (isWhite(nr, nc)) return [nr, nc];
+          }
+          return [r, c];
+        };
+        if (e.key === 'ArrowUp') st.sel = step(-1, 0);
+        else if (e.key === 'ArrowDown') st.sel = step(1, 0);
+        else if (e.key === 'ArrowLeft') st.sel = step(0, -1);
+        else if (e.key === 'ArrowRight') st.sel = step(0, 1);
+        else if (/^[1-9]$/.test(e.key)) {
+          if (st.given.includes(r + ',' + c)) { toast('A hinted measure cannot be altered.'); return; }
+          st.g[r][c] = +e.key;
+        } else if (e.key === '0' || e.key === 'Backspace' || e.key === 'Delete') {
+          if (st.given.includes(r + ',' + c)) return;
+          st.g[r][c] = 0;
+        } else return;
+        e.preventDefault();
+        ctx.update();
+      };
+      ctx.setKey(onKey);
+      wirePad(root, onKey);
+    },
+  };
+})();
+
+/* ---------------------------------------------------------------- 6. Aviary
+   Star Battle. One bird per row, column and cage; none may touch. */
+(function () {
+  const D = DATA.aviary, N = D.n;
+  P.aviary = {
+    init() { return { g: range(N).map(() => Array(N).fill(0)), given: [] }; },
+    check(st) {
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+        if ((st.g[r][c] === 1) !== (D.stars[r] === c)) return false;
+      }
+      return true;
+    },
+    reveal(st) {
+      st.g = range(N).map((r) => range(N).map((c) => (D.stars[r] === c ? 1 : 2)));
+      st.given = D.stars.map((c, r) => r + ',' + c);
+    },
+    hint(st) {
+      const open = D.stars.map((c, r) => [r, c]).filter(([r, c]) => st.g[r][c] !== 1 || !st.given.includes(r + ',' + c));
+      if (!open.length) return null;
+      const [r, c] = open[Math.floor(Math.random() * open.length)];
+      st.g[r][c] = 1;
+      st.given.push(r + ',' + c);
+      return `A wing settles: row ${r + 1}, column ${c + 1} holds a nightingale.`;
+    },
+    render(root, st, ctx) {
+      const bad = range(N).map(() => Array(N).fill(false));
+      const birds = [];
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (st.g[r][c] === 1) birds.push([r, c]);
+      const tally = (list) => {
+        const seen = {};
+        list.forEach((k) => { seen[k] = (seen[k] || 0) + 1; });
+        return seen;
+      };
+      const rowT = tally(birds.map(([r]) => r));
+      const colT = tally(birds.map(([, c]) => c));
+      const regT = tally(birds.map(([r, c]) => D.regions[r][c]));
+      birds.forEach(([r, c]) => {
+        if (rowT[r] > 1 || colT[c] > 1 || regT[D.regions[r][c]] > 1) bad[r][c] = true;
+        birds.forEach(([r2, c2]) => {
+          if (r === r2 && c === c2) return;
+          if (Math.abs(r - r2) <= 1 && Math.abs(c - c2) <= 1) { bad[r][c] = true; bad[r2][c2] = true; }
+        });
+      });
+      let html = '<table class="avi">';
+      for (let r = 0; r < N; r++) {
+        html += '<tr>';
+        for (let c = 0; c < N; c++) {
+          const reg = D.regions[r][c];
+          const w = [];
+          if (c === 0 || D.regions[r][c - 1] !== reg) w.push('wl');
+          if (c === N - 1 || D.regions[r][c + 1] !== reg) w.push('wr');
+          if (r === 0 || D.regions[r - 1][c] !== reg) w.push('wt');
+          if (r === N - 1 || D.regions[r + 1][c] !== reg) w.push('wb');
+          const v = st.g[r][c];
+          const cls = ['ac', v === 1 ? 'bird' : v === 2 ? 'dot' : '', bad[r][c] ? 'bad' : '',
+            st.given.includes(r + ',' + c) ? 'given' : ''].concat(w).filter(Boolean).join(' ');
+          html += `<td><div class="${cls}" data-r="${r}" data-c="${c}">${v === 1 ? '✦' : v === 2 ? '·' : ''}</div></td>`;
+        }
+        html += '</tr>';
+      }
+      html += '</table><div class="legend">Click to cycle empty → nightingale → dot. Birds that break a rule turn red. Thick lines are cage walls.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      root.querySelectorAll('.ac').forEach((el) => el.addEventListener('click', () => {
+        const r = +el.dataset.r, c = +el.dataset.c;
+        if (st.given.includes(r + ',' + c)) { toast('A hinted nightingale will not be moved.'); return; }
+        st.g[r][c] = (st.g[r][c] + 1) % 3;
+        ctx.update();
+      }));
+    },
+  };
+})();
+
+/* ---------------------------------------------------------------- 7. Wax Seals
+   Cryptogram. One glyph = one letter, consistently, no two glyphs alike. */
+(function () {
+  const D = DATA.seals;
+  const inv = {};
+  Object.keys(D.map).forEach((L) => { inv[D.map[L]] = L; });
+  const GLYPHS = [...new Set(D.phrase.replace(/ /g, '').split('').map((ch) => D.map[ch]))];
+  const FREQ = {};
+  D.phrase.replace(/ /g, '').split('').forEach((ch) => { const g = D.map[ch]; FREQ[g] = (FREQ[g] || 0) + 1; });
+  const GIVEN = D.given.map((L) => D.map[L]);
+  const WORDS = D.phrase.split(' ').map((w) => w.split('').map((ch) => D.map[ch]));
+
+  P.seals = {
+    init() {
+      const m = {};
+      GIVEN.forEach((g) => { m[g] = inv[g]; });
+      return { m, given: GIVEN.slice(), sel: null };
+    },
+    check(st) { return GLYPHS.every((g) => st.m[g] === inv[g]); },
+    reveal(st) {
+      st.m = {};
+      GLYPHS.forEach((g) => { st.m[g] = inv[g]; });
+      st.given = GLYPHS.slice();
+      st.sel = null;
+    },
+    hint(st) {
+      const open = GLYPHS.filter((g) => st.m[g] !== inv[g]);
+      if (!open.length) return null;
+      open.sort((a, b) => FREQ[b] - FREQ[a]);
+      const g = open[0];
+      st.m[g] = inv[g];
+      if (!st.given.includes(g)) st.given.push(g);
+      return `The seal ${g} was pressed by the letter ${inv[g]}.`;
+    },
+    render(root, st, ctx) {
+      const usage = {};
+      Object.keys(st.m).forEach((g) => { const L = st.m[g]; if (L) usage[L] = (usage[L] || 0) + 1; });
+      let html = '<div class="cryptext">';
+      WORDS.forEach((w) => {
+        html += '<div class="cword">';
+        w.forEach((g) => {
+          const L = st.m[g] || '';
+          const cls = ['glyphcol', st.given.includes(g) ? 'locked' : '', st.sel === g ? 'sel' : '',
+            L && usage[L] > 1 ? 'dupe' : ''].filter(Boolean).join(' ');
+          html += `<div class="${cls}" data-g="${g}"><div class="gy">${g}</div><div class="pl">${L}</div></div>`;
+        });
+        html += '</div>';
+      });
+      html += '</div><div class="ring">';
+      GLYPHS.slice().sort((a, b) => FREQ[b] - FREQ[a]).forEach((g) => {
+        const L = st.m[g] || '·';
+        const cls = ['ringitem', st.given.includes(g) ? 'locked' : '', st.sel === g ? 'sel' : ''].filter(Boolean).join(' ');
+        html += `<div class="${cls}" data-g="${g}"><span class="g">${g}</span><span class="n">×${FREQ[g]}</span><span class="a">${L}</span></div>`;
+      });
+      html += '</div>';
+      if (!ctx.done) html += padHtml(letterKeys, true);
+      html += '<div class="legend">Click a seal, then tap or type its letter. Every occurrence changes together. A letter used by two seals turns red — the pressing was one-to-one.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      const pick = (g) => {
+        if (st.given.includes(g)) { toast('That seal is already broken open.'); return; }
+        st.sel = st.sel === g ? null : g;
+        ctx.update();
+      };
+      root.querySelectorAll('[data-g]').forEach((el) => el.addEventListener('click', () => pick(el.dataset.g)));
+      const onKey = (e) => {
+        if (!st.sel) { toast('Choose a seal first.'); return; }
+        if (/^[a-zA-Z]$/.test(e.key)) {
+          st.m[st.sel] = e.key.toUpperCase();
+          e.preventDefault();
+          ctx.update();
+        } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === ' ') {
+          delete st.m[st.sel];
+          e.preventDefault();
+          ctx.update();
+        }
+      };
+      ctx.setKey(onKey);
+      wirePad(root, onKey);
+    },
+  };
+})();
+
+/* ---------------------------------------------------------------- 8. Stair
+   Word ladder. One letter changes per step; letters never move. */
+(function () {
+  const D = DATA.stair, LEN = 4;
+  P.stair = {
+    init() {
+      return { w: D.map((row, i) => (i === 0 ? row.word.split('') : Array(LEN).fill(''))), sel: [1, 0] };
+    },
+    check(st) { return st.w.every((chars, i) => chars.join('') === D[i].word); },
+    reveal(st) { st.w = D.map((row) => row.word.split('')); st.sel = null; },
+    hint(st) {
+      for (let i = 1; i < D.length; i++) {
+        const want = D[i].word;
+        const holes = range(LEN).filter((k) => st.w[i][k] !== want[k]);
+        if (!holes.length) continue;
+        const k = holes[Math.floor(Math.random() * holes.length)];
+        st.w[i][k] = want[k];
+        return `Step ${i + 1} carries ${want[k]} in position ${k + 1}.`;
+      }
+      return null;
+    },
+    render(root, st, ctx) {
+      let html = '<div class="stair">';
+      D.forEach((row, i) => {
+        const chars = st.w[i];
+        const solved = chars.join('') === row.word;
+        html += `<div class="rung${solved ? ' done' : ''}"><div class="idx">${i + 1}</div><div class="boxes">`;
+        for (let k = 0; k < LEN; k++) {
+          const above = i > 0 ? st.w[i - 1][k] : '';
+          const changed = i > 0 && chars[k] && above && chars[k] !== above;
+          const cls = ['lb', i === 0 ? 'fixed' : '', changed ? 'chg' : '',
+            st.sel && st.sel[0] === i && st.sel[1] === k ? 'sel' : ''].filter(Boolean).join(' ');
+          html += `<div class="${cls}" data-i="${i}" data-k="${k}">${chars[k] || ''}</div>`;
+        }
+        html += `</div><div class="gloss">${esc(row.clue)}</div></div>`;
+      });
+      html += '</div>';
+      if (!ctx.done) html += padHtml(letterKeys, true);
+      html += '<div class="legend">Tap or type to fill the selected box; <kbd>⌫</kbd> steps back. Boxes outlined in blue differ from the step above — exactly one per step is allowed.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      root.querySelectorAll('.lb').forEach((el) => el.addEventListener('click', () => {
+        const i = +el.dataset.i;
+        if (i === 0) { toast('The first step is where you already stand.'); return; }
+        st.sel = [i, +el.dataset.k];
+        ctx.update();
+      }));
+      const onKey = (e) => {
+        if (!st.sel) return;
+        let [i, k] = st.sel;
+        if (/^[a-zA-Z]$/.test(e.key)) {
+          st.w[i][k] = e.key.toUpperCase();
+          if (k < LEN - 1) k++;
+          else if (i < D.length - 1) { i++; k = 0; }
+          st.sel = [i, k];
+        } else if (e.key === 'Backspace') {
+          if (st.w[i][k]) st.w[i][k] = '';
+          else if (k > 0) { k--; st.w[i][k] = ''; }
+          else if (i > 1) { i--; k = LEN - 1; st.w[i][k] = ''; }
+          st.sel = [i, k];
+        } else if (e.key === 'ArrowLeft') st.sel = [i, Math.max(0, k - 1)];
+        else if (e.key === 'ArrowRight') st.sel = [i, Math.min(LEN - 1, k + 1)];
+        else if (e.key === 'ArrowUp') st.sel = [Math.max(1, i - 1), k];
+        else if (e.key === 'ArrowDown') st.sel = [Math.min(D.length - 1, i + 1), k];
+        else return;
+        e.preventDefault();
+        ctx.update();
+      };
+      ctx.setKey(onKey);
+      wirePad(root, onKey);
+    },
+  };
+})();
+
+/* ---------------------------------------------------------------- 9. Assay Room
+   Balance equations. Six sigils, six different masses 1-9. */
+(function () {
+  const D = DATA.assay;
+  const sum = (side, v) => side.reduce((a, i) => (v[i] == null ? NaN : a + v[i]), 0);
+  P.assay = {
+    init() { return { v: Array(D.sigils.length).fill(null), given: [], sel: 0 }; },
+    check(st) { return eq(st.v, D.solution); },
+    reveal(st) { st.v = clone(D.solution); st.given = range(D.sigils.length); st.sel = null; },
+    hint(st) {
+      const open = range(D.sigils.length).filter((i) => st.v[i] !== D.solution[i] || !st.given.includes(i));
+      if (!open.length) return null;
+      const i = open[Math.floor(Math.random() * open.length)];
+      st.v[i] = D.solution[i];
+      st.given.push(i);
+      return `The ${D.sigils[i]} weighs ${st.v[i]}.`;
+    },
+    render(root, st, ctx) {
+      const counts = {};
+      st.v.forEach((x) => { if (x != null) counts[x] = (counts[x] || 0) + 1; });
+      const chips = (side) => side.map((i) =>
+        `<span class="chip">${esc(D.sigils[i])}${st.v[i] != null ? ` <b>${st.v[i]}</b>` : ''}</span>`).join('');
+      let html = '<div class="assay"><div class="scales">';
+      D.clues.forEach((cl) => {
+        const a = sum(cl.l, st.v), b = sum(cl.r, st.v);
+        const known = !isNaN(a) && !isNaN(b);
+        const cls = 'scale' + (known ? (a === b ? ' holds' : ' breaks') : '');
+        html += `<div class="${cls}"><div class="pan">${chips(cl.l)}</div>`
+          + `<div class="fulcrum">${cl.op === '=' ? '=' : cl.op}</div>`
+          + `<div class="pan right">${chips(cl.r)}</div></div>`;
+      });
+      html += '</div><div class="sigvals">';
+      D.sigils.forEach((s, i) => {
+        const v = st.v[i];
+        const cls = ['sigval', v == null ? 'empty' : '', v != null && counts[v] > 1 ? 'dupe' : '',
+          st.given.includes(i) ? 'given' : '', st.sel === i ? 'sel' : ''].filter(Boolean).join(' ');
+        html += `<div class="${cls}" data-i="${i}"><div class="nm">${esc(s)}</div><div class="vv">${v == null ? '–' : v}</div></div>`;
+      });
+      html += '</div></div>';
+      if (!ctx.done) html += padHtml(digitKeys(9));
+      html += '<div class="legend">Every balance shown is exact. Select a sigil, then tap a mass or press <kbd>1</kbd>–<kbd>9</kbd>. A balance rims green when the masses you have entered make it true, red when they break it. Two sigils never share a mass.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      root.querySelectorAll('.sigval').forEach((el) => el.addEventListener('click', () => {
+        st.sel = +el.dataset.i;
+        ctx.update();
+      }));
+      const onKey = (e) => {
+        if (st.sel == null) return;
+        if (/^[1-9]$/.test(e.key)) {
+          if (st.given.includes(st.sel)) { toast('That mass was given by a hint.'); return; }
+          st.v[st.sel] = +e.key;
+        } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
+          if (st.given.includes(st.sel)) return;
+          st.v[st.sel] = null;
+        } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { st.sel = (st.sel + 1) % D.sigils.length; }
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { st.sel = (st.sel + D.sigils.length - 1) % D.sigils.length; }
+        else return;
+        e.preventDefault();
+        ctx.update();
+      };
+      ctx.setKey(onKey);
+      wirePad(root, onKey);
+    },
+  };
+})();
+
+/* ----------------------------------------------------------------- The Last Seal
+   Capstone: the nine shard letters, walked inward along the spiral. */
+(function () {
+  // Nine distinct letters, and exactly one nine-letter word in a 355k lexicon
+  // uses that multiset — so the rack plus the verse fix the answer outright.
+  // The shards are handed out in scrambled order (see CHAMBERS) so that no
+  // prefix of the descent spells anything.
+  const TRUE_NAME = 'PARCHMENT';
+  const SPIRAL = [0, 1, 2, 5, 8, 7, 6, 3, 4]; // grid indices in walking order
+  const TILES = TRUE_NAME.split('').sort();
+  P.finale = {
+    init() { return { g: Array(9).fill(null), sel: null }; },
+    check(st) { return SPIRAL.map((i) => st.g[i]).join('') === TRUE_NAME; },
+    reveal(st) {
+      st.g = Array(9).fill(null);
+      SPIRAL.forEach((cell, step) => { st.g[cell] = TRUE_NAME[step]; });
+      st.sel = null;
+    },
+    hint(st) {
+      // every letter of the true name is distinct, so a letter can simply be
+      // lifted from wherever it is parked and set on the right stone
+      for (let step = 0; step < 9; step++) {
+        const cell = SPIRAL[step];
+        const want = TRUE_NAME[step];
+        if (st.g[cell] === want) continue;
+        const parked = st.g.indexOf(want);
+        if (parked >= 0) st.g[parked] = null;
+        st.g[cell] = want;
+        return `Step ${step + 1} of the walk is ${want}.`;
+      }
+      return null;
+    },
+    render(root, st, ctx) {
+      const used = {};
+      st.g.forEach((L) => { if (L) used[L] = (used[L] || 0) + 1; });
+      const avail = {};
+      TILES.forEach((L) => { avail[L] = (avail[L] || 0) + 1; });
+      const ordOf = (cell) => SPIRAL.indexOf(cell) + 1;
+      let cells = '';
+      for (let i = 0; i < 9; i++) {
+        const L = st.g[i];
+        const cls = ['scell', L ? '' : 'empty', st.sel && st.sel.cell === i ? 'sel' : ''].filter(Boolean).join(' ');
+        cells += `<div class="${cls}" data-cell="${i}"><span class="ord">${ordOf(i)}</span>${L || '·'}</div>`;
+      }
+      const pts = SPIRAL.map((c) => `${(c % 3) * 74 + 37},${Math.floor(c / 3) * 74 + 37}`).join(' ');
+      let html = '<div class="finalwrap">'
+        + `<div class="spiral"><div class="sgrid">${cells}</div>`
+        + `<svg viewBox="0 0 222 222"><polyline points="${pts}" fill="none" stroke="rgba(217,162,78,.3)" stroke-width="2" stroke-linejoin="round"/>`
+        + `<circle cx="37" cy="37" r="4" fill="rgba(217,162,78,.55)"/></svg></div>`
+        + '<div style="display:flex;flex-direction:column;gap:18px;max-width:300px">'
+        + '<div class="riddle">I was an animal once.<br>They scraped me thin and stretched me<br>until I learned to hold still.<br>Every wall you have walked<br>was drawn on me.</div>'
+        + '<div class="tiles">';
+      const spent = {};
+      TILES.forEach((L, i) => {
+        spent[L] = (spent[L] || 0) + 1;
+        const isUsed = (used[L] || 0) >= spent[L];
+        const cls = ['tile', isUsed ? 'used' : '', st.sel && st.sel.tile === i ? 'sel' : ''].filter(Boolean).join(' ');
+        html += `<div class="${cls}" data-tile="${i}" data-letter="${L}">${L}</div>`;
+      });
+      html += '</div></div></div>'
+        + '<div class="legend">The gold line is the walk: from the outer corner, inward. Click a shard then a stone — or a filled stone to lift the shard out. Small numbers give the order of the walk.</div>';
+      root.innerHTML = html;
+      if (ctx.done) return;
+      root.querySelectorAll('[data-tile]').forEach((el) => el.addEventListener('click', () => {
+        if (el.classList.contains('used')) return;
+        const i = +el.dataset.tile;
+        if (st.sel && st.sel.cell != null) {
+          st.g[st.sel.cell] = el.dataset.letter;
+          st.sel = null;
+        } else st.sel = st.sel && st.sel.tile === i ? null : { tile: i, letter: el.dataset.letter };
+        ctx.update();
+      }));
+      root.querySelectorAll('[data-cell]').forEach((el) => el.addEventListener('click', () => {
+        const cell = +el.dataset.cell;
+        if (st.sel && st.sel.tile != null) { st.g[cell] = st.sel.letter; st.sel = null; }
+        else if (st.g[cell]) { st.g[cell] = null; st.sel = null; }
+        else st.sel = st.sel && st.sel.cell === cell ? null : { cell };
+        ctx.update();
+      }));
+    },
+  };
+})();
+
+/* ==========================================================================
+   CHAMBER REGISTRY
+   ========================================================================== */
+/* Order is by measured difficulty, gentlest first, so the descent teaches
+   before it bites. The shard letters deliberately do NOT run in the order of
+   the true name — collect all nine and the finale is a genuine anagram. */
+const CHAMBERS = [
+  {
+    id: 'seals', n: 1, name: 'The Wax Seals', kind: 'Cipher', letter: 'T', needs: 0,
+    ctrl: P.seals, maxHints: 3,
+    epigraph: 'A sentence pressed into wax with a set of stamps, one stamp to a letter. The stamps are lost.',
+    reject: 'The wax reads as nonsense. Some stamp is misnamed.',
+    rules: [
+      'Each glyph stands for <strong>one letter, always the same letter</strong>.',
+      'No two glyphs share a letter, and no glyph stands for itself.',
+      'Word breaks are preserved exactly as pressed. The sentence is ordinary English — and exactly one English reading fits.',
+      '<strong>Three glyphs are already broken open</strong>, and the tally beneath each shows how often it appears.',
+    ],
+  },
+  {
+    id: 'loom', n: 2, name: 'The Loom', kind: 'Weave', letter: 'N', needs: 0,
+    ctrl: P.loom, maxHints: 3,
+    epigraph: 'A half-finished tapestry, and beside each thread the tally the weaver kept.',
+    reject: 'The weave slips. Something in the tally is unhonoured.',
+    rules: [
+      'Each tally lists the lengths of the <strong>knotted runs</strong> in that thread, <strong>in order</strong>.',
+      'Runs are separated by <strong>at least one slack cell</strong>; slack may also sit before the first run and after the last.',
+      'Knot cells, or mark them slack to keep your reasoning straight.',
+      'This pattern is solvable by pure line-by-line logic — no guessing is ever required.',
+    ],
+  },
+  {
+    id: 'aqueduct', n: 3, name: 'The Aqueduct', kind: 'Network', letter: 'R', needs: 0,
+    ctrl: P.aqueduct, maxHints: 3,
+    epigraph: 'Sixteen dry cisterns. Each is stamped with the number of channels that once touched it.',
+    reject: 'Water would pool and stop. The network is wrong.',
+    rules: [
+      'Channels run <strong>straight</strong>, horizontally or vertically, between <strong>two cisterns</strong>.',
+      'At most <strong>two channels</strong> may join the same pair. Channels <strong>may not cross</strong> one another or pass through a cistern.',
+      'A cistern\'s number is <strong>exactly</strong> how many channel-ends touch it.',
+      'When you are done, <strong>every cistern must be reachable from every other</strong> — one network, not two.',
+    ],
+  },
+  {
+    id: 'assay', n: 4, name: 'The Assay Room', kind: 'Algebra', letter: 'M', needs: 2,
+    ctrl: P.assay, maxHints: 3,
+    epigraph: 'Six sigil-weights and five balances left standing, each frozen mid-agreement.',
+    reject: 'The pans lurch. Those masses cannot all be true.',
+    rules: [
+      'Six sigils carry <strong>six different whole masses</strong>, each between <strong>1 and 9</strong>.',
+      'Every balance shown is <strong>exact</strong> — the two pans weigh precisely the same.',
+      'Five balances and the rule of difference are together enough to fix all six masses.',
+    ],
+  },
+  {
+    id: 'stair', n: 5, name: "The Alchemist's Stair", kind: 'Lexical', letter: 'C', needs: 2,
+    ctrl: P.stair, maxHints: 3,
+    epigraph: 'Nine steps down, each cut from the one above by a single chisel-stroke.',
+    reject: 'A step will not bear weight. Check the strokes.',
+    rules: [
+      'Nine steps. Each step changes <strong>exactly one letter</strong> of the step above it.',
+      'Letters <strong>never move position</strong> and the word is always <strong>four letters</strong>.',
+      'Every step is an ordinary English word matching the gloss beside it.',
+      'The first step is given. The last one is where the stair lets you out.',
+    ],
+  },
+  {
+    id: 'sluice', n: 6, name: 'Sluice Row', kind: 'Sightlines', letter: 'H', needs: 2,
+    ctrl: P.sluice, maxHints: 3,
+    epigraph: 'Twenty-five gates in a flooded grid. The rim is scored with counts made by someone who could still see.',
+    reject: 'The sightlines do not agree. The water does not move.',
+    rules: [
+      'Every row and every column holds gates of height <strong>1, 2, 3, 4 and 5</strong> — each height once.',
+      'A gate <strong>hides every shorter gate behind it</strong>; a taller one further back is still visible.',
+      'A number on the rim counts <strong>how many gate-tops are visible</strong> looking down that row or column from that side.',
+      'Unmarked rim positions were never scored. Seven counts are enough.',
+    ],
+  },
+  {
+    id: 'reliquary', n: 7, name: 'The Reliquary', kind: 'Deduction', letter: 'E', needs: 5,
+    ctrl: P.reliquary, maxHints: 3,
+    epigraph: 'Five niches cut into the west wall. Fifteen names on the inventory. One arrangement that does not lie.',
+    reject: 'The inventory disagrees with the wall. Nothing moves.',
+    rules: [
+      'Five niches stand in a row, numbered <strong>1 to 5 from the left</strong>.',
+      'Each niche holds exactly one <strong>keeper</strong>, one <strong>relic</strong> and one <strong>hour</strong>.',
+      'No keeper, relic or hour appears in more than one niche.',
+      'The etchings on the right are jointly sufficient: exactly one arrangement satisfies all nine.',
+    ],
+    clues: DATA.logic.clues.map((c) => c.text),
+  },
+  {
+    id: 'aviary', n: 8, name: 'The Aviary', kind: 'Placement', letter: 'A', needs: 5,
+    ctrl: P.aviary, maxHints: 3,
+    epigraph: 'Eight cages, drawn in wire that ignores the grid. The birds were bred to hate each other.',
+    reject: 'A bird is caged wrongly. The whole aviary goes quiet.',
+    rules: [
+      'Place exactly <strong>one nightingale</strong> in every row, every column, and every wire cage.',
+      'No two nightingales may <strong>touch</strong> — not side by side, and not diagonally.',
+      'Cages are the thick-walled shapes; they cut across rows and columns freely.',
+      'Mark cells you have ruled out with a dot.',
+    ],
+  },
+  {
+    id: 'apothecary', n: 9, name: 'The Apothecary', kind: 'Arithmetic', letter: 'P', needs: 5,
+    ctrl: P.apothecary, maxHints: 3,
+    epigraph: 'A rack of empty vials. The dividers are still labelled with the masses of what stood beside them.',
+    reject: 'A sum is short or a digit is doubled. The rack rejects it.',
+    rules: [
+      'Fill every pale cell with a digit from <strong>1 to 9</strong>. Zero is never used.',
+      'A number in the <strong>upper right</strong> of a divider is the sum of the unbroken run <strong>to its right</strong>.',
+      'A number in the <strong>lower left</strong> is the sum of the unbroken run <strong>below it</strong>.',
+      'No digit may repeat <strong>within a single run</strong> — though the same digit may appear in crossing runs.',
+    ],
+  },
+];
+const FINALE = {
+  id: 'finale', n: 10, name: 'The Last Seal', kind: 'The True Name', letter: '✦', needs: 9,
+  ctrl: P.finale, maxHints: 2,
+  epigraph: 'Nine shards, nine letters, and a spiral cut into the floor of the last room.',
+  reject: 'The walk spells nothing. The floor stays shut.',
+  rules: [
+    'Your nine shard-letters are below. Each belongs on <strong>one stone</strong> of the spiral.',
+    'The chambers gave them up in <strong>no particular order</strong> — this is an anagram, not a transcription.',
+    'Walk the gold line from the <strong>outer corner inward</strong>; the letters you pass must spell the <strong>true name</strong> of this place.',
+    'Exactly one nine-letter English word uses these nine letters. The verse tells you which.',
+  ],
+};
+const ALL = CHAMBERS.concat([FINALE]);
+const byId = (id) => ALL.find((c) => c.id === id);
+const unlocked = (c) => solvedCount() >= c.needs;
+
+/* ==========================================================================
+   SHELL
+   ========================================================================== */
+let activeKey = null;
+let currentId = null;
+
+document.addEventListener('keydown', (e) => {
+  if ($('#scrim').classList.contains('show')) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (activeKey) activeKey(e);
+});
+
+function boardStateFor(c) {
+  const fresh = c.ctrl.init();
+  const saved = SAVE.boards[c.id];
+  if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return fresh;
+  // shape-guard: a board saved by an older build must not crash the view
+  const want = Object.keys(fresh).sort().join(',');
+  const got = Object.keys(saved).sort().join(',');
+  return want === got ? saved : fresh;
+}
+
+function renderShards() {
+  $('#shards').innerHTML = CHAMBERS.map((c) => {
+    const s = statusOf(c.id);
+    const cls = s === 'solved' ? 'shard have' : s === 'forced' ? 'shard forced' : 'shard';
+    return `<div class="${cls}" title="${esc(c.name)}">${isDone(c.id) ? c.letter : '·'}</div>`;
+  }).join('');
+}
+function renderTick() {
+  const n = solvedCount();
+  let t = '';
+  if (SAVE.started) {
+    const secs = Math.floor(((SAVE.finished || Date.now()) - SAVE.started) / 1000);
+    const mm = String(Math.floor(secs / 60)).padStart(2, '0');
+    const ss = String(secs % 60).padStart(2, '0');
+    t = `${mm}:${ss} · `;
+  }
+  $('#tick').textContent = t + `${n}/9 seals`;
+}
+setInterval(renderTick, 1000);
+
+function renderAtrium() {
+  currentId = null;
+  activeKey = null;
+  const n = solvedCount();
+  const done = n === 9 && isDone('finale');
+  let html = '<div class="hero">'
+    + `<h1>Nine chambers.<br>Nine mechanisms.<br>One <em>true name</em>.</h1>`
+    + '<p>Someone mapped this place and then sealed it behind their own puzzles. Each mechanism yields a lettered shard. The chambers are ordered gentlest first — and they surrender their letters in an order that spells nothing, so the last seal is an anagram you must break yourself.</p>'
+    + '<div class="rule"></div>'
+    + '<div class="meta">every chamber has exactly one solution &nbsp;·&nbsp; the clues given are always sufficient &nbsp;·&nbsp; nothing here is guesswork</div>'
+    + '</div>';
+  html += '<div class="grid-label">The Descent</div><div class="chambers">';
+  CHAMBERS.forEach((c) => {
+    const s = statusOf(c.id);
+    const open = unlocked(c);
+    const cls = ['card', s === 'solved' ? 'solved' : '', s === 'forced' ? 'forced' : '', open ? '' : 'locked'].filter(Boolean).join(' ');
+    const state = s === 'solved' ? 'Opened' : s === 'forced' ? 'Forced' : open ? 'Sealed' : `Needs ${c.needs} seals`;
+    html += `<div class="${cls}" data-open="${open ? c.id : ''}">
+      <div class="num">CHAMBER ${String(c.n).padStart(2, '0')}</div>
+      <h3>${esc(c.name)}</h3>
+      <div class="kind">${esc(c.kind)}</div>
+      <div class="foot"><div class="state">${state}</div><div class="seal">${isDone(c.id) ? c.letter : '·'}</div></div>
+    </div>`;
+  });
+  const fOpen = unlocked(FINALE);
+  const fs = statusOf('finale');
+  html += `<div class="card final ${fs === 'solved' ? 'solved' : fs === 'forced' ? 'forced' : ''} ${fOpen ? '' : 'locked'}" data-open="${fOpen ? 'finale' : ''}">
+    <div class="seal">${isDone('finale') ? '✦' : '·'}</div>
+    <div class="body"><h3>${esc(FINALE.name)}</h3>
+    <div class="kind">${esc(FINALE.kind)}</div></div>
+    <div class="state">${fs === 'solved' ? 'Opened' : fs === 'forced' ? 'Forced' : fOpen ? 'All nine shards in hand' : `Needs all nine shards — you hold ${n}`}</div>
+  </div>`;
+  html += '</div>';
+  if (done) html += ledgerHtml();
+  $('#view').innerHTML = html;
+  $('#view').querySelectorAll('[data-open]').forEach((el) => {
+    if (!el.dataset.open) return;
+    el.addEventListener('click', () => openChamber(el.dataset.open));
+  });
+  renderShards();
+  renderTick();
+}
+
+function ledgerHtml() {
+  const forced = CHAMBERS.filter((c) => statusOf(c.id) === 'forced').length;
+  const hints = ALL.reduce((a, c) => a + hintsUsed(c.id), 0);
+  let html = '<div class="grid-label">The Descent Log</div><div class="panel"><div class="body"><ul class="ledger">';
+  ALL.forEach((c) => {
+    const s = statusOf(c.id);
+    const h = hintsUsed(c.id);
+    const label = s === 'forced' ? 'forced open' : s === 'solved' ? (h ? `solved · ${h} hint${h > 1 ? 's' : ''}` : 'solved unaided') : 'never opened';
+    html += `<li class="${s === 'forced' ? 'forced' : h ? '' : 'clean'}"><b>${esc(c.name)}</b><span class="v">${label}</span></li>`;
+  });
+  html += `</ul><p style="margin-top:14px">${forced === 0 && hints === 0
+    ? 'Nine mechanisms, no mercy taken. The map was yours before you found it.'
+    : `Forced open: ${forced}. Hints spent: ${hints}. The name is the same either way — but the record is the record.`}</p></div></div>`;
+  return html;
+}
+
+function openChamber(id) {
+  const c = byId(id);
+  if (!unlocked(c)) { toast('That door is still sealed.'); return; }
+  if (!SAVE.started) { SAVE.started = Date.now(); persist(); }
+  currentId = id;
+  activeKey = null;
+  const st = boardStateFor(c);
+  SAVE.boards[id] = st;
+  const s = statusOf(id);
+  const done = isDone(id);
+
+  let html = '<div class="chead">'
+    + '<button class="btn ghost" id="backBtn">← The Descent</button>'
+    + `<div class="body"><div class="num">CHAMBER ${String(c.n).padStart(2, '0')}</div>`
+    + `<h2>${esc(c.name)}</h2><div class="kind">${esc(c.kind)}</div>`
+    + `<p class="epigraph">${esc(c.epigraph)}</p></div>`
+    + (done ? `<div class="solvedbanner">${s === 'forced' ? 'forced open' : 'seal broken'} · shard ${c.letter}</div>` : '')
+    + '</div>';
+  // Controls come first in the rail so the primary action never needs scrolling.
+  const mech = '<div class="panel"><h4>Mechanism</h4><div class="body">'
+    + '<div class="controls">'
+    + (done ? '<button class="btn" id="backBtn2" style="flex:1 0 100%">Return to the descent</button>'
+      : '<button class="btn primary" id="checkBtn">Test the seal</button>'
+      + `<button class="btn" id="hintBtn">Hint <span style="opacity:.6">${c.maxHints - hintsUsed(c.id)}</span></button>`
+      + '<button class="btn" id="clearBtn">Clear</button>'
+      + '<button class="btn danger" id="revealBtn" style="flex:1 0 100%">Show me the solution</button>')
+    + '</div>'
+    + `<p style="margin-top:12px;font-size:12.5px" id="hintSlot">${done
+      ? (s === 'forced' ? 'You forced this one. The shard is yours anyway.' : 'Solved. The shard is yours.')
+      : 'Nothing here needs a guess. If you are guessing, you are missing a deduction.'}</p>`
+    + '</div></div>';
+  const protocol = '<div class="panel"><h4>Protocol</h4><div class="body">'
+    + c.rules.map((r) => `<p>${r}</p>`).join('')
+    + '</div></div>';
+  const etchings = c.clues
+    ? '<div class="panel"><h4>Etchings <span style="color:var(--ink-faint);text-transform:none;letter-spacing:0">click to strike</span></h4><ul class="clues" id="clueList">'
+      + c.clues.map((t, i) => {
+        const struck = (SAVE.notes[c.id] || []).includes(i);
+        return `<li class="${struck ? 'used' : ''}" data-i="${i}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span>${esc(t)}</span></li>`;
+      }).join('')
+      + '</ul></div>'
+    : '';
+  html += '<div class="stage"><div class="board-wrap" id="board"></div>'
+    + `<div class="side">${mech}${protocol}${etchings}</div></div>`;
+  $('#view').innerHTML = html;
+
+  const board = $('#board');
+  const ctx = {
+    done,
+    id,
+    setKey(fn) { activeKey = fn; },
+    update() {
+      SAVE.boards[id] = st;
+      persist();
+      c.ctrl.render(board, st, ctx);
+    },
+  };
+  c.ctrl.render(board, st, ctx);
+
+  const back = () => renderAtrium();
+  const b1 = $('#backBtn'); if (b1) b1.addEventListener('click', back);
+  const b2 = $('#backBtn2'); if (b2) b2.addEventListener('click', back);
+  const cl = $('#clueList');
+  if (cl) cl.querySelectorAll('li').forEach((li) => li.addEventListener('click', () => {
+    const i = +li.dataset.i;
+    const set = new Set(SAVE.notes[c.id] || []);
+    if (set.has(i)) set.delete(i); else set.add(i);
+    SAVE.notes[c.id] = [...set];
+    persist();
+    li.classList.toggle('used');
+  }));
+  if (done) return;
+
+  $('#checkBtn').addEventListener('click', () => {
+    if (c.ctrl.check(st)) solve(c, st);
+    else toast(c.reject, 'bad');
+  });
+  $('#hintBtn').addEventListener('click', () => {
+    const left = c.maxHints - hintsUsed(c.id);
+    if (left <= 0) { toast('This chamber has no mercy left.', 'bad'); return; }
+    const msg = c.ctrl.hint(st);
+    if (!msg) { toast('There is nothing left to reveal.'); return; }
+    SAVE.hints[c.id] = hintsUsed(c.id) + 1;
+    persist();
+    ctx.update();
+    $('#hintBtn').innerHTML = `Hint <span style="opacity:.6">${c.maxHints - hintsUsed(c.id)}</span>`;
+    $('#hintSlot').innerHTML = `<span class="hintlog">${esc(msg)}</span>`;
+  });
+  $('#clearBtn').addEventListener('click', () => {
+    modal('<h3>Clear the board?</h3><p>Every mark you have made in this chamber is wiped, including hinted cells. Hints already spent are not returned.</p>'
+      + '<div class="acts"><button class="btn" data-act="no">Keep it</button><button class="btn danger" data-act="yes">Wipe it</button></div>');
+    wireModal({
+      yes: () => {
+        SAVE.boards[id] = c.ctrl.init();
+        persist();
+        closeModal();
+        openChamber(id);
+      },
+    });
+  });
+  $('#revealBtn').addEventListener('click', () => {
+    modal('<h3>Show the solution?</h3>'
+      + '<p>The mechanism opens itself and hands you the shard — but the log will record that this chamber was <em>forced</em>, and you cannot un-see it.</p>'
+      + '<p style="color:var(--ink-faint)">Every chamber here is solvable from the clues alone. You still have hints.</p>'
+      + '<div class="acts"><button class="btn" data-act="no">Not yet</button><button class="btn danger" data-act="yes">Force it open</button></div>');
+    wireModal({
+      yes: () => {
+        c.ctrl.reveal(st);
+        SAVE.boards[id] = st;
+        SAVE.status[id] = 'forced';
+        if (id === 'finale') SAVE.finished = Date.now();
+        persist();
+        closeModal();
+        openChamber(id);
+        toast('The mechanism opens under protest. Shard ' + c.letter + ' is yours.', 'bad');
+      },
+    });
+  });
+}
+
+function wireModal(handlers) {
+  $('#modal').querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => {
+    const act = b.dataset.act;
+    if (act === 'no') { closeModal(); return; }
+    if (handlers[act]) handlers[act]();
+  }));
+}
+
+function solve(c, st) {
+  SAVE.status[c.id] = 'solved';
+  SAVE.boards[c.id] = st;
+  if (c.id === 'finale') SAVE.finished = Date.now();
+  persist();
+  renderShards();
+  renderTick();
+  celebrate(c.id === 'finale');
+  if (c.id === 'finale') {
+    const secs = Math.floor((SAVE.finished - SAVE.started) / 1000);
+    const mm = Math.floor(secs / 60), ss = secs % 60;
+    modal('<h3>The floor opens.</h3>'
+      + '<p class="epigraph" style="margin:0 0 14px">The spiral reads <strong style="color:var(--wax)">PARCHMENT</strong>. The walls go thin at the edges, the way a drawing does, and you understand that you have been walking around inside the map the whole time.</p>'
+      + `<p>Nine mechanisms. ${mm}m ${ss}s. ${cleanCount()} of 9 chambers solved without force.</p>`
+      + '<div class="acts"><button class="btn primary" data-act="yes">See the log</button></div>');
+    wireModal({ yes: () => { closeModal(); renderAtrium(); } });
+    return;
+  }
+  const nextNow = CHAMBERS.filter((x) => !isDone(x.id) && unlocked(x)).length;
+  modal(`<h3>Shard ${c.letter}</h3>`
+    + `<p class="epigraph" style="margin:0 0 14px">${esc(c.name)} gives way. A wedge of dark glass drops into your hand, cut with the letter <strong style="color:var(--wax)">${c.letter}</strong>.</p>`
+    + `<p>${solvedCount()} of nine seals broken.${solvedCount() === 9 ? ' <strong>The last seal will see you now.</strong>' : nextNow ? ` ${nextNow} chamber${nextNow > 1 ? 's' : ''} stand open.` : ''}</p>`
+    + '<div class="acts"><button class="btn" data-act="stay">Stay here</button><button class="btn primary" data-act="yes">Onward</button></div>');
+  wireModal({
+    yes: () => { closeModal(); renderAtrium(); },
+    stay: () => { closeModal(); openChamber(c.id); },
+  });
+}
+
+$('#resetBtn').addEventListener('click', () => {
+  modal('<h3>Abandon the descent?</h3><p>Every seal, board and shard is erased. The place resets to the moment before you arrived.</p>'
+    + '<div class="acts"><button class="btn" data-act="no">Keep going</button><button class="btn danger" data-act="yes">Erase everything</button></div>');
+  wireModal({
+    yes: () => {
+      try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* ignore */ }
+      SAVE = clone(DEFAULT_SAVE);
+      closeModal();
+      renderAtrium();
+      toast('The dust settles. Nothing has been opened.');
+    },
+  });
+});
+
+renderAtrium();
+</script>
+</body>
+</html>
