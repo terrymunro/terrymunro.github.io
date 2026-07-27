@@ -473,29 +473,39 @@ a{color:var(--cool)}
 .sigval.given .vv{color:var(--wax)}
 
 /* ============================== final seal ============================== */
-.finalwrap{display:flex;gap:34px;flex-wrap:wrap;justify-content:center;align-items:center}
-.spiral{position:relative;width:222px;height:222px;flex:none}
-.spiral svg{position:absolute;inset:0;pointer-events:none;overflow:visible}
-.spiral .sgrid{display:grid;grid-template-columns:repeat(3,74px);grid-template-rows:repeat(3,74px)}
-.scell{
-  border:1px solid var(--line-mid);display:grid;place-items:center;cursor:pointer;
-  font-family:var(--mono);font-size:26px;background:var(--bg-lift);transition:.15s;position:relative;
+/* width:100% is load-bearing — .board-wrap centres its children, and an
+   inline-size container that shrink-to-fits collapses to nothing. */
+.finalwrap{display:flex;flex-direction:column;gap:28px;align-items:center;width:100%;container-type:inline-size}
+.finalwrap .riddle{text-align:center}
+/* One row, always nine tiles, never wrapping — the row IS the word, so it has
+   to stay readable left-to-right on a phone. The tiles divide whatever width
+   the board column has (cqi, not vw: the side rail eats a third of the page
+   until it stacks at 940px, and vw would push the row into a scrollbar). */
+.rack{
+  --tg:clamp(4px,1cqi,9px);
+  display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:var(--tg);
+  width:100%;max-width:calc(9 * 54px + 10 * var(--tg) + 6px);
+  padding:var(--tg) calc(var(--tg) + 3px);
+  border:1px solid var(--line);border-radius:var(--r);background:var(--bg-lift);
+  touch-action:none;
 }
-.scell:hover{background:#1b1f26}
-.scell.sel{outline:2px solid var(--wax);outline-offset:-2px}
-.scell.empty{color:var(--ink-faint)}
-.scell .ord{
-  position:absolute;top:3px;left:5px;font-size:9px;color:var(--ink-faint);font-family:var(--mono);
-}
-.tiles{display:flex;flex-wrap:wrap;gap:7px;max-width:230px;justify-content:center}
 .tile{
-  width:40px;height:46px;border:1px solid var(--line-mid);border-radius:var(--r-sm);
-  background:var(--panel);display:grid;place-items:center;font-family:var(--mono);font-size:20px;
-  cursor:pointer;transition:.15s;
+  aspect-ratio:41 / 50;min-width:0;
+  border:1px solid var(--line-mid);border-radius:var(--r-sm);background:var(--panel);
+  display:grid;place-items:center;font-family:var(--mono);font-size:min(25px,4.7cqi);
+  cursor:grab;user-select:none;touch-action:none;
+  transition:border-color .15s,background .15s,color .15s;
 }
 .tile:hover{border-color:var(--wax)}
-.tile.used{opacity:.24;cursor:default}
+.rack.done{border-color:var(--wax-line);background:var(--wax-soft)}
+.rack.done .tile{cursor:default;color:var(--wax);border-color:var(--wax-line)}
+.rack.done .tile:hover{border-color:var(--wax-line)}
 .tile.sel{border-color:var(--wax);background:var(--wax-soft);color:var(--wax)}
+.tile.drag{
+  position:relative;z-index:3;cursor:grabbing;transition:none;
+  border-color:var(--wax);background:var(--wax-soft);color:var(--wax);
+  box-shadow:0 14px 26px -10px rgba(0,0,0,.8);
+}
 .riddle{
   font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-dim);
   line-height:1.85;max-width:44ch;
@@ -541,7 +551,7 @@ a{color:var(--cool)}
    EXACTLY ONE solution consistent with the clues shown to the player.
    ========================================================================== */
 const DATA = {
-  logic: {"cats":[{"key":"keeper","label":"Keeper","items":["Aster","Brivel","Corda","Dunmar","Elish"]},{"key":"relic","label":"Relic","items":["Ash Bell","Bone Key","Glass Eye","Iron Tooth","Salt Coin"]},{"key":"hour","label":"Hour","items":["Dusk","Matins","Midnight","Noon","Vespers"]}],"solution":[["Dunmar","Aster","Corda","Brivel","Elish"],["Salt Coin","Iron Tooth","Bone Key","Glass Eye","Ash Bell"],["Midnight","Noon","Dusk","Matins","Vespers"]],"clues":[{"text":"Elish sits at one end of the row."},{"text":"Exactly 2 niches stand between Elish and Noon."},{"text":"The Glass Eye is adjacent to Corda."},{"text":"Dusk lies between the Salt Coin and Elish."},{"text":"Matins lies immediately left of the Ash Bell."},{"text":"Midnight is adjacent to Aster."},{"text":"Exactly 2 niches stand between Midnight and Brivel."},{"text":"The Bone Key lies between Midnight and Elish."},{"text":"Exactly 2 niches stand between Vespers and the Iron Tooth."}]},
+  logic: {"cats":[{"key":"keeper","label":"Keeper","items":["Aster","Brivel","Corda","Dunmar","Elish"]},{"key":"relic","label":"Relic","items":["Ash Bell","Bone Key","Glass Eye","Iron Tooth","Salt Coin"]},{"key":"hour","label":"Hour","items":["Dusk","Matins","Midnight","Noon","Vespers"]}],"solution":[["Dunmar","Aster","Corda","Brivel","Elish"],["Salt Coin","Iron Tooth","Bone Key","Glass Eye","Ash Bell"],["Midnight","Noon","Dusk","Matins","Vespers"]],"clues":[{"text":"Elish sits at one end of the row."},{"text":"Exactly 2 niches stand between Elish and Noon."},{"text":"The Glass Eye is adjacent to Corda."},{"text":"Dusk lies between the Salt Coin and Elish."},{"text":"Matins lies immediately left of the Ash Bell."},{"text":"Midnight is adjacent to Aster."},{"text":"Exactly 2 niches stand between Midnight and Brivel."},{"text":"Aster lies somewhere left of the Bone Key."},{"text":"The Bone Key lies somewhere left of Vespers."},{"text":"Exactly 2 niches stand between Vespers and the Iron Tooth."}]},
   sluice: {"solution":[[4,2,1,3,5],[5,1,3,2,4],[2,3,4,5,1],[1,5,2,4,3],[3,4,5,1,2]],"clues":{"top":[0,0,4,2,0],"right":[1,0,0,0,2],"bottom":[2,0,0,0,0],"left":[0,1,0,0,3]}},
   loom: {"w":11,"h":11,"rows":[[11],[1],[9,1],[1,1,1],[1,5,1,1],[1,1,1,1,1],[1,1,1,1,1,1],[1,1,3,1,1],[1,1,1,1],[1,7,1],[1]],"cols":[[1,9],[1,1],[1,1,6],[1,1,1,1],[1,1,1,2,1],[1,1,1,1,1],[1,1,4,1],[1,1,1],[1,8],[1],[10]],"solution":[[1,1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,1,1,0,1,0,1],[1,0,1,0,0,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,1,1,0,1,0,1],[1,0,1,0,0,0,0,0,1,0,1],[1,0,1,1,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0]]},
   aqueduct: {"n":8,"islands":[{"r":2,"c":4,"deg":4},{"r":4,"c":4,"deg":5},{"r":0,"c":4,"deg":4},{"r":0,"c":7,"deg":2},{"r":0,"c":0,"deg":3},{"r":4,"c":6,"deg":3},{"r":3,"c":7,"deg":2},{"r":3,"c":5,"deg":2},{"r":2,"c":2,"deg":4},{"r":1,"c":5,"deg":1},{"r":4,"c":0,"deg":2},{"r":7,"c":0,"deg":2},{"r":7,"c":4,"deg":2},{"r":5,"c":2,"deg":4},{"r":7,"c":2,"deg":3},{"r":6,"c":6,"deg":1}],"solution":[{"i":0,"j":1,"n":1},{"i":0,"j":2,"n":1},{"i":2,"j":3,"n":1},{"i":2,"j":4,"n":2},{"i":1,"j":5,"n":2},{"i":3,"j":6,"n":1},{"i":6,"j":7,"n":1},{"i":0,"j":8,"n":2},{"i":7,"j":9,"n":1},{"i":4,"j":10,"n":1},{"i":10,"j":11,"n":1},{"i":1,"j":12,"n":2},{"i":8,"j":13,"n":2},{"i":13,"j":14,"n":2},{"i":5,"j":15,"n":1},{"i":11,"j":14,"n":1}]},
@@ -771,7 +781,10 @@ P.sluice = {
     }
     html += '<tr><td></td>' + range(5).map((c) => `<td>${rim(K.bottom[c])}</td>`).join('') + '<td></td></tr></table>';
     if (!ctx.done) html += padHtml(digitKeys(5));
-    html += '<div class="legend">Select a gate, then tap a height or press <kbd>1</kbd>–<kbd>5</kbd>. <kbd>0</kbd> or <kbd>⌫</kbd> clears; arrow keys move.</div>';
+    html += '<div class="legend">Fill all 25 cells with heights <kbd>1</kbd>–<kbd>5</kbd>, each height once per row and once per column. '
+      + 'The rim numbers count the gate-tops visible looking in from that side — a gate hides every shorter gate behind it.'
+      + (ctx.done ? '' : ' Click a cell, then tap a height above or type it; <kbd>0</kbd> or <kbd>⌫</kbd> clears, arrow keys move.')
+      + '</div>';
     root.innerHTML = html;
     if (ctx.done) return;
     root.querySelectorAll('.cell').forEach((el) => el.addEventListener('click', () => {
@@ -1448,83 +1461,114 @@ P.loom = {
 })();
 
 /* ----------------------------------------------------------------- The Last Seal
-   Capstone: the nine shard letters, walked inward along the spiral. */
+   Capstone: the nine shard letters in one row, dragged into the true name.
+   There is no board to fill and no button to press — every shard is always in
+   play, so the only state is their order, and the right order opens the floor
+   the instant it happens (see FINALE.autoSolve). */
 (function () {
   // Nine distinct letters, and exactly one nine-letter word in a 355k lexicon
   // uses that multiset — so the rack plus the verse fix the answer outright.
   // The shards are handed out in scrambled order (see CHAMBERS) so that no
   // prefix of the descent spells anything.
   const TRUE_NAME = 'PARCHMENT';
-  const SPIRAL = [0, 1, 2, 5, 8, 7, 6, 3, 4]; // grid indices in walking order
-  const TILES = TRUE_NAME.split('').sort();
+  // Alphabetical: a neutral opening row that spells nothing and hints nothing.
+  const START = TRUE_NAME.split('').sort();
+  const swap = (row, i, j) => { const t = row[i]; row[i] = row[j]; row[j] = t; };
   P.finale = {
-    init() { return { g: Array(9).fill(null), sel: null }; },
-    check(st) { return SPIRAL.map((i) => st.g[i]).join('') === TRUE_NAME; },
-    reveal(st) {
-      st.g = Array(9).fill(null);
-      SPIRAL.forEach((cell, step) => { st.g[cell] = TRUE_NAME[step]; });
-      st.sel = null;
-    },
+    init() { return { row: START.slice(), sel: null }; },
+    check(st) { return st.row.join('') === TRUE_NAME; },
+    reveal(st) { st.row = TRUE_NAME.split(''); st.sel = null; },
     hint(st) {
-      // every letter of the true name is distinct, so a letter can simply be
-      // lifted from wherever it is parked and set on the right stone
-      for (let step = 0; step < 9; step++) {
-        const cell = SPIRAL[step];
-        const want = TRUE_NAME[step];
-        if (st.g[cell] === want) continue;
-        const parked = st.g.indexOf(want);
-        if (parked >= 0) st.g[parked] = null;
-        st.g[cell] = want;
-        return `Step ${step + 1} of the walk is ${want}.`;
+      // Every letter is distinct, so the wanted letter sits in exactly one
+      // place and can be traded straight into position. It can only come from
+      // a later slot — earlier ones already hold their own correct letter —
+      // so a hint never undoes a hint.
+      for (let i = 0; i < 9; i++) {
+        const want = TRUE_NAME[i];
+        if (st.row[i] === want) continue;
+        swap(st.row, i, st.row.indexOf(want));
+        st.sel = null;
+        return `Letter ${i + 1} of the true name is ${want}.`;
       }
       return null;
     },
     render(root, st, ctx) {
-      const used = {};
-      st.g.forEach((L) => { if (L) used[L] = (used[L] || 0) + 1; });
-      const avail = {};
-      TILES.forEach((L) => { avail[L] = (avail[L] || 0) + 1; });
-      const ordOf = (cell) => SPIRAL.indexOf(cell) + 1;
-      let cells = '';
-      for (let i = 0; i < 9; i++) {
-        const L = st.g[i];
-        const cls = ['scell', L ? '' : 'empty', st.sel && st.sel.cell === i ? 'sel' : ''].filter(Boolean).join(' ');
-        cells += `<div class="${cls}" data-cell="${i}"><span class="ord">${ordOf(i)}</span>${L || '·'}</div>`;
-      }
-      const pts = SPIRAL.map((c) => `${(c % 3) * 74 + 37},${Math.floor(c / 3) * 74 + 37}`).join(' ');
-      let html = '<div class="finalwrap">'
-        + `<div class="spiral"><div class="sgrid">${cells}</div>`
-        + `<svg viewBox="0 0 222 222"><polyline points="${pts}" fill="none" stroke="rgba(217,162,78,.3)" stroke-width="2" stroke-linejoin="round"/>`
-        + `<circle cx="37" cy="37" r="4" fill="rgba(217,162,78,.55)"/></svg></div>`
-        + '<div style="display:flex;flex-direction:column;gap:18px;max-width:300px">'
+      const tiles = st.row
+        .map((L, i) => `<div class="tile${st.sel === i ? ' sel' : ''}" data-i="${i}" data-letter="${L}">${L}</div>`)
+        .join('');
+      root.innerHTML = '<div class="finalwrap">'
         + '<div class="riddle">I was an animal once.<br>They scraped me thin and stretched me<br>until I learned to hold still.<br>Every wall you have walked<br>was drawn on me.</div>'
-        + '<div class="tiles">';
-      const spent = {};
-      TILES.forEach((L, i) => {
-        spent[L] = (spent[L] || 0) + 1;
-        const isUsed = (used[L] || 0) >= spent[L];
-        const cls = ['tile', isUsed ? 'used' : '', st.sel && st.sel.tile === i ? 'sel' : ''].filter(Boolean).join(' ');
-        html += `<div class="${cls}" data-tile="${i}" data-letter="${L}">${L}</div>`;
-      });
-      html += '</div></div></div>'
-        + '<div class="legend">The gold line is the walk: from the outer corner, inward. Click a shard then a stone — or a filled stone to lift the shard out. Small numbers give the order of the walk.</div>';
-      root.innerHTML = html;
+        + `<div class="rack${ctx.done ? ' done' : ''}" id="rack">${tiles}</div>`
+        + (ctx.done ? ''
+          : '<div class="legend">Drag a shard along the row and the rest close up around it, or tap two shards to trade places. With one lifted, <span style="white-space:nowrap"><kbd>←</kbd> <kbd>→</kbd></span> walk it along. Nothing to press: the floor opens the moment the row reads true.</div>')
+        + '</div>';
       if (ctx.done) return;
-      root.querySelectorAll('[data-tile]').forEach((el) => el.addEventListener('click', () => {
-        if (el.classList.contains('used')) return;
-        const i = +el.dataset.tile;
-        if (st.sel && st.sel.cell != null) {
-          st.g[st.sel.cell] = el.dataset.letter;
-          st.sel = null;
-        } else st.sel = st.sel && st.sel.tile === i ? null : { tile: i, letter: el.dataset.letter };
-        ctx.update();
-      }));
-      root.querySelectorAll('[data-cell]').forEach((el) => el.addEventListener('click', () => {
-        const cell = +el.dataset.cell;
-        if (st.sel && st.sel.tile != null) { st.g[cell] = st.sel.letter; st.sel = null; }
-        else if (st.g[cell]) { st.g[cell] = null; st.sel = null; }
-        else st.sel = st.sel && st.sel.cell === cell ? null : { cell };
-        ctx.update();
+      const rack = root.querySelector('#rack');
+      const commit = (mutate) => { mutate(); ctx.update(); };
+      ctx.setKey((e) => {
+        if (e.key === 'Escape') { if (st.sel !== null) commit(() => { st.sel = null; }); return; }
+        if (st.sel !== null && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+          const j = st.sel + (e.key === 'ArrowLeft' ? -1 : 1);
+          if (j < 0 || j > 8) return;
+          e.preventDefault();
+          commit(() => { swap(st.row, st.sel, j); st.sel = j; });
+          return;
+        }
+        if (e.key.length !== 1) return;
+        const at = st.row.indexOf(e.key.toUpperCase());
+        if (at < 0) return;
+        commit(() => { st.sel = st.sel === at ? null : at; });
+      });
+
+      // Pointer-driven reorder: the dragged tile is translated under the
+      // finger while the DOM order is rewritten live, so the row you see is
+      // always the row you will get. Window listeners rather than pointer
+      // capture — capture throws on synthetic pointers, which the test
+      // harness relies on.
+      let drag = null;
+      const onMove = (e) => {
+        if (!drag) return;
+        const el = drag.el;
+        if (Math.abs(e.clientX - drag.from) > 3) drag.moved = true;
+        if (!drag.moved) return;
+        const left = e.clientX - drag.grab;
+        const mid = left + el.offsetWidth / 2;
+        const sibs = [...rack.children].filter((n) => n !== el);
+        let k = 0;
+        for (const s of sibs) {
+          const b = s.getBoundingClientRect();
+          if (b.left + b.width / 2 < mid) k++;
+        }
+        const before = sibs[k] || null;
+        if (el.nextElementSibling !== before) rack.insertBefore(el, before);
+        el.style.transform = 'none';
+        el.style.transform = `translateX(${left - el.getBoundingClientRect().left}px)`;
+      };
+      const onUp = () => {
+        if (!drag) return;
+        const { el, moved } = drag;
+        drag = null;
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerup', onUp);
+        window.removeEventListener('pointercancel', onUp);
+        el.classList.remove('drag');
+        el.style.transform = '';
+        commit(() => {
+          if (moved) { st.row = [...rack.children].map((n) => n.dataset.letter); st.sel = null; return; }
+          const i = +el.dataset.i;               // a tap, not a drag
+          if (st.sel === i) st.sel = null;
+          else if (st.sel === null) st.sel = i;
+          else { swap(st.row, st.sel, i); st.sel = null; }
+        });
+      };
+      rack.querySelectorAll('.tile').forEach((el) => el.addEventListener('pointerdown', (e) => {
+        if (e.button) return;
+        e.preventDefault();
+        drag = { el, grab: e.clientX - el.getBoundingClientRect().left, from: e.clientX, moved: false };
+        el.classList.add('drag');
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+        window.addEventListener('pointercancel', onUp);
       }));
     },
   };
@@ -1538,19 +1582,7 @@ P.loom = {
    the true name — collect all nine and the finale is a genuine anagram. */
 const CHAMBERS = [
   {
-    id: 'seals', n: 1, name: 'The Wax Seals', kind: 'Cipher', letter: 'T', needs: 0,
-    ctrl: P.seals, maxHints: 3,
-    epigraph: 'A sentence pressed into wax with a set of stamps, one stamp to a letter. The stamps are lost.',
-    reject: 'The wax reads as nonsense. Some stamp is misnamed.',
-    rules: [
-      'Each glyph stands for <strong>one letter, always the same letter</strong>.',
-      'No two glyphs share a letter, and no glyph stands for itself.',
-      'Word breaks are preserved exactly as pressed. The sentence is ordinary English — and exactly one English reading fits.',
-      '<strong>Three glyphs are already broken open</strong>, and the tally beneath each shows how often it appears.',
-    ],
-  },
-  {
-    id: 'loom', n: 2, name: 'The Loom', kind: 'Weave', letter: 'N', needs: 0,
+    id: 'loom', n: 1, name: 'The Loom', kind: 'Weave', letter: 'N', needs: 0,
     ctrl: P.loom, maxHints: 3,
     epigraph: 'A half-finished tapestry, and beside each thread the tally the weaver kept.',
     reject: 'The weave slips. Something in the tally is unhonoured.',
@@ -1562,7 +1594,7 @@ const CHAMBERS = [
     ],
   },
   {
-    id: 'aqueduct', n: 3, name: 'The Aqueduct', kind: 'Network', letter: 'R', needs: 0,
+    id: 'aqueduct', n: 2, name: 'The Aqueduct', kind: 'Network', letter: 'R', needs: 0,
     ctrl: P.aqueduct, maxHints: 3,
     epigraph: 'Sixteen dry cisterns. Each is stamped with the number of channels that once touched it.',
     reject: 'Water would pool and stop. The network is wrong.',
@@ -1571,6 +1603,18 @@ const CHAMBERS = [
       'At most <strong>two channels</strong> may join the same pair. Channels <strong>may not cross</strong> one another or pass through a cistern.',
       'A cistern\'s number is <strong>exactly</strong> how many channel-ends touch it.',
       'When you are done, <strong>every cistern must be reachable from every other</strong> — one network, not two.',
+    ],
+  },
+  {
+    id: 'seals', n: 3, name: 'The Wax Seals', kind: 'Cipher', letter: 'T', needs: 0,
+    ctrl: P.seals, maxHints: 3,
+    epigraph: 'A sentence pressed into wax with a set of stamps, one stamp to a letter. The stamps are lost.',
+    reject: 'The wax reads as nonsense. Some stamp is misnamed.',
+    rules: [
+      'Each glyph stands for <strong>one letter, always the same letter</strong>.',
+      'No two glyphs share a letter, and no glyph stands for itself.',
+      'Word breaks are preserved exactly as pressed. The sentence is ordinary English — and exactly one English reading fits.',
+      '<strong>Three glyphs are already broken open</strong>, and the tally beneath each shows how often it appears.',
     ],
   },
   {
@@ -1602,10 +1646,12 @@ const CHAMBERS = [
     epigraph: 'Twenty-five gates in a flooded grid. The rim is scored with counts made by someone who could still see.',
     reject: 'The sightlines do not agree. The water does not move.',
     rules: [
-      'Every row and every column holds gates of height <strong>1, 2, 3, 4 and 5</strong> — each height once.',
-      'A gate <strong>hides every shorter gate behind it</strong>; a taller one further back is still visible.',
-      'A number on the rim counts <strong>how many gate-tops are visible</strong> looking down that row or column from that side.',
-      'Unmarked rim positions were never scored. Seven counts are enough.',
+      '<strong>Your task:</strong> write a height from <strong>1 to 5</strong> into every one of the 25 cells. Click a cell, then type the number or tap it on the pad below the grid.',
+      'Every row and every column must use each of <strong>1, 2, 3, 4 and 5 exactly once</strong> — no repeats in any line.',
+      'The numbers <strong>around the outside</strong> are the test. Stand at one and look inward along its row or column: it says <strong>how many gate-tops you can see</strong> from there.',
+      'You see a gate only if <strong>every gate in front of it is shorter</strong>. A taller gate hides everything shorter behind it, however far back.',
+      'So a row reading <strong>1 3 2 5 4</strong> shows <strong>3</strong> tops from the left — the 1, then the 3, then the 5. The 2 hides behind the 3, and the 4 behind the 5.',
+      'Blank rim positions tell you nothing. The seven numbers that are scored are enough to fix all 25 heights.',
     ],
   },
   {
@@ -1617,7 +1663,7 @@ const CHAMBERS = [
       'Five niches stand in a row, numbered <strong>1 to 5 from the left</strong>.',
       'Each niche holds exactly one <strong>keeper</strong>, one <strong>relic</strong> and one <strong>hour</strong>.',
       'No keeper, relic or hour appears in more than one niche.',
-      'The etchings on the right are jointly sufficient: exactly one arrangement satisfies all nine.',
+      'The etchings on the right are jointly sufficient: exactly one arrangement satisfies them all, and <strong>every step of the way there is forced</strong> — you never need to try a placement and see what happens.',
     ],
     clues: DATA.logic.clues.map((c) => c.text),
   },
@@ -1648,14 +1694,14 @@ const CHAMBERS = [
 ];
 const FINALE = {
   id: 'finale', n: 10, name: 'The Last Seal', kind: 'The True Name', letter: '✦', needs: 9,
-  ctrl: P.finale, maxHints: 2,
-  epigraph: 'Nine shards, nine letters, and a spiral cut into the floor of the last room.',
-  reject: 'The walk spells nothing. The floor stays shut.',
+  ctrl: P.finale, maxHints: 2, autoSolve: true,
+  epigraph: 'Nine shards, nine letters, and a slot cut across the floor of the last room to hold them in a line.',
+  reject: 'The row spells nothing. The floor stays shut.',
   rules: [
-    'Your nine shard-letters are below. Each belongs on <strong>one stone</strong> of the spiral.',
+    'Your nine shard-letters lie in the slot already. Nothing is missing — only <strong>the order</strong> is wrong.',
+    '<strong>Drag</strong> a shard along the row to move it, or <strong>tap two</strong> to trade their places.',
     'The chambers gave them up in <strong>no particular order</strong> — this is an anagram, not a transcription.',
-    'Walk the gold line from the <strong>outer corner inward</strong>; the letters you pass must spell the <strong>true name</strong> of this place.',
-    'Exactly one nine-letter English word uses these nine letters. The verse tells you which.',
+    'Exactly one nine-letter English word uses these nine letters, and the verse tells you which. Spell it out and the floor <strong>opens on its own</strong>.',
   ],
 };
 const ALL = CHAMBERS.concat([FINALE]);
@@ -1667,6 +1713,14 @@ const unlocked = (c) => solvedCount() >= c.needs;
    ========================================================================== */
 let activeKey = null;
 let currentId = null;
+
+/* Every screen lives in #view and the page itself scrolls, so a deep-scrolled
+   chamber would otherwise hand its scroll position to the next screen. Only
+   called when the screen actually changes — re-rendering the same chamber
+   (hint, clear, force) must leave the reader where they were. */
+function resetScroll() {
+  window.scrollTo(0, 0);
+}
 
 document.addEventListener('keydown', (e) => {
   if ($('#scrim').classList.contains('show')) return;
@@ -1705,6 +1759,7 @@ function renderTick() {
 setInterval(renderTick, 1000);
 
 function renderAtrium() {
+  const changed = currentId !== null;
   currentId = null;
   activeKey = null;
   const n = solvedCount();
@@ -1739,6 +1794,7 @@ function renderAtrium() {
   html += '</div>';
   if (done) html += ledgerHtml();
   $('#view').innerHTML = html;
+  if (changed) resetScroll();
   $('#view').querySelectorAll('[data-open]').forEach((el) => {
     if (!el.dataset.open) return;
     el.addEventListener('click', () => openChamber(el.dataset.open));
@@ -1767,6 +1823,7 @@ function openChamber(id) {
   const c = byId(id);
   if (!unlocked(c)) { toast('That door is still sealed.'); return; }
   if (!SAVE.started) { SAVE.started = Date.now(); persist(); }
+  const changed = currentId !== id;
   currentId = id;
   activeKey = null;
   const st = boardStateFor(c);
@@ -1785,7 +1842,9 @@ function openChamber(id) {
   const mech = '<div class="panel"><h4>Mechanism</h4><div class="body">'
     + '<div class="controls">'
     + (done ? '<button class="btn" id="backBtn2" style="flex:1 0 100%">Return to the descent</button>'
-      : '<button class="btn primary" id="checkBtn">Test the seal</button>'
+      // an autoSolve mechanism opens itself, so a Test button could only ever
+      // report failure — it is left out rather than left to nag
+      : (c.autoSolve ? '' : '<button class="btn primary" id="checkBtn">Test the seal</button>')
       + `<button class="btn" id="hintBtn">Hint <span style="opacity:.6">${c.maxHints - hintsUsed(c.id)}</span></button>`
       + '<button class="btn" id="clearBtn">Clear</button>'
       + '<button class="btn danger" id="revealBtn" style="flex:1 0 100%">Show me the solution</button>')
@@ -1808,6 +1867,7 @@ function openChamber(id) {
   html += '<div class="stage"><div class="board-wrap" id="board"></div>'
     + `<div class="side">${mech}${protocol}${etchings}</div></div>`;
   $('#view').innerHTML = html;
+  if (changed) resetScroll();
 
   const board = $('#board');
   const ctx = {
@@ -1817,6 +1877,8 @@ function openChamber(id) {
     update() {
       SAVE.boards[id] = st;
       persist();
+      // no Test button on these — the mechanism watches the board itself
+      if (!done && c.autoSolve && c.ctrl.check(st)) { solve(c, st); return; }
       c.ctrl.render(board, st, ctx);
     },
   };
@@ -1836,7 +1898,8 @@ function openChamber(id) {
   }));
   if (done) return;
 
-  $('#checkBtn').addEventListener('click', () => {
+  const chk = $('#checkBtn');
+  if (chk) chk.addEventListener('click', () => {
     if (c.ctrl.check(st)) solve(c, st);
     else toast(c.reject, 'bad');
   });
@@ -1903,7 +1966,7 @@ function solve(c, st) {
     const secs = Math.floor((SAVE.finished - SAVE.started) / 1000);
     const mm = Math.floor(secs / 60), ss = secs % 60;
     modal('<h3>The floor opens.</h3>'
-      + '<p class="epigraph" style="margin:0 0 14px">The spiral reads <strong style="color:var(--wax)">PARCHMENT</strong>. The walls go thin at the edges, the way a drawing does, and you understand that you have been walking around inside the map the whole time.</p>'
+      + '<p class="epigraph" style="margin:0 0 14px">The row reads <strong style="color:var(--wax)">PARCHMENT</strong>. The walls go thin at the edges, the way a drawing does, and you understand that you have been walking around inside the map the whole time.</p>'
       + `<p>Nine mechanisms. ${mm}m ${ss}s. ${cleanCount()} of 9 chambers solved without force.</p>`
       + '<div class="acts"><button class="btn primary" data-act="yes">See the log</button></div>');
     wireModal({ yes: () => { closeModal(); renderAtrium(); } });
@@ -1929,6 +1992,7 @@ $('#resetBtn').addEventListener('click', () => {
       SAVE = clone(DEFAULT_SAVE);
       closeModal();
       renderAtrium();
+      resetScroll(); // a wipe from the atrium is not a screen change, but the page just shrank
       toast('The dust settles. Nothing has been opened.');
     },
   });
