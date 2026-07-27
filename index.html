@@ -389,6 +389,7 @@ a{color:var(--cool)}
 .avi .ac.wr{border-right:2px solid var(--line-hard)}
 .avi .ac.wt{border-top:2px solid var(--line-hard)}
 .avi .ac.wb{border-bottom:2px solid var(--line-hard)}
+.avi .ac.cursor{box-shadow:inset 0 0 0 2px var(--cool)}
 
 /* ============================== puzzle: wax seals ============================== */
 .cryptext{
@@ -1077,6 +1078,10 @@ P.loom = {
    Star Battle. One bird per row, column and cage; none may touch. */
 (function () {
   const D = DATA.aviary, N = D.n;
+  // Cursor for keyboard edits. Deliberately outside the board state: boardStateFor
+  // discards a saved board whose key set differs from init(), so adding a key here
+  // would wipe every game already in progress.
+  let cursor = null;
   P.aviary = {
     init() { return { g: range(N).map(() => Array(N).fill(0)), given: [] }; },
     check(st) {
@@ -1116,32 +1121,104 @@ P.loom = {
           if (Math.abs(r - r2) <= 1 && Math.abs(c - c2) <= 1) { bad[r][c] = true; bad[r2][c2] = true; }
         });
       });
+      const glyph = (v) => (v === 1 ? '✦' : v === 2 ? '·' : '');
+      // One class builder for both the initial paint and the in-place patching a
+      // drag does, so the two can never drift apart.
+      const clsFor = (r, c) => {
+        const reg = D.regions[r][c];
+        const w = [];
+        if (c === 0 || D.regions[r][c - 1] !== reg) w.push('wl');
+        if (c === N - 1 || D.regions[r][c + 1] !== reg) w.push('wr');
+        if (r === 0 || D.regions[r - 1][c] !== reg) w.push('wt');
+        if (r === N - 1 || D.regions[r + 1][c] !== reg) w.push('wb');
+        const v = st.g[r][c];
+        return ['ac', v === 1 ? 'bird' : v === 2 ? 'dot' : '', bad[r][c] ? 'bad' : '',
+          st.given.includes(r + ',' + c) ? 'given' : '',
+          cursor && cursor[0] === r && cursor[1] === c ? 'cursor' : ''].concat(w).filter(Boolean).join(' ');
+      };
       let html = '<table class="avi">';
       for (let r = 0; r < N; r++) {
         html += '<tr>';
         for (let c = 0; c < N; c++) {
-          const reg = D.regions[r][c];
-          const w = [];
-          if (c === 0 || D.regions[r][c - 1] !== reg) w.push('wl');
-          if (c === N - 1 || D.regions[r][c + 1] !== reg) w.push('wr');
-          if (r === 0 || D.regions[r - 1][c] !== reg) w.push('wt');
-          if (r === N - 1 || D.regions[r + 1][c] !== reg) w.push('wb');
-          const v = st.g[r][c];
-          const cls = ['ac', v === 1 ? 'bird' : v === 2 ? 'dot' : '', bad[r][c] ? 'bad' : '',
-            st.given.includes(r + ',' + c) ? 'given' : ''].concat(w).filter(Boolean).join(' ');
-          html += `<td><div class="${cls}" data-r="${r}" data-c="${c}">${v === 1 ? '✦' : v === 2 ? '·' : ''}</div></td>`;
+          html += `<td><div class="${clsFor(r, c)}" data-r="${r}" data-c="${c}">${glyph(st.g[r][c])}</div></td>`;
         }
         html += '</tr>';
       }
-      html += '</table><div class="legend">Click to cycle empty → nightingale → dot. Birds that break a rule turn red. Thick lines are cage walls.</div>';
+      html += '</table><div class="legend">Left-click seats a nightingale. Right-click lays a dot — hold and drag to lay many.'
+        + ' <kbd>⌫</kbd> empties the outlined cell; arrow keys move it, <kbd>space</kbd> and <kbd>.</kbd> mark it.'
+        + ' Birds that break a rule turn red. Thick lines are cage walls.</div>';
       root.innerHTML = html;
       if (ctx.done) return;
-      root.querySelectorAll('.ac').forEach((el) => el.addEventListener('click', () => {
+
+      const cellAt = (r, c) => root.querySelector(`.ac[data-r="${r}"][data-c="${c}"]`);
+      const locked = (r, c) => st.given.includes(r + ',' + c);
+      const repaint = (el, r, c) => { el.className = clsFor(r, c); el.textContent = glyph(st.g[r][c]); };
+      const moveCursor = (r, c) => {
+        const prev = cursor;
+        cursor = [r, c];
+        [prev, cursor].forEach((p) => {
+          if (!p) return;
+          const el = cellAt(p[0], p[1]);
+          if (el) repaint(el, p[0], p[1]);
+        });
+      };
+
+      let painting = null; // { to } while a right-drag is laying or lifting dots
+      const paint = (el) => {
         const r = +el.dataset.r, c = +el.dataset.c;
-        if (st.given.includes(r + ',' + c)) { toast('A hinted nightingale will not be moved.'); return; }
-        st.g[r][c] = (st.g[r][c] + 1) % 3;
+        // A drag never disturbs a seated bird — sweeping dots must not cost you a
+        // deduction. Skipping birds also keeps the red rule-break flags accurate
+        // without a full re-render, since a dot can never make a cell bad.
+        if (locked(r, c) || st.g[r][c] === 1 || st.g[r][c] === painting.to) return;
+        st.g[r][c] = painting.to;
+        repaint(el, r, c);
+      };
+
+      root.querySelectorAll('.ac').forEach((el) => {
+        el.addEventListener('contextmenu', (e) => e.preventDefault());
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          const r = +el.dataset.r, c = +el.dataset.c;
+          if (locked(r, c)) { toast('A hinted nightingale will not be moved.'); return; }
+          moveCursor(r, c);
+          // Touch has no second button, so a tap keeps the old three-way cycle.
+          if (e.pointerType === 'touch') { st.g[r][c] = (st.g[r][c] + 1) % 3; ctx.update(); return; }
+          const dotting = e.button === 2 || e.shiftKey || e.ctrlKey;
+          if (!dotting) { st.g[r][c] = st.g[r][c] === 1 ? 0 : 1; ctx.update(); return; }
+          const to = st.g[r][c] === 2 ? 0 : 2;
+          if (st.g[r][c] === 1) { st.g[r][c] = to; ctx.update(); return; } // bad flags shift
+          painting = { to };
+          paint(el);
+        });
+        el.addEventListener('pointerenter', () => { if (painting) paint(el); });
+      });
+      const stop = () => { if (painting) { painting = null; ctx.update(); } };
+      root.addEventListener('pointerup', stop);
+      root.addEventListener('pointerleave', stop);
+      window.addEventListener('pointerup', stop, { once: true });
+
+      const onKey = (e) => {
+        if (!cursor) return;
+        let [r, c] = cursor;
+        if (e.key === 'ArrowUp') r = (r + N - 1) % N;
+        else if (e.key === 'ArrowDown') r = (r + 1) % N;
+        else if (e.key === 'ArrowLeft') c = (c + N - 1) % N;
+        else if (e.key === 'ArrowRight') c = (c + 1) % N;
+        else if (e.key === 'Backspace' || e.key === 'Delete') {
+          if (locked(r, c)) { toast('A hinted nightingale will not be moved.'); return; }
+          st.g[r][c] = 0;
+        } else if (e.key === ' ' || e.key === 'Enter') {
+          if (locked(r, c)) { toast('A hinted nightingale will not be moved.'); return; }
+          st.g[r][c] = st.g[r][c] === 1 ? 0 : 1;
+        } else if (e.key === '.') {
+          if (locked(r, c)) { toast('A hinted nightingale will not be moved.'); return; }
+          st.g[r][c] = st.g[r][c] === 2 ? 0 : 2;
+        } else return;
+        e.preventDefault();
+        cursor = [r, c];
         ctx.update();
-      }));
+      };
+      ctx.setKey(onKey);
     },
   };
 })();
