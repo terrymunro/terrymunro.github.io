@@ -1,0 +1,88 @@
+{
+  "spec": {
+    "candidates": [
+      "Ark",
+      "Bell",
+      "Crow",
+      "Dusk",
+      "Echo",
+      "Flint"
+    ],
+    "sequence_length": 4,
+    "false_count": 3,
+    "statements": [
+      {
+        "kind": "adjacent",
+        "a": "Ark",
+        "b": "Bell"
+      },
+      {
+        "kind": "in_slots",
+        "item": "Dusk",
+        "slots": [
+          1,
+          2
+        ]
+      },
+      {
+        "kind": "before",
+        "a": "Crow",
+        "b": "Echo"
+      },
+      {
+        "kind": "in_slots",
+        "item": "Bell",
+        "slots": [
+          1,
+          2
+        ]
+      },
+      {
+        "kind": "adjacent",
+        "a": "Crow",
+        "b": "Flint"
+      },
+      {
+        "kind": "exactly_one_of",
+        "items": [
+          "Ark",
+          "Bell"
+        ]
+      },
+      {
+        "kind": "in_slots",
+        "item": "Echo",
+        "slots": [
+          1,
+          3
+        ]
+      },
+      {
+        "kind": "slot_one_of",
+        "slot": 3,
+        "items": [
+          "Dusk",
+          "Flint"
+        ]
+      },
+      {
+        "kind": "before",
+        "a": "Echo",
+        "b": "Flint"
+      }
+    ]
+  },
+  "expected": {
+    "sequence": [
+      "Echo",
+      "Bell",
+      "Flint",
+      "Crow"
+    ],
+    "false_statements": [
+      1,
+      2,
+      3
+    ]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "spec": {
+    "slots": 5,
+    "categories": {
+      "keeper": [
+        "Aster",
+        "Brivel",
+        "Corda",
+        "Dunmar",
+        "Elish"
+      ],
+      "relic": [
+        "Ash Bell",
+        "Bone Key",
+        "Glass Eye",
+        "Iron Tooth",
+        "Salt Coin"
+      ],
+      "hour": [
+        "Dusk",
+        "Matins",
+        "Midnight",
+        "Noon",
+        "Vespers"
+      ]
+    },
+    "clues": [
+      {
+        "kind": "at_end",
+        "item": "Elish"
+      },
+      {
+        "kind": "gap",
+        "a": "Elish",
+        "b": "Noon",
+        "between": 2
+      },
+      {
+        "kind": "adjacent",
+        "a": "Glass Eye",
+        "b": "Corda"
+      },
+      {
+        "kind": "strictly_between",
+        "item": "Dusk",
+        "a": "Salt Coin",
+        "b": "Elish"
+      },
+      {
+        "kind": "immediately_left",
+        "a": "Matins",
+        "b": "Ash Bell"
+      },
+      {
+        "kind": "adjacent",
+        "a": "Midnight",
+        "b": "Aster"
+      },
+      {
+        "kind": "gap",
+        "a": "Midnight",
+        "b": "Brivel",
+        "between": 2
+      },
+      {
+        "kind": "before",
+        "a": "Aster",
+        "b": "Bone Key"
+      },
+      {
+        "kind": "before",
+        "a": "Bone Key",
+        "b": "Vespers"
+      },
+      {
+        "kind": "gap",
+        "a": "Vespers",
+        "b": "Iron Tooth",
+        "between": 2
+      }
+    ]
+  },
+  "expected": {
+    "keeper": [
+      "Dunmar",
+      "Aster",
+      "Corda",
+      "Brivel",
+      "Elish"
+    ],
+    "relic": [
+      "Salt Coin",
+      "Iron Tooth",
+      "Bone Key",
+      "Glass Eye",
+      "Ash Bell"
+    ],
+    "hour": [
+      "Midnight",
+      "Noon",
+      "Dusk",
+      "Matins",
+      "Vespers"
+    ]
+  }
+}

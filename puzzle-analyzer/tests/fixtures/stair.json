@@ -1,0 +1,41 @@
+{
+  "spec": {
+    "steps": [
+      "MAZE",
+      "MACE",
+      "RACE",
+      "RATE",
+      "RITE",
+      "SITE",
+      "SIRE",
+      "HIRE",
+      "HERE"
+    ],
+    "wordlist": [
+      "MAZE",
+      "MACE",
+      "RACE",
+      "RATE",
+      "RITE",
+      "SITE",
+      "SIRE",
+      "HIRE",
+      "HERE",
+      "GAZE",
+      "MICE",
+      "RIPE",
+      "HARE"
+    ]
+  },
+  "expected": [
+    "MAZE",
+    "MACE",
+    "RACE",
+    "RATE",
+    "RITE",
+    "SITE",
+    "SIRE",
+    "HIRE",
+    "HERE"
+  ]
+}
