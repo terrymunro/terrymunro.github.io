@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from .core import (
+    AllDifferentPropagator,
     CpModelBuilder,
     Csp,
     Rating,
@@ -159,19 +160,32 @@ def _csp(puzzle: Kakuro) -> Csp:
         for c, fillable in enumerate(row)
         if fillable
     }
-    propagators = [
-        TablePropagator(
+    propagators = []
+    for run in puzzle.runs:
+        name = (
             f"{'across' if run.direction == 'h' else 'down'} run of "
-            f"{run.length} summing to {run.total}",
-            [f"R{r + 1}C{c + 1}" for r, c in run.cells()],
-            permutation_table(
-                range(1, 10),
-                run.length,
-                lambda row, total=run.total: sum(row) == total,
-            ),
+            f"{run.length} summing to {run.total}"
         )
-        for run in puzzle.runs
-    ]
+        scope = [f"R{r + 1}C{c + 1}" for r, c in run.cells()]
+        if run.length == 9:
+            # A full run holds every digit once and must sum to 45 (which
+            # check() has already enforced): plain all-different is exact,
+            # and avoids materializing all 9! permutations.
+            propagators.append(
+                AllDifferentPropagator(name, scope, permutation=True)
+            )
+        else:
+            propagators.append(
+                TablePropagator(
+                    name,
+                    scope,
+                    permutation_table(
+                        range(1, 10),
+                        run.length,
+                        lambda row, total=run.total: sum(row) == total,
+                    ),
+                )
+            )
     return Csp(domains=domains, propagators=propagators)
 
 

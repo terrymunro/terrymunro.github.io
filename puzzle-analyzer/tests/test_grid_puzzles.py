@@ -143,6 +143,18 @@ class TestKakuro:
         verdict = kakuro.validate(kakuro.parse(spec))
         assert not verdict.well_formed
 
+    def test_nine_cell_run_grades_without_error(self):
+        # Codex review finding (PR #5): a full-length run used to build a
+        # 9! permutation table and blow the table-size cap during grading.
+        spec = {
+            "layout": [[1] * 9],
+            "runs": [{"dir": "h", "anchor": [0, 0], "len": 9, "sum": 45}],
+        }
+        puzzle = kakuro.parse(spec)
+        rating = kakuro.grade(puzzle)  # must not raise
+        assert rating.grade  # a lone 9-run is wildly ambiguous; any grade is fine
+        assert kakuro.validate(puzzle).solution_count >= 2
+
     def test_run_over_blocked_cell_is_malformed(self, fixture):
         spec = fixture("apothecary")["spec"]
         spec["runs"][0]["len"] = 5  # walks off the white run

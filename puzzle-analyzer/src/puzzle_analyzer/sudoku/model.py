@@ -145,10 +145,23 @@ def _parse_cells(raw: list[Any], context: str) -> tuple[int, ...]:
     return tuple(cells)
 
 
+def _parse_givens(givens: Any) -> tuple[int, ...]:
+    if isinstance(givens, str):
+        return tuple(parse_puzzle(givens))
+    try:
+        values = tuple(int(v) for v in givens)
+    except (TypeError, ValueError) as exc:
+        raise SpecError(f"givens must be digits 0-9: {exc}") from exc
+    if len(values) != 81:
+        raise SpecError(f"givens must have 81 cells, got {len(values)}")
+    if bad := [v for v in values if not 0 <= v <= 9]:
+        raise SpecError(f"givens must be digits 0-9, got {sorted(set(bad))}")
+    return values
+
+
 def parse_spec(spec: dict[str, Any]) -> SudokuPuzzle:
     """Build a puzzle from the JSON object form."""
-    givens = spec.get("givens", "." * 81)
-    values = tuple(parse_puzzle(givens) if isinstance(givens, str) else givens)
+    values = _parse_givens(spec.get("givens", "." * 81))
     cages = tuple(
         Cage(
             cells=_parse_cells(get_field(raw, "cells", list), "cage"),

@@ -50,20 +50,20 @@ from .core.spec import get_field
 
 type Clue = dict[str, Any]
 
-CLUE_KINDS = frozenset(
-    {
-        "at_end",
-        "at_slot",
-        "in_slots",
-        "gap",
-        "adjacent",
-        "strictly_between",
-        "immediately_left",
-        "before",
-        "same_slot",
-        "not_same_slot",
-    }
-)
+#: Required fields per clue kind; also the set of known kinds.
+CLUE_FIELDS: dict[str, tuple[str, ...]] = {
+    "at_end": ("item",),
+    "at_slot": ("item", "slot"),
+    "in_slots": ("item", "slots"),
+    "gap": ("a", "b", "between"),
+    "adjacent": ("a", "b"),
+    "strictly_between": ("item", "a", "b"),
+    "immediately_left": ("a", "b"),
+    "before": ("a", "b"),
+    "same_slot": ("a", "b"),
+    "not_same_slot": ("a", "b"),
+}
+CLUE_KINDS = frozenset(CLUE_FIELDS)
 
 
 @dataclass(frozen=True, slots=True)
@@ -108,6 +108,11 @@ def check(puzzle: Zebra) -> list[str]:
         kind = clue.get("kind")
         if kind not in CLUE_KINDS:
             issues.append(f"clue {index}: unknown kind {kind!r}")
+            continue
+        if missing := [f for f in CLUE_FIELDS[kind] if f not in clue]:
+            issues.append(
+                f"clue {index} ({kind}): missing field(s) {', '.join(missing)}"
+            )
             continue
         for item in _clue_items(clue):
             if item not in known:

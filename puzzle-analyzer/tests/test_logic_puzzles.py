@@ -35,6 +35,15 @@ class TestZebra:
         verdict = zebra.validate(zebra.parse(spec))
         assert not verdict.well_formed
 
+    def test_clue_missing_operand_is_malformed(self, fixture):
+        # Same defect class as the Codex truthlie finding: a known kind
+        # with a missing operand must be a verdict, not a KeyError.
+        spec = fixture("reliquary")["spec"]
+        spec["clues"].append({"kind": "before", "a": "Elish"})
+        verdict = zebra.validate(zebra.parse(spec))
+        assert not verdict.well_formed
+        assert any("missing field" in issue for issue in verdict.issues)
+
     def test_unknown_clue_kind_is_malformed(self, fixture):
         spec = fixture("reliquary")["spec"]
         spec["clues"].append({"kind": "psychic", "item": "Elish"})
@@ -72,6 +81,15 @@ class TestTruthLie:
         )
         assert not truthlie.holds(puzzle.statements[0], ("A", "B"))
         assert truthlie.holds(puzzle.statements[0], ("A", "C"))
+
+    def test_statement_missing_operand_is_malformed(self, fixture):
+        # Codex review finding (PR #5): {"kind": "before", "a": ...} used
+        # to pass check() and then KeyError inside holds().
+        spec = fixture("choir")["spec"]
+        spec["statements"].append({"kind": "before", "a": "Ark"})
+        verdict = truthlie.validate(truthlie.parse(spec))
+        assert not verdict.well_formed
+        assert any("missing field" in issue for issue in verdict.issues)
 
     def test_impossible_false_count_is_malformed(self, fixture):
         spec = fixture("choir")["spec"]

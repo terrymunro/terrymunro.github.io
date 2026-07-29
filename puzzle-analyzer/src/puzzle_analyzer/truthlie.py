@@ -47,9 +47,15 @@ from .core.spec import get_field
 
 type Statement = dict[str, Any]
 
-STATEMENT_KINDS = frozenset(
-    {"adjacent", "before", "in_slots", "exactly_one_of", "slot_one_of"}
-)
+#: Required fields per statement kind; also the set of known kinds.
+STATEMENT_FIELDS: dict[str, tuple[str, ...]] = {
+    "adjacent": ("a", "b"),
+    "before": ("a", "b"),
+    "in_slots": ("item", "slots"),
+    "exactly_one_of": ("items",),
+    "slot_one_of": ("slot", "items"),
+}
+STATEMENT_KINDS = frozenset(STATEMENT_FIELDS)
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,7 +91,14 @@ def check(puzzle: TruthLie) -> list[str]:
         if kind not in STATEMENT_KINDS:
             issues.append(f"statement {index}: unknown kind {kind!r}")
             continue
-        names = statement.get("items", [])
+        if missing := [f for f in STATEMENT_FIELDS[kind] if f not in statement]:
+            issues.append(
+                f"statement {index} ({kind}): missing "
+                f"field(s) {', '.join(missing)}"
+            )
+            continue
+        # Copy: += on the raw list would mutate the caller's statement.
+        names = list(statement.get("items", []))
         names += [statement[k] for k in ("item", "a", "b") if k in statement]
         for name in names:
             if name not in known:
