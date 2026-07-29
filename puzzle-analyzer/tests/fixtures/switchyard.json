@@ -1,0 +1,74 @@
+{
+  "spec": {
+    "slots": 5,
+    "categories": {
+      "handler": [
+        "Rook",
+        "Vesper",
+        "Ibis",
+        "Moth",
+        "Vale"
+      ],
+      "signal": [
+        "Amber",
+        "Cobalt",
+        "Ivory",
+        "Sable",
+        "Violet"
+      ]
+    },
+    "clues": [
+      {
+        "kind": "immediately_left",
+        "a": "Cobalt",
+        "b": "Ivory"
+      },
+      {
+        "kind": "same_slot",
+        "a": "Rook",
+        "b": "Amber"
+      },
+      {
+        "kind": "not_same_slot",
+        "a": "Moth",
+        "b": "Sable"
+      },
+      {
+        "kind": "not_same_slot",
+        "a": "Moth",
+        "b": "Violet"
+      },
+      {
+        "kind": "immediately_left",
+        "a": "Ibis",
+        "b": "Vale"
+      },
+      {
+        "kind": "immediately_left",
+        "a": "Vale",
+        "b": "Rook"
+      },
+      {
+        "kind": "before",
+        "a": "Amber",
+        "b": "Sable"
+      }
+    ]
+  },
+  "expected": {
+    "handler": [
+      "Moth",
+      "Ibis",
+      "Vale",
+      "Rook",
+      "Vesper"
+    ],
+    "signal": [
+      "Cobalt",
+      "Ivory",
+      "Violet",
+      "Amber",
+      "Sable"
+    ]
+  }
+}

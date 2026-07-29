@@ -1,0 +1,74 @@
+{
+  "spec": {
+    "symbols": [
+      "Quill",
+      "Thorn",
+      "Wheel",
+      "Lantern",
+      "Anchor",
+      "Crescent"
+    ],
+    "min": 1,
+    "max": 9,
+    "distinct": true,
+    "equations": [
+      {
+        "left": [
+          "Quill",
+          "Thorn"
+        ],
+        "right": [
+          "Lantern",
+          "Anchor"
+        ]
+      },
+      {
+        "left": [
+          "Quill",
+          "Lantern",
+          "Anchor"
+        ],
+        "right": [
+          "Wheel"
+        ]
+      },
+      {
+        "left": [
+          "Quill",
+          "Anchor"
+        ],
+        "right": [
+          "Crescent"
+        ]
+      },
+      {
+        "left": [
+          "Quill",
+          "Anchor",
+          "Crescent"
+        ],
+        "right": [
+          "Wheel",
+          "Lantern"
+        ]
+      },
+      {
+        "left": [
+          "Thorn",
+          "Anchor"
+        ],
+        "right": [
+          "Wheel"
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "Quill": 2,
+    "Thorn": 5,
+    "Wheel": 9,
+    "Lantern": 3,
+    "Anchor": 4,
+    "Crescent": 6
+  }
+}

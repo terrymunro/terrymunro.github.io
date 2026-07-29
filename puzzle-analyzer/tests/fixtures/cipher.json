@@ -1,0 +1,22 @@
+{
+  "spec": {
+    "ciphertext": "Q LIQKH DOFR ITQKL ZIT LOSTFET WTZVTTF LOUFQSL",
+    "wordlist": [
+      "A",
+      "SHARP",
+      "MIND",
+      "HEARS",
+      "THE",
+      "SILENCE",
+      "BETWEEN",
+      "SIGNALS",
+      "I",
+      "SHARD",
+      "MINE",
+      "HEARD",
+      "TOE",
+      "BEDECKS"
+    ]
+  },
+  "expected": "A SHARP MIND HEARS THE SILENCE BETWEEN SIGNALS"
+}

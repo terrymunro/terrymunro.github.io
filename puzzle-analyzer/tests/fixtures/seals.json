@@ -1,0 +1,29 @@
+{
+  "spec": {
+    "ciphertext": "λμζφωγωσ φμω λζππθ λδφμμβπξ φμω ζσσζαχωϖωαφ ζπσωζξψ ζξϖδφφωξ",
+    "wordlist": [
+      "WHATEVER",
+      "THE",
+      "WALLS",
+      "WITHHOLD",
+      "ARRANGEMENT",
+      "ALREADY",
+      "ADMITTED",
+      "WHENEVER",
+      "SHE",
+      "HALLS",
+      "WITHHELD",
+      "ARRANGEMENTS",
+      "ALMONDS",
+      "ADMIRED",
+      "BALLS",
+      "CALLS"
+    ],
+    "given": {
+      "ω": "E",
+      "χ": "G",
+      "β": "O"
+    }
+  },
+  "expected": "WHATEVER THE WALLS WITHHOLD THE ARRANGEMENT ALREADY ADMITTED"
+}
