@@ -22,7 +22,16 @@ plaintext is A-Z.  Distinct solutions are distinct plaintexts.
 from dataclasses import dataclass, field
 from typing import Any
 
-from .core import Verdict, load_wordlist
+from .core import (
+    AllDifferentPropagator,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    grade_csp,
+    load_wordlist,
+)
 from .core.spec import get_field
 
 
@@ -168,3 +177,82 @@ def _pattern(word: str) -> tuple[int, ...]:
     """Repeat structure of a word: ABBA and NOON share (0, 1, 1, 0)."""
     seen: dict[str, int] = {}
     return tuple(seen.setdefault(ch, len(seen)) for ch in word)
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _word_candidates(puzzle: Cryptogram) -> dict[str, list[str]]:
+    by_length: dict[int, list[str]] = {}
+    for entry in puzzle.wordlist:
+        by_length.setdefault(len(entry), []).append(entry)
+    out = {}
+    for word in dict.fromkeys(puzzle.words):
+        pattern = _pattern(word)
+        candidates = [
+            c for c in sorted(by_length.get(len(word), []))
+            if _pattern(c) == pattern
+        ]
+        if puzzle.no_self_map:
+            candidates = [
+                c
+                for c in candidates
+                if all(s != letter for s, letter in zip(word, c, strict=True))
+            ]
+        out[word] = candidates
+    return out
+
+
+def _csp(puzzle: Cryptogram) -> Csp:
+    """One variable per cipher symbol; a table per distinct cipher word.
+
+    This mirrors how a human cracks a cryptogram: shortlist dictionary
+    words matching each word's repeat pattern, then propagate letters.
+    """
+    symbols = sorted({s for word in puzzle.words for s in word})
+    alphabet = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    domains: dict[str, set] = {}
+    for symbol in symbols:
+        if symbol in puzzle.given:
+            domains[symbol] = {puzzle.given[symbol]}
+        elif puzzle.no_self_map:
+            domains[symbol] = alphabet - {symbol}
+        else:
+            domains[symbol] = set(alphabet)
+
+    propagators: list[Any] = [
+        AllDifferentPropagator("substitution is injective", symbols)
+    ]
+    for word, candidates in _word_candidates(puzzle).items():
+        scope = list(dict.fromkeys(word))
+        tuples = sorted(
+            {
+                tuple(dict(zip(word, candidate, strict=True))[s] for s in scope)
+                for candidate in candidates
+            }
+        )
+        propagators.append(
+            TablePropagator(f"word {word} ({len(candidates)} candidates)",
+                            scope, tuples)
+        )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Cryptogram) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def reductions(puzzle: Cryptogram):
+    """Hardening moves: withhold one pre-cracked symbol."""
+    for symbol, letter in sorted(puzzle.given.items()):
+        given = {k: v for k, v in puzzle.given.items() if k != symbol}
+        yield Reduction(
+            f"withhold the given {symbol} -> {letter}",
+            Cryptogram(
+                words=puzzle.words,
+                wordlist=puzzle.wordlist,
+                no_self_map=puzzle.no_self_map,
+                given=given,
+            ),
+        )

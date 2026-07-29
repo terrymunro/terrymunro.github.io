@@ -21,7 +21,18 @@ Spec format::
 from dataclasses import dataclass
 from typing import Any
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    AllDifferentPropagator,
+    CpModelBuilder,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    product_table,
+)
 from .core.spec import get_field
 
 
@@ -111,3 +122,68 @@ def validate(puzzle: Balance, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: Balance) -> Csp:
+    domains = {
+        symbol: set(range(puzzle.minimum, puzzle.maximum + 1))
+        for symbol in puzzle.symbols
+    }
+    propagators: list[Any] = []
+    if puzzle.distinct:
+        propagators.append(
+            AllDifferentPropagator(
+                "all weights differ",
+                puzzle.symbols,
+                permutation=(
+                    len(puzzle.symbols)
+                    == puzzle.maximum - puzzle.minimum + 1
+                ),
+            )
+        )
+    for index, equation in enumerate(puzzle.equations, 1):
+        scope = list(dict.fromkeys(equation.left + equation.right))
+        position = {symbol: i for i, symbol in enumerate(scope)}
+
+        def balances(row, eq=equation, pos=position):
+            left = sum(row[pos[s]] for s in eq.left)
+            right = sum(row[pos[s]] for s in eq.right)
+            return left == right
+
+        propagators.append(
+            TablePropagator(
+                f"balance {index} ({'+'.join(equation.left)} = "
+                f"{'+'.join(equation.right)})",
+                scope,
+                product_table(
+                    [range(puzzle.minimum, puzzle.maximum + 1)] * len(scope),
+                    balances,
+                ),
+            )
+        )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Balance) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def reductions(puzzle: Balance):
+    """Hardening moves: remove one balance."""
+    for index in range(len(puzzle.equations)):
+        equation = puzzle.equations[index]
+        yield Reduction(
+            f"remove balance {index + 1} ({'+'.join(equation.left)} = "
+            f"{'+'.join(equation.right)})",
+            Balance(
+                symbols=puzzle.symbols,
+                minimum=puzzle.minimum,
+                maximum=puzzle.maximum,
+                distinct=puzzle.distinct,
+                equations=puzzle.equations[:index] + puzzle.equations[index + 1 :],
+            ),
+        )

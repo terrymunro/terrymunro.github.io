@@ -8,12 +8,12 @@ a puzzle type means writing one cohesive module and one entry below.
 """
 
 import importlib
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from types import ModuleType
 from typing import Any
 
-from .core import Verdict
+from .core import Rating, Reduction, Verdict
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,6 +35,30 @@ class PuzzleType:
     @property
     def validate(self) -> Callable[..., Verdict]:
         return self._module().validate
+
+    @property
+    def grade(self) -> Callable[[Any], Rating] | None:
+        """Difficulty grader, when the module provides one."""
+        return getattr(self._module(), "grade", None)
+
+    @property
+    def reductions(self) -> Callable[[Any], Iterable[Reduction]] | None:
+        """Hardening move generator, when the module provides one."""
+        return getattr(self._module(), "reductions", None)
+
+    @property
+    def solution_key(self) -> Callable[[Any], Any]:
+        """Projection used to compare solutions across hardening edits."""
+        return getattr(self._module(), "solution_key", lambda solution: solution)
+
+    @property
+    def capabilities(self) -> list[str]:
+        out = ["validate"]
+        if self.grade is not None:
+            out.append("grade")
+        if self.grade is not None and self.reductions is not None:
+            out.append("harden")
+        return out
 
 
 def _entry(name: str, module_name: str, summary: str, found_in: str) -> PuzzleType:

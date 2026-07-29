@@ -33,7 +33,16 @@ from dataclasses import dataclass
 from itertools import permutations
 from typing import Any
 
-from .core import Verdict
+from .core import (
+    AllDifferentPropagator,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    grade_csp,
+    product_table,
+)
 from .core.spec import get_field
 
 type Statement = dict[str, Any]
@@ -140,3 +149,86 @@ def validate(puzzle: TruthLie, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: TruthLie) -> Csp:
+    """Slots plus one truth variable per statement.
+
+    Each statement's table links the whole sequence to its truth value;
+    a final table pins how many statements are false.  This mirrors how a
+    solver reasons: assume a lie-set shape, propagate positions.
+    """
+    slot_names = [f"slot{i + 1}" for i in range(puzzle.sequence_length)]
+    truth_names = [f"statement{i + 1}" for i in range(len(puzzle.statements))]
+    domains: dict[str, set] = {name: set(puzzle.candidates) for name in slot_names}
+    domains |= {name: {False, True} for name in truth_names}
+
+    propagators: list = [
+        AllDifferentPropagator("all slots differ", slot_names)
+    ]
+    for index, statement in enumerate(puzzle.statements):
+        propagators.append(
+            TablePropagator(
+                f"statement {index + 1} ({statement['kind']})",
+                [*slot_names, truth_names[index]],
+                product_table(
+                    [list(puzzle.candidates)] * puzzle.sequence_length
+                    + [[False, True]],
+                    lambda row, s=statement: (
+                        len(set(row[:-1])) == len(row) - 1
+                        and row[-1] == holds(s, row[:-1])
+                    ),
+                ),
+            )
+        )
+    propagators.append(
+        TablePropagator(
+            f"exactly {puzzle.false_count} statements are false",
+            truth_names,
+            product_table(
+                [[False, True]] * len(truth_names),
+                lambda row: sum(not truth for truth in row) == puzzle.false_count,
+            ),
+        )
+    )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: TruthLie) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def solution_key(solution: dict[str, Any]) -> tuple[str, ...]:
+    """Hardening compares sequences; lie indices shift when clues drop."""
+    return tuple(solution["sequence"])
+
+
+def reductions(puzzle: TruthLie):
+    """Hardening moves: drop one statement.
+
+    Dropping a statement that the (unique) solution makes false also
+    lowers the required lie count by one, so the solution stays valid by
+    construction — and is then re-proved by the hardening engine.
+    """
+    verdict = validate(puzzle)
+    if not verdict.unique:
+        return
+    false_indices = set(verdict.solution["false_statements"])
+    for index in range(len(puzzle.statements)):
+        statement = puzzle.statements[index]
+        was_false = (index + 1) in false_indices
+        yield Reduction(
+            f"drop statement {index + 1} ({statement['kind']}"
+            f"{', currently false' if was_false else ''})",
+            TruthLie(
+                candidates=puzzle.candidates,
+                sequence_length=puzzle.sequence_length,
+                false_count=puzzle.false_count - (1 if was_false else 0),
+                statements=puzzle.statements[:index]
+                + puzzle.statements[index + 1 :],
+            ),
+        )

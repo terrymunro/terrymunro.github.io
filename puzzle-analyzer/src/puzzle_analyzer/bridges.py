@@ -4,8 +4,10 @@ Spec format::
 
     {"islands": [{"r": 0, "c": 0, "deg": 3}, ...], "max_bridges": 2}
 
-Islands sit on grid points.  Bridges run straight, horizontally or
-vertically, between two islands with no island in between; at most
+Islands sit on grid points; ``"deg": null`` marks an island whose degree
+is hidden (a "?" island) and imposes no degree constraint.  Bridges run
+straight, horizontally or vertically, between two islands with no island
+in between; at most
 ``max_bridges`` (default 2) may join the same pair; bridges may not cross.
 Every island's degree must be met exactly and the finished network must be
 connected.
@@ -18,7 +20,17 @@ configurations are never counted as solutions.
 from dataclasses import dataclass
 from typing import Any
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    CpModelBuilder,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    product_table,
+)
 from .core.spec import get_field
 
 
@@ -26,7 +38,8 @@ from .core.spec import get_field
 class Island:
     row: int
     col: int
-    degree: int
+    #: None = hidden degree ("?" island): no degree constraint.
+    degree: int | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,7 +62,11 @@ def parse(spec: dict[str, Any]) -> Bridges:
         Island(
             row=get_field(raw, "r", int),
             col=get_field(raw, "c", int),
-            degree=get_field(raw, "deg", int),
+            degree=(
+                None
+                if raw.get("deg") is None
+                else get_field(raw, "deg", int)
+            ),
         )
         for raw in get_field(spec, "islands", list)
     )
@@ -73,9 +90,10 @@ def check(puzzle: Bridges) -> list[str]:
                 f"islands {positions[pos]} and {index} share cell {pos}"
             )
         positions[pos] = index
-        if island.degree < 1:
+        if island.degree is not None and island.degree < 1:
             issues.append(f"island {index}: degree must be at least 1")
-    if sum(i.degree for i in puzzle.islands) % 2:
+    degrees = [i.degree for i in puzzle.islands]
+    if None not in degrees and sum(degrees) % 2:  # type: ignore[arg-type]
         issues.append("island degrees sum to an odd number — impossible")
     return issues
 
@@ -137,6 +155,8 @@ def validate(puzzle: Bridges, *, limit: int = 2) -> Verdict:
     ]
 
     for index, island in enumerate(puzzle.islands):
+        if island.degree is None:
+            continue
         incident = [
             counts[k]
             for k, edge in enumerate(edges)
@@ -181,3 +201,77 @@ def validate(puzzle: Bridges, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: Bridges) -> Csp:
+    """Degree and crossing constraints only.
+
+    Network connectivity is global and cannot be propagated locally; a
+    puzzle whose uniqueness rests on connectivity alone will therefore
+    grade as Extreme, which errs on the hard side — never the easy side.
+    """
+    edges = _candidate_edges(puzzle)
+    names = [f"bridge {e.a}-{e.b}" for e in edges]
+    domains = {
+        name: set(range(puzzle.max_bridges + 1)) for name in names
+    }
+    propagators: list[Any] = []
+    for index, island in enumerate(puzzle.islands):
+        if island.degree is None:
+            continue
+        scope = [
+            names[k] for k, edge in enumerate(edges) if index in (edge.a, edge.b)
+        ]
+        propagators.append(
+            TablePropagator(
+                f"island {index} at ({island.row},{island.col}) "
+                f"needs {island.degree}",
+                scope,
+                product_table(
+                    [range(puzzle.max_bridges + 1)] * len(scope),
+                    lambda row, degree=island.degree: sum(row) == degree,
+                ),
+            )
+        )
+    for i, first in enumerate(edges):
+        if not first.horizontal:
+            continue
+        for j, second in enumerate(edges):
+            if second.horizontal or not _crosses(puzzle, first, second):
+                continue
+            propagators.append(
+                TablePropagator(
+                    f"bridges {names[i]} and {names[j]} may not cross",
+                    [names[i], names[j]],
+                    product_table(
+                        [range(puzzle.max_bridges + 1)] * 2,
+                        lambda row: row[0] == 0 or row[1] == 0,
+                    ),
+                )
+            )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Bridges) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def reductions(puzzle: Bridges):
+    """Hardening moves: hide one island's degree (a "?" island)."""
+    for index, island in enumerate(puzzle.islands):
+        if island.degree is None:
+            continue
+        islands = (
+            *puzzle.islands[:index],
+            Island(row=island.row, col=island.col, degree=None),
+            *puzzle.islands[index + 1 :],
+        )
+        yield Reduction(
+            f"hide the degree of island {index} at "
+            f"({island.row},{island.col})",
+            Bridges(islands=islands, max_bridges=puzzle.max_bridges),
+        )

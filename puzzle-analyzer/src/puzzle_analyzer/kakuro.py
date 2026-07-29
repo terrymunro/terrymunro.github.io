@@ -18,7 +18,16 @@ zero-based).  Every run holds digits 1-9 with no repeats, adding up to
 from dataclasses import dataclass
 from typing import Any
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    CpModelBuilder,
+    Csp,
+    Rating,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    permutation_table,
+)
 from .core.spec import SpecError, get_field
 
 type Cell = tuple[int, int]
@@ -137,3 +146,34 @@ def validate(puzzle: Kakuro, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: Kakuro) -> Csp:
+    domains = {
+        f"R{r + 1}C{c + 1}": set(range(1, 10))
+        for r, row in enumerate(puzzle.layout)
+        for c, fillable in enumerate(row)
+        if fillable
+    }
+    propagators = [
+        TablePropagator(
+            f"{'across' if run.direction == 'h' else 'down'} run of "
+            f"{run.length} summing to {run.total}",
+            [f"R{r + 1}C{c + 1}" for r, c in run.cells()],
+            permutation_table(
+                range(1, 10),
+                run.length,
+                lambda row, total=run.total: sum(row) == total,
+            ),
+        )
+        for run in puzzle.runs
+    ]
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Kakuro) -> Rating:
+    return grade_csp(_csp(puzzle))

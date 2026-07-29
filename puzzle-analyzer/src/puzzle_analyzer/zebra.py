@@ -34,7 +34,18 @@ from typing import Any
 
 from ortools.sat.python import cp_model
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    AllDifferentPropagator,
+    CpModelBuilder,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    product_table,
+)
 from .core.spec import get_field
 
 type Clue = dict[str, Any]
@@ -192,3 +203,74 @@ def validate(puzzle: Zebra, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _clue_predicate(clue: Clue, slots: int):
+    """Truth of a clue as a function of its items' positions (in scope
+    order: item, a, b — whichever the clue uses)."""
+    match clue["kind"]:
+        case "at_end":
+            return lambda row: row[0] in (1, slots)
+        case "at_slot":
+            return lambda row: row[0] == int(clue["slot"])
+        case "in_slots":
+            allowed = {int(s) for s in clue["slots"]}
+            return lambda row: row[0] in allowed
+        case "gap":
+            distance = int(clue["between"]) + 1
+            return lambda row: abs(row[0] - row[1]) == distance
+        case "adjacent":
+            return lambda row: abs(row[0] - row[1]) == 1
+        case "strictly_between":
+            return lambda row: row[1] < row[0] < row[2] or row[2] < row[0] < row[1]
+        case "immediately_left":
+            return lambda row: row[0] + 1 == row[1]
+        case "before":
+            return lambda row: row[0] < row[1]
+        case "same_slot":
+            return lambda row: row[0] == row[1]
+        case _:  # not_same_slot
+            return lambda row: row[0] != row[1]
+
+
+def _csp(puzzle: Zebra) -> Csp:
+    domains = {item: set(range(1, puzzle.slots + 1)) for item in puzzle.items()}
+    propagators: list[Any] = [
+        AllDifferentPropagator(f"category {name}", members, permutation=True)
+        for name, members in puzzle.categories.items()
+    ]
+    for index, clue in enumerate(puzzle.clues, 1):
+        scope = _clue_items(clue)
+        predicate = _clue_predicate(clue, puzzle.slots)
+        propagators.append(
+            TablePropagator(
+                f"clue {index} ({clue['kind']})",
+                scope,
+                product_table(
+                    [range(1, puzzle.slots + 1)] * len(scope), predicate
+                ),
+            )
+        )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Zebra) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def reductions(puzzle: Zebra):
+    """Hardening moves: drop one clue."""
+    for index in range(len(puzzle.clues)):
+        clue = puzzle.clues[index]
+        yield Reduction(
+            f"drop clue {index + 1} ({clue['kind']})",
+            Zebra(
+                slots=puzzle.slots,
+                categories=puzzle.categories,
+                clues=puzzle.clues[:index] + puzzle.clues[index + 1 :],
+            ),
+        )

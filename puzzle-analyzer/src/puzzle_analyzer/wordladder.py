@@ -20,7 +20,15 @@ Spec format::
 from dataclasses import dataclass
 from typing import Any
 
-from .core import Verdict, load_wordlist
+from .core import (
+    AllDifferentPropagator,
+    Csp,
+    Rating,
+    TablePropagator,
+    Verdict,
+    grade_csp,
+    load_wordlist,
+)
 from .core.spec import get_field
 
 
@@ -131,3 +139,37 @@ def validate(puzzle: WordLadder, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: WordLadder) -> Csp:
+    pool = sorted(w for w in puzzle.wordlist if len(w) == len(puzzle.start))
+    pairs = [
+        (a, b)
+        for a in pool
+        for b in pool
+        if a != b and differ_by_one(a, b)
+    ]
+    names = [f"step{i + 1}" for i in range(puzzle.length)]
+    domains: dict[str, set] = {name: set(pool) for name in names}
+    domains[names[0]] = {puzzle.start}
+    domains[names[-1]] = {puzzle.end}
+    propagators: list[Any] = [
+        AllDifferentPropagator("no word repeats", names)
+    ]
+    propagators += [
+        TablePropagator(
+            f"steps {i + 1} and {i + 2} differ by one letter",
+            [names[i], names[i + 1]],
+            pairs,
+        )
+        for i in range(puzzle.length - 1)
+    ]
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: WordLadder) -> Rating:
+    return grade_csp(_csp(puzzle))

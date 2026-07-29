@@ -15,7 +15,16 @@ enforced with CP-SAT's automaton constraint.
 from dataclasses import dataclass
 from typing import Any
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    CpModelBuilder,
+    Csp,
+    Rating,
+    Reduction,
+    RegularPropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+)
 from .core.spec import get_field
 
 type Clue = tuple[int, ...] | None
@@ -140,3 +149,60 @@ def validate(puzzle: Nonogram, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _line_propagator(
+    name: str, scope: list[str], clue: tuple[int, ...]
+) -> RegularPropagator:
+    triples, final = _automaton(clue)
+    transitions = {(state, symbol): nxt for state, symbol, nxt in triples}
+    return RegularPropagator(name, scope, transitions, 0, [final])
+
+
+def _csp(puzzle: Nonogram) -> Csp:
+    domains = {
+        f"R{r + 1}C{c + 1}": {0, 1}
+        for r in range(puzzle.height)
+        for c in range(puzzle.width)
+    }
+    propagators = []
+    for r, clue in enumerate(puzzle.rows):
+        if clue is not None:
+            scope = [f"R{r + 1}C{c + 1}" for c in range(puzzle.width)]
+            propagators.append(
+                _line_propagator(f"row {r + 1} clue {list(clue)}", scope, clue)
+            )
+    for c, clue in enumerate(puzzle.cols):
+        if clue is not None:
+            scope = [f"R{r + 1}C{c + 1}" for r in range(puzzle.height)]
+            propagators.append(
+                _line_propagator(f"column {c + 1} clue {list(clue)}", scope, clue)
+            )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Nonogram) -> Rating:
+    """Grade by line-consistency propagation depth (see core.grading)."""
+    return grade_csp(_csp(puzzle))
+
+
+def reductions(puzzle: Nonogram):
+    """Hardening moves: hide one line clue (a "destroyed scan")."""
+    for r, clue in enumerate(puzzle.rows):
+        if clue is not None:
+            rows = (*puzzle.rows[:r], None, *puzzle.rows[r + 1 :])
+            yield Reduction(
+                f"hide the clue for row {r + 1}",
+                Nonogram(rows=rows, cols=puzzle.cols),
+            )
+    for c, clue in enumerate(puzzle.cols):
+        if clue is not None:
+            cols = (*puzzle.cols[:c], None, *puzzle.cols[c + 1 :])
+            yield Reduction(
+                f"hide the clue for column {c + 1}",
+                Nonogram(rows=puzzle.rows, cols=cols),
+            )

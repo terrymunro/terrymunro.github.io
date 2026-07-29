@@ -12,7 +12,16 @@ two stars touch, even diagonally.
 from dataclasses import dataclass
 from typing import Any
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    CpModelBuilder,
+    Csp,
+    Rating,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    product_table,
+)
 from .core.spec import get_field
 
 
@@ -99,3 +108,58 @@ def validate(puzzle: StarBattle, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading
+# --------------------------------------------------------------------------
+
+def _csp(puzzle: StarBattle) -> Csp:
+    n, stars = puzzle.size, puzzle.stars
+    domains = {
+        f"R{r + 1}C{c + 1}": {0, 1} for r in range(n) for c in range(n)
+    }
+
+    def exactly(scope: list[str], name: str) -> TablePropagator:
+        return TablePropagator(
+            name,
+            scope,
+            product_table(
+                [(0, 1)] * len(scope), lambda row: sum(row) == stars
+            ),
+        )
+
+    propagators: list[Any] = []
+    for r in range(n):
+        propagators.append(
+            exactly([f"R{r + 1}C{c + 1}" for c in range(n)], f"row {r + 1}")
+        )
+    for c in range(n):
+        propagators.append(
+            exactly([f"R{r + 1}C{c + 1}" for r in range(n)], f"column {c + 1}")
+        )
+    by_region: dict[int, list[str]] = {}
+    for r in range(n):
+        for c in range(n):
+            by_region.setdefault(puzzle.regions[r][c], []).append(
+                f"R{r + 1}C{c + 1}"
+            )
+    for region, scope in sorted(by_region.items()):
+        propagators.append(exactly(scope, f"region {region}"))
+    for r in range(n):
+        for c in range(n):
+            for dr, dc in ((0, 1), (1, -1), (1, 0), (1, 1)):
+                rr, cc = r + dr, c + dc
+                if 0 <= rr < n and 0 <= cc < n:
+                    propagators.append(
+                        TablePropagator(
+                            f"no touching stars at R{r + 1}C{c + 1}",
+                            [f"R{r + 1}C{c + 1}", f"R{rr + 1}C{cc + 1}"],
+                            [(0, 0), (0, 1), (1, 0)],
+                        )
+                    )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: StarBattle) -> Rating:
+    return grade_csp(_csp(puzzle))

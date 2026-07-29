@@ -16,12 +16,22 @@ form a Latin square; a rim clue counts the buildings visible from that
 side (taller buildings hide everything shorter behind them).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any
 
 from ortools.sat.python import cp_model
 
-from .core import CpModelBuilder, Verdict, enumerate_solutions
+from .core import (
+    CpModelBuilder,
+    Csp,
+    Rating,
+    Reduction,
+    TablePropagator,
+    Verdict,
+    enumerate_solutions,
+    grade_csp,
+    permutation_table,
+)
 from .core.spec import get_field
 
 
@@ -135,3 +145,90 @@ def validate(puzzle: Skyscrapers, *, limit: int = 2) -> Verdict:
         solution_count=len(solutions),
         solutions=solutions,
     )
+
+
+# --------------------------------------------------------------------------
+# Grading and hardening
+# --------------------------------------------------------------------------
+
+def _visible(line: tuple[int, ...]) -> int:
+    tallest = 0
+    count = 0
+    for height in line:
+        if height > tallest:
+            tallest = height
+            count += 1
+    return count
+
+
+def _csp(puzzle: Skyscrapers) -> Csp:
+    n = puzzle.size
+    domains = {
+        f"R{r + 1}C{c + 1}": (
+            {puzzle.givens[r][c]} if puzzle.givens[r][c] else set(range(1, n + 1))
+        )
+        for r in range(n)
+        for c in range(n)
+    }
+
+    def line_table(first: int, last: int) -> list[tuple[int, ...]]:
+        return permutation_table(
+            range(1, n + 1),
+            n,
+            lambda row: (not first or _visible(row) == first)
+            and (not last or _visible(row[::-1]) == last),
+        )
+
+    propagators = []
+    for r in range(n):
+        scope = [f"R{r + 1}C{c + 1}" for c in range(n)]
+        propagators.append(
+            TablePropagator(
+                f"row {r + 1} (left {puzzle.left[r] or '-'}, "
+                f"right {puzzle.right[r] or '-'})",
+                scope,
+                line_table(puzzle.left[r], puzzle.right[r]),
+            )
+        )
+    for c in range(n):
+        scope = [f"R{r + 1}C{c + 1}" for r in range(n)]
+        propagators.append(
+            TablePropagator(
+                f"column {c + 1} (top {puzzle.top[c] or '-'}, "
+                f"bottom {puzzle.bottom[c] or '-'})",
+                scope,
+                line_table(puzzle.top[c], puzzle.bottom[c]),
+            )
+        )
+    return Csp(domains=domains, propagators=propagators)
+
+
+def grade(puzzle: Skyscrapers) -> Rating:
+    return grade_csp(_csp(puzzle))
+
+
+def _replace(rim: tuple[int, ...], index: int) -> tuple[int, ...]:
+    return (*rim[:index], 0, *rim[index + 1 :])
+
+
+def reductions(puzzle: Skyscrapers):
+    """Hardening moves: blank one rim clue, or clear one given height."""
+    for side in ("top", "bottom", "left", "right"):
+        rim = getattr(puzzle, side)
+        for index, clue in enumerate(rim):
+            if clue:
+                yield Reduction(
+                    f"blank the {side} clue at position {index + 1}",
+                    replace(puzzle, **{side: _replace(rim, index)}),
+                )
+    for r, row in enumerate(puzzle.givens):
+        for c, value in enumerate(row):
+            if value:
+                givens = tuple(
+                    tuple(0 if (i, j) == (r, c) else v for j, v in enumerate(rw))
+                    for i, rw in enumerate(puzzle.givens)
+                )
+                yield Reduction(
+                    f"clear the given {value} at R{r + 1}C{c + 1}",
+                    replace(puzzle, givens=givens),
+                )
