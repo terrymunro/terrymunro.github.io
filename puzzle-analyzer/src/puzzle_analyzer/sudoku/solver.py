@@ -4,7 +4,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 
 from .board import Board
+from .model import SudokuPuzzle
 from .techniques import TECHNIQUES, Step
+
+
+def as_puzzle(values: "Sequence[int] | SudokuPuzzle") -> SudokuPuzzle:
+    if isinstance(values, SudokuPuzzle):
+        return values
+    return SudokuPuzzle(values=tuple(values))
 
 
 @dataclass(slots=True)
@@ -29,13 +36,14 @@ class SolveResult:
         return not self.solved and self.contradiction is None
 
 
-def solve_logically(values: Sequence[int]) -> SolveResult:
+def solve_logically(values: "Sequence[int] | SudokuPuzzle") -> SolveResult:
     """Solve using only the human technique repertoire, cheapest-first.
 
     Never guesses and never backtracks.  If it finishes, the puzzle is
     solvable by pure logic with the implemented techniques.
     """
-    board = Board(values)
+    puzzle = as_puzzle(values)
+    board = Board(puzzle.values, puzzle.geometry, puzzle.variants.cages)
     steps: list[Step] = []
     counts: dict[str, int] = {}
     hardest_cost = 0.0

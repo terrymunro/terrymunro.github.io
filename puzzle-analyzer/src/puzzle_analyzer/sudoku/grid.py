@@ -124,3 +124,57 @@ def find_given_conflicts(values: Sequence[int]) -> list[str]:
             else:
                 seen[v] = cell
     return conflicts
+
+
+# --------------------------------------------------------------------------
+# Instance geometry (variant support)
+# --------------------------------------------------------------------------
+
+from dataclasses import dataclass as _dataclass  # noqa: E402
+
+
+@_dataclass(frozen=True, slots=True)
+class Geometry:
+    """The complete constraint geometry of one puzzle instance.
+
+    The first 27 units are always the classic rows, columns and boxes (in
+    that order — the fish techniques rely on it); variants append extra
+    all-different units (diagonals, extra regions) and extra peer pairs
+    (anti-knight, anti-king).
+    """
+
+    units: tuple[tuple[int, ...], ...]
+    unit_names: tuple[str, ...]
+    peers: tuple[frozenset[int], ...]
+    cell_units: tuple[tuple[int, ...], ...]
+
+
+def build_geometry(
+    extra_units: Sequence[tuple[str, Sequence[int]]] = (),
+    extra_peer_pairs: Sequence[tuple[int, int]] = (),
+) -> Geometry:
+    """Classic geometry plus named extra units and extra peer pairs."""
+    units = tuple(tuple(u) for u in UNITS) + tuple(
+        tuple(cells) for _, cells in extra_units
+    )
+    unit_names = tuple(UNIT_NAMES) + tuple(name for name, _ in extra_units)
+    cell_units = tuple(
+        tuple(k for k, unit in enumerate(units) if i in unit) for i in ALL_CELLS
+    )
+    peer_sets: list[set[int]] = [set() for _ in ALL_CELLS]
+    for unit in units:
+        for cell in unit:
+            peer_sets[cell].update(c for c in unit if c != cell)
+    for a, b in extra_peer_pairs:
+        peer_sets[a].add(b)
+        peer_sets[b].add(a)
+    return Geometry(
+        units=units,
+        unit_names=unit_names,
+        peers=tuple(frozenset(p) for p in peer_sets),
+        cell_units=cell_units,
+    )
+
+
+#: The plain 9x9 sudoku geometry.
+CLASSIC = build_geometry()

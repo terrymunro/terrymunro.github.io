@@ -9,12 +9,14 @@ from typing import Any
 
 from ..core import Rating as CoreRating
 from ..core import Reduction, Verdict
+from . import fpuzzles
 from .analyze import Analysis, analyze
 from .board import Board
 from .difficulty import Rating, rate
 from .grid import cell_name, format_grid, parse_puzzle, to_line
 from .harden import HardenReport, Suggestion, greedy_harden, suggest_removals
-from .solver import SolveResult, solve_logically
+from .model import Cage, SudokuPuzzle, Variants, parse_spec
+from .solver import SolveResult, as_puzzle, solve_logically
 from .techniques import TECHNIQUES, Step
 from .uniqueness import count_solutions, is_unique
 
@@ -22,19 +24,25 @@ __all__ = [
     "TECHNIQUES",
     "Analysis",
     "Board",
+    "Cage",
     "HardenReport",
     "Rating",
     "SolveResult",
     "Step",
+    "SudokuPuzzle",
     "Suggestion",
+    "Variants",
     "analyze",
+    "as_puzzle",
     "count_solutions",
     "format_grid",
+    "fpuzzles",
     "grade",
     "greedy_harden",
     "is_unique",
     "parse",
     "parse_puzzle",
+    "parse_spec",
     "rate",
     "reductions",
     "solve_logically",
@@ -44,19 +52,34 @@ __all__ = [
 ]
 
 
-def parse(spec: str | dict[str, Any]) -> list[int]:
-    """Registry entry point: accept a raw 81-char string or ``{"givens": ...}``."""
+def parse(spec: str | dict[str, Any] | SudokuPuzzle) -> SudokuPuzzle:
+    """Registry entry point.
+
+    Accepts a classic 81-char string, a JSON spec dict (see
+    :mod:`~puzzle_analyzer.sudoku.model` for variant fields), an f-puzzles
+    URL / ``{"fpuzzles": url}``, or an already-parsed puzzle.
+    """
+    if isinstance(spec, SudokuPuzzle):
+        return spec
     if isinstance(spec, dict):
-        spec = spec["givens"]
-    return parse_puzzle(spec)
+        if "fpuzzles" in spec:
+            return parse_spec(fpuzzles.decode(spec["fpuzzles"]))
+        return parse_spec(spec)
+    text = spec.strip()
+    if "?load=" in text or "f-puzzles.com" in text:
+        return parse_spec(fpuzzles.decode(text))
+    return SudokuPuzzle(values=tuple(parse_puzzle(text)))
 
 
-def validate(values: list[int], *, limit: int = 2) -> Verdict:
+def validate(values: "list[int] | SudokuPuzzle", *, limit: int = 2) -> Verdict:
     """Registry entry point: uniqueness verdict plus sudoku-specific extras."""
-    analysis = analyze(values)
+    puzzle = as_puzzle(values)
+    analysis = analyze(puzzle)
     details: dict[str, Any] = {}
+    if variants := puzzle.variants.describe():
+        details["variants"] = variants
     if analysis.rating is not None and analysis.solve is not None:
-        details = {
+        details |= {
             "solvableWithoutGuessing": analysis.solvable_without_guessing,
             "grade": analysis.rating.grade,
             "hardestTechnique": analysis.rating.hardest_technique,
@@ -73,7 +96,7 @@ def validate(values: list[int], *, limit: int = 2) -> Verdict:
     )
 
 
-def grade(values: list[int]) -> CoreRating:
+def grade(values: "list[int] | SudokuPuzzle") -> CoreRating:
     """Registry entry point: technique-based grading on the shared scale.
 
     Sudoku keeps its bespoke human-technique solver (richer than the
@@ -103,12 +126,16 @@ def grade(values: list[int]) -> CoreRating:
     )
 
 
-def reductions(values: list[int]):
+def reductions(values: "list[int] | SudokuPuzzle"):
     """Registry entry point: hardening moves are single given-removals."""
-    for cell, digit in enumerate(values):
+    from dataclasses import replace
+
+    puzzle = as_puzzle(values)
+    for cell, digit in enumerate(puzzle.values):
         if digit:
-            reduced = list(values)
-            reduced[cell] = 0
+            grid = list(puzzle.values)
+            grid[cell] = 0
             yield Reduction(
-                f"remove the {digit} at {cell_name(cell)}", reduced
+                f"remove the {digit} at {cell_name(cell)}",
+                replace(puzzle, values=tuple(grid)),
             )

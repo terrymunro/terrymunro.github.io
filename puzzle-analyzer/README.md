@@ -19,7 +19,7 @@ Cartographer's Descent* — and `abyss.html` — *The Abyss*):
 
 | Type | Site puzzles | Capabilities | Hardening move |
 |---|---|---|---|
-| `sudoku` | — | validate, grade, harden | remove a given |
+| `sudoku` (+ variants) | — | validate, grade, harden | remove a given |
 | `nonogram` | The Loom, Blind Tomography | validate, grade, harden | hide a line clue |
 | `skyscrapers` | Sluice Row | validate, grade, harden | blank a rim clue / clear a given |
 | `kenken` | Pressure Lattice | validate, grade, harden | merge adjacent cages into `+` |
@@ -112,6 +112,37 @@ analysis.rating.grade                 # "Easy" … "Extreme"
 for step in analysis.solve.steps:     # annotated deductions
     print(step.technique, step.description)
 ```
+
+## Variant sudoku
+
+Sudoku accepts variant constraints, freely composable, via a JSON spec or
+an **f-puzzles import** (the exchange format used by Cracking the Cryptic
+and SudokuPad — paste a `?load=` URL straight in):
+
+```sh
+uv run puzzle-analyzer validate sudoku '{"givens": "...", "diagonal_down": true, "diagonal_up": true}'
+uv run puzzle-analyzer validate sudoku "https://f-puzzles.com/?load=N4Ig..."
+uv run puzzle-analyzer sudoku solve '{"fpuzzles": "N4Ig..."}'
+```
+
+Supported today: **Sudoku X** (either/both diagonals), **anti-knight**,
+**anti-king**, **killer cages**, and **extra regions** (windoku). The
+technique solver participates fully: diagonals and extra regions join the
+unit-based techniques automatically (hidden singles report "the only cell
+in diagonal R1C1-R9C9…"), locked candidates generalizes to any pair of
+intersecting units, and killer cages get a Cage Combinations technique.
+The f-puzzles importer **fails loudly** on any feature the analyzer does
+not implement (thermometers, arrows, …), so an import can never silently
+drop a constraint and "prove" uniqueness of the wrong puzzle;
+`fpuzzles.encode` round-trips our specs back out for use in SudokuPad.
+
+Variant fixtures are *generated, not borrowed*
+(`tools/generate_variant_fixtures.py`) and each carries three
+machine-checked guarantees, re-verified in CI: a CP-SAT uniqueness proof,
+agreement from the independent technique solver with no guessing, and
+proof the variant constraint is load-bearing (the same givens under
+classic rules admit multiple solutions — so a regression that dropped the
+variant constraint cannot pass).
 
 ## Grading and hardening
 
@@ -235,3 +266,7 @@ directory (`.github/workflows/puzzle-analyzer-ci.yml`).
   puzzle well-formed. Adding a move later is one `reductions()` function.
 - Zebra and truth-lie clues use a structured JSON DSL rather than natural
   language; the fixtures show how each site clue translates.
+- Variant sudoku grading uses the technique solver; variants beyond the
+  current set (thermometers, arrows, sandwich, jigsaw regions) need a
+  `VariantHandler`-style extension — the importer already names exactly
+  which features a given puzzle would require.

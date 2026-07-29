@@ -8,12 +8,13 @@ so hardened puzzles never need guessing.
 """
 
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from .analyze import Analysis, analyze
 from .difficulty import Rating, rate
 from .grid import cell_name
-from .solver import solve_logically
+from .model import SudokuPuzzle
+from .solver import as_puzzle, solve_logically
 from .uniqueness import is_unique
 
 
@@ -24,7 +25,7 @@ class Suggestion:
     cell: int
     digit: int
     rating: Rating
-    new_puzzle: list[int]
+    new_puzzle: "SudokuPuzzle"
 
     def describe(self) -> str:
         return (
@@ -32,6 +33,10 @@ class Suggestion:
             f"{self.rating.grade} (hardest: {self.rating.hardest_technique}, "
             f"score {self.rating.score})"
         )
+
+    @property
+    def new_values(self) -> list[int]:
+        return list(self.new_puzzle.values)
 
 
 @dataclass(frozen=True, slots=True)
@@ -44,7 +49,7 @@ class HardenReport:
     breaks_solvability: list[int]
 
 
-def suggest_removals(values: Sequence[int]) -> HardenReport:
+def suggest_removals(values: "Sequence[int] | SudokuPuzzle") -> HardenReport:
     """Evaluate every single-given removal and rank the ones that help.
 
     Suggestions are removals that keep the puzzle unique AND logically
@@ -52,7 +57,8 @@ def suggest_removals(values: Sequence[int]) -> HardenReport:
     difficulty are included too (they still make the puzzle sparser), but
     ones that would lower the score are dropped.
     """
-    base = analyze(values)
+    puzzle = as_puzzle(values)
+    base = analyze(puzzle)
     suggestions: list[Suggestion] = []
     breaks_uniqueness: list[int] = []
     breaks_solvability: list[int] = []
@@ -60,11 +66,12 @@ def suggest_removals(values: Sequence[int]) -> HardenReport:
     if not base.valid or not base.solvable_without_guessing:
         return HardenReport(base, [], [], [])
 
-    for cell, digit in enumerate(values):
+    for cell, digit in enumerate(puzzle.values):
         if not digit:
             continue
-        trial = list(values)
-        trial[cell] = 0
+        grid = list(puzzle.values)
+        grid[cell] = 0
+        trial = replace(puzzle, values=tuple(grid))
         if not is_unique(trial):
             breaks_uniqueness.append(cell)
             continue
@@ -81,7 +88,7 @@ def suggest_removals(values: Sequence[int]) -> HardenReport:
 
 
 def greedy_harden(
-    values: Sequence[int], max_removals: int | None = None
+    values: "Sequence[int] | SudokuPuzzle", max_removals: int | None = None
 ) -> list[Suggestion]:
     """Repeatedly apply the best strictly-improving removal.
 
@@ -89,7 +96,7 @@ def greedy_harden(
     is the hardest variant found.  Greedy, so not guaranteed optimal, but
     each intermediate puzzle is verified unique and guess-free.
     """
-    current = list(values)
+    current = as_puzzle(values)
     applied: list[Suggestion] = []
     while max_removals is None or len(applied) < max_removals:
         report = suggest_removals(current)

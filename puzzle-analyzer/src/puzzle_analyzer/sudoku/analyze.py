@@ -4,8 +4,8 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 from .difficulty import Rating, rate
-from .grid import find_given_conflicts
-from .solver import SolveResult, solve_logically
+from .model import SudokuPuzzle, find_conflicts
+from .solver import SolveResult, as_puzzle, solve_logically
 from .uniqueness import count_solutions
 
 
@@ -30,15 +30,16 @@ class Analysis:
         return bool(self.solve and self.solve.solved)
 
 
-def analyze(values: Sequence[int]) -> Analysis:
-    values = list(values)
-    conflicts = find_given_conflicts(values)
+def analyze(values: "Sequence[int] | SudokuPuzzle") -> Analysis:
+    puzzle = as_puzzle(values)
+    grid = list(puzzle.values)
+    conflicts = find_conflicts(puzzle)
     if conflicts:
-        return Analysis(values, conflicts, 0, None, None, None)
+        return Analysis(grid, conflicts, 0, None, None, None)
 
-    solutions = count_solutions(values, limit=2)
+    solutions = count_solutions(puzzle, limit=2)
     if len(solutions) != 1:
-        return Analysis(values, [], len(solutions), None, None, None)
+        return Analysis(grid, [], len(solutions), None, None, None)
 
-    result = solve_logically(values)
-    return Analysis(values, [], 1, solutions[0], result, rate(result))
+    result = solve_logically(puzzle)
+    return Analysis(grid, [], 1, solutions[0], result, rate(result))

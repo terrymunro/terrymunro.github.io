@@ -16,20 +16,16 @@ Anything a puzzle needs beyond this repertoire is reported as requiring
 chains or trial-and-error ("guessing").
 """
 
+import functools
 import itertools
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
 from .board import Board
 from .grid import (
-    BOXES,
     COLS,
     DIGITS,
-    PEERS,
     ROWS,
-    UNIT_NAMES,
-    UNITS,
-    box_of,
     cell_name,
     cells_name,
     col_of,
@@ -81,7 +77,7 @@ def find_naked_single(board: Board) -> Step | None:
 
 
 def find_hidden_single(board: Board) -> Step | None:
-    for unit_index, unit in enumerate(UNITS):
+    for unit_index, unit in enumerate(board.geometry.units):
         for digit in DIGITS:
             spots = [c for c in unit if digit in board.candidates[c]]
             if len(spots) == 1:
@@ -90,7 +86,8 @@ def find_hidden_single(board: Board) -> Step | None:
                     technique="Hidden Single",
                     description=(
                         f"{cell_name(cell)} must be {digit} — it is the only "
-                        f"cell in {UNIT_NAMES[unit_index]} that can take {digit}"
+                        f"cell in {board.geometry.unit_names[unit_index]} "
+                        f"that can take {digit}"
                     ),
                     placements=[(cell, digit)],
                 )
@@ -101,69 +98,76 @@ def find_hidden_single(board: Board) -> Step | None:
 # Locked candidates
 # --------------------------------------------------------------------------
 
-def find_locked_candidates_pointing(board: Board) -> Step | None:
-    """All candidates for a digit in a box lie on one line -> clear the line."""
-    for box_index, box in enumerate(BOXES):
+def _locked_label(name_a: str, name_b: str) -> str:
+    """Classic naming: box->line is Pointing, line->box is Claiming."""
+    a_is_box, b_is_box = name_a.startswith("box"), name_b.startswith("box")
+    if a_is_box and not b_is_box:
+        return "Locked Candidates (Pointing)"
+    if b_is_box and not a_is_box:
+        return "Locked Candidates (Claiming)"
+    return "Locked Candidates"
+
+
+def find_locked_candidates(board: Board) -> Step | None:
+    """If every place for a digit in unit A lies inside unit B, the digit
+    is locked: eliminate it from the rest of B.
+
+    Generalises classic pointing/claiming to any pair of intersecting
+    units, so diagonals and extra regions participate automatically.
+    """
+    geometry = board.geometry
+    for a_index, b_index in _intersecting_unit_pairs(geometry):
+        unit_a, unit_b = geometry.units[a_index], geometry.units[b_index]
+        b_set = set(unit_b)
         for digit in DIGITS:
-            spots = [c for c in box if digit in board.candidates[c]]
-            if len(spots) < 2:
+            spots = [c for c in unit_a if digit in board.candidates[c]]
+            if len(spots) < 2 or not all(c in b_set for c in spots):
                 continue
-            for line_of, lines, kind in (
-                (row_of, ROWS, "row"),
-                (col_of, COLS, "column"),
-            ):
-                line_ids = {line_of(c) for c in spots}
-                if len(line_ids) != 1:
-                    continue
-                line_id = line_ids.pop()
-                eliminations = [
-                    (c, digit)
-                    for c in lines[line_id]
-                    if box_of(c) != box_index and digit in board.candidates[c]
-                ]
-                if eliminations:
-                    return Step(
-                        technique="Locked Candidates (Pointing)",
-                        description=(
-                            f"in box {box_index + 1}, digit {digit} is "
-                            f"confined to {kind} {line_id + 1} "
-                            f"({cells_name(spots)}); eliminate "
-                            f"{_format_eliminations(eliminations)}"
-                        ),
-                        eliminations=eliminations,
-                    )
+            eliminations = [
+                (c, digit)
+                for c in unit_b
+                if c not in spots and digit in board.candidates[c]
+            ]
+            if eliminations:
+                name_a = geometry.unit_names[a_index]
+                name_b = geometry.unit_names[b_index]
+                return Step(
+                    technique=_locked_label(name_a, name_b),
+                    description=(
+                        f"in {name_a}, digit {digit} is confined to "
+                        f"{name_b} ({cells_name(spots)}); eliminate "
+                        f"{_format_eliminations(eliminations)}"
+                    ),
+                    eliminations=eliminations,
+                )
     return None
 
 
-def find_locked_candidates_claiming(board: Board) -> Step | None:
-    """All candidates for a digit on a line lie in one box -> clear the box."""
-    for lines, kind in ((ROWS, "row"), (COLS, "column")):
-        for line_id, line in enumerate(lines):
-            for digit in DIGITS:
-                spots = [c for c in line if digit in board.candidates[c]]
-                if len(spots) < 2:
-                    continue
-                box_ids = {box_of(c) for c in spots}
-                if len(box_ids) != 1:
-                    continue
-                box_index = box_ids.pop()
-                eliminations = [
-                    (c, digit)
-                    for c in BOXES[box_index]
-                    if c not in spots and digit in board.candidates[c]
-                ]
-                if eliminations:
-                    return Step(
-                        technique="Locked Candidates (Claiming)",
-                        description=(
-                            f"in {kind} {line_id + 1}, digit {digit} is "
-                            f"confined to box {box_index + 1} "
-                            f"({cells_name(spots)}); eliminate "
-                            f"{_format_eliminations(eliminations)}"
-                        ),
-                        eliminations=eliminations,
-                    )
-    return None
+@functools.lru_cache(maxsize=8)
+def _intersecting_unit_pairs(geometry) -> list[tuple[int, int]]:
+    """Ordered unit pairs sharing at least two cells.
+
+    Box->line pairs come first, then line->box, then everything else, so
+    classic puzzles see the familiar pointing-before-claiming order.
+    """
+    pairs = []
+    for a, unit_a in enumerate(geometry.units):
+        cells_a = set(unit_a)
+        for b, unit_b in enumerate(geometry.units):
+            if a != b and len(cells_a & set(unit_b)) >= 2:
+                pairs.append((a, b))
+
+    def rank(pair: tuple[int, int]) -> int:
+        label = _locked_label(
+            geometry.unit_names[pair[0]], geometry.unit_names[pair[1]]
+        )
+        return {
+            "Locked Candidates (Pointing)": 0,
+            "Locked Candidates (Claiming)": 1,
+        }.get(label, 2)
+
+    pairs.sort(key=rank)
+    return pairs
 
 
 # --------------------------------------------------------------------------
@@ -174,7 +178,7 @@ _SUBSET_NAMES = {2: "Pair", 3: "Triple", 4: "Quad"}
 
 
 def _find_naked_subset(board: Board, size: int) -> Step | None:
-    for unit_index, unit in enumerate(UNITS):
+    for unit_index, unit in enumerate(board.geometry.units):
         open_cells = [
             c for c in unit if 2 <= len(board.candidates[c]) <= size
         ]
@@ -194,7 +198,7 @@ def _find_naked_subset(board: Board, size: int) -> Step | None:
                     technique=f"Naked {_SUBSET_NAMES[size]}",
                     description=(
                         f"cells {cells_name(combo)} in "
-                        f"{UNIT_NAMES[unit_index]} contain only "
+                        f"{board.geometry.unit_names[unit_index]} contain only "
                         f"{{{digits}}}; eliminate "
                         f"{_format_eliminations(eliminations)}"
                     ),
@@ -204,7 +208,7 @@ def _find_naked_subset(board: Board, size: int) -> Step | None:
 
 
 def _find_hidden_subset(board: Board, size: int) -> Step | None:
-    for unit_index, unit in enumerate(UNITS):
+    for unit_index, unit in enumerate(board.geometry.units):
         digit_spots = {
             d: [c for c in unit if d in board.candidates[c]] for d in DIGITS
         }
@@ -223,7 +227,8 @@ def _find_hidden_subset(board: Board, size: int) -> Step | None:
                 return Step(
                     technique=f"Hidden {_SUBSET_NAMES[size]}",
                     description=(
-                        f"in {UNIT_NAMES[unit_index]}, digits {{{digits}}} "
+                        f"in {board.geometry.unit_names[unit_index]}, "
+                        f"digits {{{digits}}} "
                         f"only fit in {cells_name(cells)}; those cells can "
                         f"hold nothing else — eliminate "
                         f"{_format_eliminations(eliminations)}"
@@ -331,7 +336,8 @@ def find_xy_wing(board: Board) -> Step | None:
     bivalue = [c for c in board.unsolved_cells() if len(board.candidates[c]) == 2]
     for pivot in bivalue:
         x, y = sorted(board.candidates[pivot])
-        pincers = [p for p in PEERS[pivot] if p in bivalue and p != pivot]
+        peers = board.geometry.peers
+        pincers = [p for p in peers[pivot] if p in bivalue and p != pivot]
         for a, b in itertools.combinations(pincers, 2):
             ca, cb = board.candidates[a], board.candidates[b]
             # Pincers must share exactly one digit z with each other, and
@@ -344,7 +350,7 @@ def find_xy_wing(board: Board) -> Step | None:
                 continue
             if not (({x, z} == ca and {y, z} == cb) or ({y, z} == ca and {x, z} == cb)):
                 continue
-            targets = (PEERS[a] & PEERS[b]) - {pivot}
+            targets = (peers[a] & peers[b]) - {pivot}
             eliminations = [
                 (c, z) for c in sorted(targets) if z in board.candidates[c]
             ]
@@ -369,9 +375,10 @@ def find_xyz_wing(board: Board) -> Step | None:
         if len(board.candidates[pivot]) != 3:
             continue
         pivot_cands = board.candidates[pivot]
+        peers = board.geometry.peers
         pincers = [
             p
-            for p in PEERS[pivot]
+            for p in peers[pivot]
             if len(board.candidates[p]) == 2
             and board.candidates[p] <= pivot_cands
         ]
@@ -382,7 +389,7 @@ def find_xyz_wing(board: Board) -> Step | None:
             if board.candidates[a] | board.candidates[b] != pivot_cands:
                 continue
             z = next(iter(shared))
-            targets = PEERS[a] & PEERS[b] & PEERS[pivot]
+            targets = peers[a] & peers[b] & peers[pivot]
             eliminations = [
                 (c, z) for c in sorted(targets) if z in board.candidates[c]
             ]
@@ -398,6 +405,85 @@ def find_xyz_wing(board: Board) -> Step | None:
                     ),
                     eliminations=eliminations,
                 )
+    return None
+
+
+# --------------------------------------------------------------------------
+# Killer cages
+# --------------------------------------------------------------------------
+
+def _cage_supports(domains: list[set[int]], total: int) -> list[set[int]]:
+    """Per-cell digits appearing in some distinct-digit assignment summing
+    to ``total`` (all empty when no assignment exists)."""
+    size = len(domains)
+    supports: list[set[int]] = [set() for _ in range(size)]
+
+    def dfs(index: int, used: int, remaining: int, chosen: list[int]) -> None:
+        if index == size:
+            if remaining == 0:
+                for i, digit in enumerate(chosen):
+                    supports[i].add(digit)
+            return
+        cells_left = size - index - 1
+        for digit in domains[index]:
+            if used & (1 << digit) or digit > remaining:
+                continue
+            after = remaining - digit
+            # Distinct digits 1..9: the leftover cells need at least
+            # 1+2+..., at most 9+8+...
+            if after < cells_left * (cells_left + 1) // 2:
+                continue
+            if after > cells_left * (19 - cells_left) // 2:
+                continue
+            chosen.append(digit)
+            dfs(index + 1, used | (1 << digit), after, chosen)
+            chosen.pop()
+
+    dfs(0, 0, total, [])
+    return supports
+
+
+def find_cage_combinations(board: Board) -> Step | None:
+    """Prune killer-cage cells to digits used by some valid combination."""
+    for index, cage in enumerate(board.cages, 1):
+        if all(board.values[c] for c in cage.cells):
+            continue
+        domains = [
+            {board.values[c]} if board.values[c] else board.candidates[c]
+            for c in cage.cells
+        ]
+        supports = _cage_supports(domains, cage.total)
+        if not any(supports):
+            # No valid combination at all: expose the contradiction by
+            # clearing the first open cell so the solver reports it.
+            dead = next(c for c in cage.cells if not board.values[c])
+            return Step(
+                technique="Cage Combinations",
+                description=(
+                    f"cage {index} at {cell_name(min(cage.cells))} has no "
+                    f"valid combination summing to {cage.total}"
+                ),
+                eliminations=[
+                    (dead, digit) for digit in sorted(board.candidates[dead])
+                ],
+            )
+        eliminations = [
+            (cell, digit)
+            for cell, support in zip(cage.cells, supports, strict=True)
+            if not board.values[cell]
+            for digit in sorted(board.candidates[cell] - support)
+        ]
+        if eliminations:
+            anchor = cell_name(min(cage.cells))
+            return Step(
+                technique="Cage Combinations",
+                description=(
+                    f"cage {index} at {anchor} must make {cage.total} from "
+                    f"distinct digits; eliminate "
+                    f"{_format_eliminations(eliminations)}"
+                ),
+                eliminations=eliminations,
+            )
     return None
 
 
@@ -418,9 +504,9 @@ class Technique:
 TECHNIQUES: list[Technique] = [
     Technique("Naked Single", 1.0, find_naked_single),
     Technique("Hidden Single", 1.5, find_hidden_single),
-    Technique("Locked Candidates (Pointing)", 2.6, find_locked_candidates_pointing),
-    Technique("Locked Candidates (Claiming)", 2.8, find_locked_candidates_claiming),
+    Technique("Locked Candidates", 2.7, find_locked_candidates),
     Technique("Naked Pair", 3.0, find_naked_pair),
+    Technique("Cage Combinations", 3.2, find_cage_combinations),
     Technique("Hidden Pair", 3.4, find_hidden_pair),
     Technique("Naked Triple", 3.6, find_naked_triple),
     Technique("Hidden Triple", 4.0, find_hidden_triple),

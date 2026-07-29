@@ -7,22 +7,33 @@ uniqueness check.
 
 import argparse
 import json
+import json as _json
 import sys
 from pathlib import Path
 
 from .analyze import Analysis, analyze
-from .grid import cell_name, format_grid, parse_puzzle, to_line
+from .grid import cell_name, format_grid, to_line
 from .harden import greedy_harden, suggest_removals
+from .model import SudokuPuzzle
 
 GRADES = ["Easy", "Medium", "Hard", "Very Hard"]
 
 
-def _load_puzzle(arg: str) -> list[int]:
+def _load_puzzle(arg: str) -> SudokuPuzzle:
+    from . import parse
+
     if arg == "-":
-        return parse_puzzle(sys.stdin.read())
-    if Path(arg).exists():
-        return parse_puzzle(Path(arg).read_text(encoding="utf-8"))
-    return parse_puzzle(arg)
+        text = sys.stdin.read()
+    elif Path(arg).exists():
+        text = Path(arg).read_text(encoding="utf-8")
+    else:
+        text = arg
+    try:
+        spec = _json.loads(text)
+    except _json.JSONDecodeError:
+        return parse(text)
+    # A bare digit grid parses as a huge JSON number; only dicts are specs.
+    return parse(spec if isinstance(spec, dict) else text)
 
 
 def _analysis_dict(analysis: Analysis) -> dict:
@@ -95,8 +106,8 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_solve(args: argparse.Namespace) -> int:
-    values = _load_puzzle(args.puzzle)
-    analysis = analyze(values)
+    puzzle = _load_puzzle(args.puzzle)
+    analysis = analyze(puzzle)
 
     if args.json:
         out = _analysis_dict(analysis)
@@ -120,7 +131,7 @@ def cmd_solve(args: argparse.Namespace) -> int:
         print(json.dumps(out, indent=2))
         return 0 if analysis.solvable_without_guessing else 1
 
-    print(format_grid(values))
+    print(format_grid(puzzle.values))
     print()
     _print_validity(analysis)
     if not analysis.solve:
@@ -154,15 +165,15 @@ def _suggestion_dict(s) -> dict:
         "grade": s.rating.grade,
         "hardestTechnique": s.rating.hardest_technique,
         "score": s.rating.score,
-        "puzzle": to_line(s.new_puzzle),
+        "puzzle": to_line(s.new_values),
     }
 
 
 def cmd_harden(args: argparse.Namespace) -> int:
-    values = _load_puzzle(args.puzzle)
+    puzzle = _load_puzzle(args.puzzle)
 
     if args.greedy:
-        chain = greedy_harden(values, max_removals=args.max_removals)
+        chain = greedy_harden(puzzle, max_removals=args.max_removals)
         if not chain:
             print("no removal makes this puzzle strictly harder")
             return 1
@@ -171,7 +182,7 @@ def cmd_harden(args: argparse.Namespace) -> int:
                 json.dumps(
                     {
                         "removals": [_suggestion_dict(s) for s in chain],
-                        "hardenedPuzzle": to_line(chain[-1].new_puzzle),
+                        "hardenedPuzzle": to_line(chain[-1].new_values),
                     },
                     indent=2,
                 )
@@ -182,12 +193,12 @@ def cmd_harden(args: argparse.Namespace) -> int:
             print(f"  - {s.describe()}")
         print()
         print("hardened puzzle (same solution, no guessing needed):")
-        print(format_grid(chain[-1].new_puzzle))
+        print(format_grid(chain[-1].new_values))
         print()
-        print(to_line(chain[-1].new_puzzle))
+        print(to_line(chain[-1].new_values))
         return 0
 
-    report = suggest_removals(values)
+    report = suggest_removals(puzzle)
     if not report.base.valid:
         print("puzzle is not valid (see `validate`); cannot harden")
         return 1
