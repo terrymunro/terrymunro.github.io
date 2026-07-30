@@ -136,6 +136,23 @@ class TestVariantRules:
         assert not verdict.well_formed
         assert any("cage" in issue for issue in verdict.issues)
 
+    def test_list_givens_are_validated(self):
+        # Codex review finding (PR #5): bad list-form givens used to
+        # surface as IndexError deep in the solver.
+        with pytest.raises(SpecError, match="81 cells"):
+            parse({"givens": [5, 3, 0]})
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": [12] + [0] * 80})
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": ["x"] * 81})
+        # Codex review finding (PR #7): 1.9 must not truncate to 1, and
+        # booleans are not digits.
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": [1.9] + [0] * 80})
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": [True] + [0] * 80})
+        assert parse({"givens": [0] * 81}).values == (0,) * 81
+
     def test_x_geometry_has_29_units(self, fixture):
         puzzle = parse(fixture("sudoku_x")["spec"])
         assert len(puzzle.geometry.units) == 29
