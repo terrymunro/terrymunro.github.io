@@ -167,10 +167,12 @@ def _csp(puzzle: Kakuro) -> Csp:
             f"{run.length} summing to {run.total}"
         )
         scope = [f"R{r + 1}C{c + 1}" for r, c in run.cells()]
-        if run.length == 9:
-            # A full run holds every digit once and must sum to 45 (which
-            # check() has already enforced): plain all-different is exact,
-            # and avoids materializing all 9! permutations.
+        if run.length == 9 and run.total == 45:
+            # A full run holds every digit once, so with the only legal sum
+            # (45) plain all-different is exact — and avoids materializing
+            # all 9! permutations.  Any other total falls through to the
+            # table, which comes out empty and exposes the contradiction
+            # even when grading is called without check().
             propagators.append(
                 AllDifferentPropagator(name, scope, permutation=True)
             )

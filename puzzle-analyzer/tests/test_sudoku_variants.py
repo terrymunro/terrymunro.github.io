@@ -145,6 +145,12 @@ class TestVariantRules:
             parse({"givens": [12] + [0] * 80})
         with pytest.raises(SpecError, match="digits 0-9"):
             parse({"givens": ["x"] * 81})
+        # Codex review finding (PR #7): 1.9 must not truncate to 1, and
+        # booleans are not digits.
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": [1.9] + [0] * 80})
+        with pytest.raises(SpecError, match="digits 0-9"):
+            parse({"givens": [True] + [0] * 80})
         assert parse({"givens": [0] * 81}).values == (0,) * 81
 
     def test_x_geometry_has_29_units(self, fixture):

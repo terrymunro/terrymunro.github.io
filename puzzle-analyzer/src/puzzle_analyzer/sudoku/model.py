@@ -148,15 +148,18 @@ def _parse_cells(raw: list[Any], context: str) -> tuple[int, ...]:
 def _parse_givens(givens: Any) -> tuple[int, ...]:
     if isinstance(givens, str):
         return tuple(parse_puzzle(givens))
-    try:
-        values = tuple(int(v) for v in givens)
-    except (TypeError, ValueError) as exc:
-        raise SpecError(f"givens must be digits 0-9: {exc}") from exc
+    values = []
+    for v in givens:
+        # Exact integers only: int(1.9) would silently certify a different
+        # puzzle than the one supplied, and bool is not a digit.
+        if isinstance(v, bool) or not isinstance(v, int):
+            raise SpecError(f"givens must be integral digits 0-9, got {v!r}")
+        values.append(v)
     if len(values) != 81:
         raise SpecError(f"givens must have 81 cells, got {len(values)}")
     if bad := [v for v in values if not 0 <= v <= 9]:
         raise SpecError(f"givens must be digits 0-9, got {sorted(set(bad))}")
-    return values
+    return tuple(values)
 
 
 def parse_spec(spec: dict[str, Any]) -> SudokuPuzzle:
